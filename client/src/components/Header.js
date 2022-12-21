@@ -40,7 +40,7 @@ const TopBarContainer = styled.div`
   a {
     width: 164px;
     height: 100%;
-    margin-right: 20px;
+    margin: 2px;  // 버튼 사이 간격이 생긴 원인 -> margin-right: 20px;
     text-align: center;
   }
   a:hover {
