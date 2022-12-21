@@ -3,6 +3,7 @@ import { createGlobalStyle } from "styled-components";
 import Header from './components/Header';
 import QuestionList from './pages/Sample';
 import LoginPage from './pages/LoginPage';
+import AskQuestion from './pages/AskQuestion';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -29,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .app {
-    
+    margin-top: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,6 +69,7 @@ function App() {
           <Route path="/question" element={<QuestionList />} />
           <Route path="/companies" element={<QuestionList />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/askquestion" element={<AskQuestion />} />
         </Routes>
       </div>
     </BrowserRouter>
