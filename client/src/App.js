@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { createGlobalStyle } from "styled-components";
 import Header from './components/Header';
 import QuestionList from './pages/Sample';
+import LoginPage from './pages/LoginPage';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -28,9 +29,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .app {
-    margin-top: 50px;
+    
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
 
   a {
@@ -64,6 +67,7 @@ function App() {
           <Route path="/question/:questionId" element={<QuestionList />} />
           <Route path="/question" element={<QuestionList />} />
           <Route path="/companies" element={<QuestionList />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </div>
     </BrowserRouter>
