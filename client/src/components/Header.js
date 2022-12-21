@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { GrSearch } from "react-icons/gr";
 import { BasicButton, LoginButton } from "./Button";
+import { Link } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   width: 100%;
@@ -95,8 +96,8 @@ return (
         />        
       </SearchBar>
       <div className="top_buttons">
-        <LoginButton>Log in</LoginButton>&nbsp;
-        <BasicButton>Sign up</BasicButton>&nbsp;&nbsp;
+        <Link to="/login"><LoginButton>Log in</LoginButton></Link>
+        <Link to="/signup"><BasicButton>Sign up</BasicButton></Link>
       </div>      
     </TopBarContainer>
   </HeaderContainer>
