@@ -46,6 +46,10 @@ const TopBarContainer = styled.div`
   a:hover {
     background-color: #E4E6E8;
   }
+  .header_menu {
+    padding: 14px;
+    font-size: 12px;
+  }
 `;
 
 const SearchBar = styled.div`
@@ -79,8 +83,9 @@ return (
   <HeaderContainer>
     <TopBarContainer>
       <a href="/"><span className="logo_img">stack overflow</span></a>
-      <span>About</span>
-      <span>Products</span>
+      <span className="header_menu">About</span>
+      <span className="header_menu">Products</span>
+      <span className="header_menu">For Teams</span>
       <SearchBar>
         <GrSearch />        
         <input 
