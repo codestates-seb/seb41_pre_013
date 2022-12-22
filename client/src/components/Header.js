@@ -40,11 +40,15 @@ const TopBarContainer = styled.div`
 	a {
 		width: 164px;
 		height: 100%;
-		margin-right: 20px;
+		margin: 2px;
 		text-align: center;
 	}
 	a:hover {
 		background-color: #e4e6e8;
+	}
+	.header_menu {
+		padding: 14px;
+		font-size: 12px;
 	}
 `;
 
@@ -58,6 +62,7 @@ const SearchBar = styled.div`
 	padding: 5px;
 	border: 1px solid #b8bcc0;
 	border-radius: 3px;
+	background-color: white;
 
 	input {
 		color: var(--font-color-base);
@@ -65,6 +70,7 @@ const SearchBar = styled.div`
 		outline: none;
 		margin-left: 10px;
 		margin-right: 10px;
+		width: 100%;
 	}
 	svg {
 		font-size: 1.3rem;
@@ -79,8 +85,9 @@ function Header() {
 				<a href="/">
 					<span className="logo_img">stack overflow</span>
 				</a>
-				<span>About</span>
-				<span>Products</span>
+				<span className="header_menu">About</span>
+				<span className="header_menu">Products</span>
+				<span className="header_menu">For Teams</span>
 				<SearchBar>
 					<GrSearch />
 					<input
@@ -99,7 +106,7 @@ function Header() {
 					<Link to="/login">
 						<LoginButton>Log in</LoginButton>
 					</Link>
-					<Link to="/signup">
+					<Link to="/users">
 						<BasicButton>Sign up</BasicButton>
 					</Link>
 				</div>
