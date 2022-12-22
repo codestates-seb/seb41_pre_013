@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import AskQuestionForm from '../components/AskQuestionForm';
 
 const MainContainer = styled.div`
   width: 100%;
@@ -7,17 +8,17 @@ const MainContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
+  height: 100%;
 `;
 
 const MainContent = styled.main`
   max-width: calc(var(--max-width) - var(--nav-width));
   width: calc(100% - var(--nav-width));
-  padding: var(--main-outline-margin);
+  padding: 0 var(--main-outline-margin);
   background-image: url("https://cdn.sstatic.net/Img/ask/background.svg?v=2e9a8205b368");
   background-repeat: no-repeat;
   background-position: right top;
   background-size: 550px;
-  
   h2 {
     color: var(--font-color-title);  
   }
@@ -32,6 +33,7 @@ const MainContent = styled.main`
     padding: 24px;
     border-radius: 5px;
     border: 1px solid #BBD9F1;
+    margin-top: 40px;
 
     > h2 {
       font-weight: 400;
@@ -62,8 +64,13 @@ const AskQuestionContainer = styled.div`
 
 const AskQuestionDescription = styled.div`
   .ask-question-title {
-    height: 130px;
-    line-height: 130px;
+    height: 86px;
+    margin-top: 20px;
+
+    h2 {
+      font-size: 27px;
+      line-height: 86px;
+    }
   }
 `;
 
@@ -105,6 +112,7 @@ function AskQuestion() {
             </div>
           </AskQuestionDescription>
         </AskQuestionContainer>
+        <AskQuestionForm />
       </MainContent>
     </MainContainer>
   );
