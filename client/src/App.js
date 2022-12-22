@@ -1,85 +1,41 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { createGlobalStyle } from "styled-components";
-import Header from './components/Header';
-import QuestionList from './pages/Sample';
-import LoginPage from './pages/LoginPage';
-import SignUpPage from './pages/SignUpPage';
-import AskQuestion from './pages/AskQuestion';
+import GlobalStyle from './GlobalStyle';
+import React, { Suspense } from 'react';
+import useScrollTop from './hooks/useScrollTop';
 
-
-const GlobalStyle = createGlobalStyle`
-  :root {
-    --line-color-top-orange: #EC8A3C;
-    --line-color: #E1E3E6;
-    --font-color-base: #737A82;
-    --font-color-title: #242629;
-    --max-width: 1264px; /* 164(left) / 24+730+24(main) / 298(aside) */
-    --nav-width: 164px;
-    --aside-width: 298px;
-    --main-outline-margin: 24px;
-  }
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;    
-  }
-
-  body {
-    font-size: 0.9rem;
-    color: var(--font-color-base);
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    overflow: hidden;
-  }
-
-  .app {
-    margin-top: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
-    width: 100vw;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  a:hover {
-    color: black;
-  }
-
-  button {
-    cursor: pointer;
-    outline: none;
-    border: none;
-  }
-
-  aside {
-    width: var(--aside-width);
-    margin-top: var(--main-outline-margin);
-  }
-`;
+const Header = React.lazy(() => import('./components/Header'));
+const Questoins = React.lazy(() => import('./pages/QuestionList'));
+const LoginPage = React.lazy(() => import('./pages/LoginPage'));
+const SignUpPage = React.lazy(() => import('./pages/SignUpPage'));
+const AskQuestion = React.lazy(() => import('./pages/AskQuestion'));
+const Footer = React.lazy(() => import('./components/Footer'));
+const Loading = React.lazy(() => import('./components/Loading'));
 
 function App() {
-  return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <GlobalStyle />
-      <div className="app">        
-        <Header />
-        <Routes>
-          <Route exact path="/" element={<QuestionList />} />
-          <Route path="/question/:questionId" element={<QuestionList />} />
-          <Route path="/question" element={<QuestionList />} />
-          <Route path="/companies" element={<QuestionList />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/users" element={<SignUpPage />} />
-          <Route path="/askquestion" element={<AskQuestion />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
-  );
+	useScrollTop();
+	return (
+		<BrowserRouter basename={process.env.PUBLIC_URL}>
+			<GlobalStyle />
+			<Suspense fallback={<Loading />}>
+				<>
+					<div className="app">
+						<Header />
+						<Routes>
+							<Route exact path="/" element={<Questoins />} />
+							<Route path="/questions" element={<Questoins />} />
+							<Route path="/login" element={<LoginPage />} />
+							<Route path="/signup" element={<SignUpPage />} />
+							<Route path="/askquestion" element={<AskQuestion />} />
+							<Route path="/tags" element={<Questoins />} />
+							<Route path="/users" element={<Questoins />} />
+							<Route path="/companies" element={<Questoins />} />
+						</Routes>
+						<Footer />
+					</div>
+				</>
+			</Suspense>
+		</BrowserRouter>
+	);
 }
 
 export default App;

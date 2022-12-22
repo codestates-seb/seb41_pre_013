@@ -1,114 +1,125 @@
-import styled from "styled-components";
-import { GrSearch } from "react-icons/gr";
-import { BasicButton, LoginButton } from "./Button";
+import styled from 'styled-components';
+import { GrSearch } from 'react-icons/gr';
+import { BasicButton, LoginButton } from './Button';
 import { Link } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
-  width: 100%;
-  height: 50px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  min-width: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-top: 3px solid var(--line-color-top-orange);
-  border-bottom: 2px solid #ECECEC;
-  box-shadow: 0 5px 5px -5px #E5E5E5;
-  background-color: #F8F9F9;
+	width: 100%;
+	height: 50px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	min-width: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: var(--font-size-0-8rem);
+	border-top: 3px solid var(--line-color-top-orange);
+	border-bottom: 2px solid #ececec;
+	box-shadow: 0 5px 5px -5px #e5e5e5;
+	background-color: #f8f9f9;
 `;
 
 const TopBarContainer = styled.div`
-  width: 100%;
-  max-width: var(--max-width);
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	width: 100%;
+	max-width: var(--max-width);
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-  .logo_img {
-    display: inline-block;
-    text-indent: -9999em;
-    height: 30px;
-    width: 146px;
-    margin-top: 5px;
-    margin-left: 0;
-    background-position: 0 -500px;
-    background-image: url("https://cdn.sstatic.net/Img/unified/sprites.svg?v=fcc0ea44ba27");
-  }
-  a {
-    width: 164px;
-    height: 100%;
-    margin: 2px;
-    text-align: center;
-  }
-  a:hover {
-    background-color: #E4E6E8;
-  }
-  .header_menu {
-    padding: 14px;
-    font-size: 12px;
-  }
+	.logo_img {
+		display: inline-block;
+		text-indent: -9999em;
+		height: 30px;
+		width: 146px;
+		margin-top: 5px;
+		margin-left: 0;
+		background-position: 0 -500px;
+		background-image: url('https://cdn.sstatic.net/Img/unified/sprites.svg?v=fcc0ea44ba27');
+	}
+	a {
+		width: 164px;
+		height: 100%;
+		margin: 2px;
+		text-align: center;
+	}
+	a:hover {
+		background-color: #e4e6e8;
+	}
+	.header_menu {
+		padding: 14px;
+		font-size: 12px;
+	}
+	.top_buttons {
+		margin-right: var(--main-outline-margin);
+	}
 `;
 
 const SearchBar = styled.div`
-  flex-grow: 1;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-  margin-right: 10px;
-  padding: 5px;
-  border: 1px solid #B8BCC0;
-  border-radius: 3px;
-  background-color: white;
+	flex-grow: 1;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	margin-left: 10px;
+	margin-right: 10px;
+	padding: 5px;
+	border: 1px solid #b8bcc0;
+	border-radius: 3px;
+	background-color: white;
 
-  input {
-    color: var(--font-color-base);
-    border: none;
-    outline: none;
-    margin-left: 10px;
-    margin-right: 10px;
-    width: 100%;
-  }
-  svg {
-    font-size: 1.3rem;
-    color: red;   
-  }
+	:focus-within {
+		border: var(--border-input-focus);
+		outline: var(--outline-input-focus);
+	}
+	input {
+		color: #848c95;
+		border: none;
+		outline: none;
+		margin-left: 10px;
+		margin-right: 10px;
+		width: 100%;
+		background: none;
+	}
+	svg {
+		font-size: var(--font-size-1-2rem);
+		color: red;
+	}
 `;
 
-
-
 function Header() {
-return (
-  <HeaderContainer>
-    <TopBarContainer>
-      <a href="/"><span className="logo_img">stack overflow</span></a>
-      <span className="header_menu">About</span>
-      <span className="header_menu">Products</span>
-      <span className="header_menu">For Teams</span>
-      <SearchBar>
-        <GrSearch />        
-        <input 
-          name="q_text" 
-          type="text" 
-          role="combobox"
-          autocomplete="off"
-          maxlength="240" 
-          aria-label="Search" 
-          aria-controls="top-search" 
-          aria-expanded="true"
-          placeholder="Search…" 
-        />        
-      </SearchBar>
-      <div className="top_buttons">
-        <Link to="/login"><LoginButton>Log in</LoginButton></Link>
-        <Link to="/users"><BasicButton>Sign up</BasicButton></Link>
-      </div>      
-    </TopBarContainer>
-  </HeaderContainer>
-  );
+	return (
+		<HeaderContainer>
+			<TopBarContainer>
+				<a href="/">
+					<span className="logo_img">stack overflow</span>
+				</a>
+				<span className="header_menu">About</span>
+				<span className="header_menu">Products</span>
+				<span className="header_menu">For Teams</span>
+				<SearchBar>
+					<GrSearch />
+					<input
+						name="q_text"
+						type="text"
+						role="combobox"
+						aria-label="Search"
+						aria-controls="top-search"
+						aria-expanded="true"
+						placeholder="Search…"
+					/>
+				</SearchBar>
+				<div className="top_buttons">
+					<Link to="/login">
+						<LoginButton>Log in</LoginButton>
+					</Link>
+					<Link to="/users">
+						<BasicButton>Sign up</BasicButton>
+					</Link>
+				</div>
+			</TopBarContainer>
+		</HeaderContainer>
+	);
 }
 
 export default Header;
