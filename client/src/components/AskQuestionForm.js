@@ -38,9 +38,14 @@ const AskQuestionBox = styled.div`
 
     textarea {
       height: 100%;
+      padding: 7.8px 9.1px;
       resize: vertical;
       border: 1px solid #BABFC3;
       border-radius: 4px;
+
+      :focus {
+        outline: 1px solid #90CCF9;
+      }
     }
   }
 
@@ -61,7 +66,6 @@ const Input = styled.input`
 
   :focus {
     outline: 1px solid #90CCF9;
-    box-shadow: 15px 15px 5px 0px #DEEAF7;
   }
 `;
 
