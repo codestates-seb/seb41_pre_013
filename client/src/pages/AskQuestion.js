@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-// import { BasicButton } from "../components/Button";
-import AskQuestionForm from "../components/question/AskQuestionForm";
+import AskQuestionForm from '../components/AskQuestionForm';
 
 const MainContainer = styled.div`
   width: 100%;
@@ -9,6 +8,7 @@ const MainContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
+  height: 100%;
 `;
 
 const MainContent = styled.main`
@@ -44,57 +44,41 @@ function AskQuestion() {
   return (
     <MainContainer>
       <MainContent>
-        <div className="ask-question-container">
-          <div className="ask-question-description">
+        <AskQuestionContainer>
+          <AskQuestionDescription>
             <div className="ask-question-title">
               <h2>Ask a public question</h2>
             </div>
             <div className="ask-question-info">
-              <div className="good-question-tips">
-                <h3>Writing a good question</h3>
-                <p>
-                  You're ready to ask a programming-related question and this form will help guide you through the process.
-                  <br />
-                  Looking to ask a non-programming question? See the topics here to find a relevant site.
-                </p>
-                <h4>Steps</h4>
-                <p>
-                  <ul>
-                    <li>
-                      Summarize your problem in a one-line title.
-                    </li>
-                    <li>
-                      Describe your problem in more detail.
-                    </li>
-                    <li>
-                      Describe what you tried and what you expected to happen.
-                    </li>
-                    <li>
-                      Add "tags" which help surface your question to members of the community.
-                    </li>
-                    <li>
-                      Review your question and post it to the site.
-                    </li>
-                  </ul>
-                </p>
-              </div>
-              {/*<div className="good-title-tips">
-                <h3>Writing a good title</h3>
-                <p>
-                  <ul>
-                    <li>
-                      Your title should summarize the problem.
-                    </li>
-                    <li>
-                      You might find that you have a better idea of your title after writing out the rest of the question.
-                    </li>
-                  </ul>
-                </p>
-              </div> */}
+              <h2>Writing a good question</h2>
+              <p>
+                You're ready to ask a programming-related question and this form will help guide you through the process.
+              </p>
+              <p className="second-info">
+                Looking to ask a non-programming question? See the topics here to find a relevant site.
+              </p>
+              <h5>Steps</h5>
+              <ul>
+                <li>
+                  Summarize your problem in a one-line title.
+                </li>
+                <li>
+                  Describe your problem in more detail.
+                </li>
+                <li>
+                  Describe what you tried and what you expected to happen.
+                </li>
+                <li>
+                  Add "tags" which help surface your question to members of the community.
+                </li>
+                <li>
+                  Review your question and post it to the site.
+                </li>
+              </ul>
             </div>
-          </div>
-          <AskQuestionForm />
-        </div>
+          </AskQuestionDescription>
+        </AskQuestionContainer>
+        <AskQuestionForm />
       </MainContent>
     </MainContainer>
   );
