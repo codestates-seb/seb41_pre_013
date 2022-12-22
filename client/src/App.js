@@ -62,7 +62,6 @@ function App() {
 					<Route path="/question" element={<QuestionList />} />
 					<Route path="/companies" element={<QuestionList />} />
 					<Route path="/login" element={<LoginPage />} />
-					<Route path="/askquestion" element={<AskQuestion />} />
 				</Routes>
 			</div>
 		</BrowserRouter>
