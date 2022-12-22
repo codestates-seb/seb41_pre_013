@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { GrSearch } from "react-icons/gr";
 import { BasicButton, LoginButton } from "./Button";
 import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   width: 100%;
