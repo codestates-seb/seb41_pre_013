@@ -40,7 +40,7 @@ const TopBarContainer = styled.div`
   a {
     width: 164px;
     height: 100%;
-    margin: 2px;  // 버튼 사이 간격이 생긴 원인 -> margin-right: 20px;
+    margin: 2px;
     text-align: center;
   }
   a:hover {
@@ -62,6 +62,7 @@ const SearchBar = styled.div`
   padding: 5px;
   border: 1px solid #B8BCC0;
   border-radius: 3px;
+  background-color: white;
 
   input {
     color: var(--font-color-base);
@@ -69,6 +70,7 @@ const SearchBar = styled.div`
     outline: none;
     margin-left: 10px;
     margin-right: 10px;
+    width: 100%;
   }
   svg {
     font-size: 1.3rem;
@@ -102,7 +104,7 @@ return (
       </SearchBar>
       <div className="top_buttons">
         <Link to="/login"><LoginButton>Log in</LoginButton></Link>
-        <Link to="/signup"><BasicButton>Sign up</BasicButton></Link>
+        <Link to="/users"><BasicButton>Sign up</BasicButton></Link>
       </div>      
     </TopBarContainer>
   </HeaderContainer>

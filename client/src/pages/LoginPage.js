@@ -22,7 +22,6 @@ const LoginStyle = styled.div`
         padding: 24px;
         border-radius: 8px;
         box-shadow: 1px 1px 8px 2px lightgray;
-
         .text {
             padding: 2px;
             margin-bottom: 4px;
@@ -46,7 +45,6 @@ const Button = styled.button`
     border-radius: 4px;
     color: white;
     font-size: 13px;
-
     .log {
       margin-bottom: 4px;
     }
@@ -64,7 +62,6 @@ const MenuStyle = styled.div`
         font-size: 20px;
         margin-right: 4px;
     }
-    
     .first {
       background-color: #ffffff;
       color: black;
@@ -72,7 +69,6 @@ const MenuStyle = styled.div`
       justify-content: center;
       align-items: center;
     }
-
     .second {
       background-color: #2f3237;
       color: white;
@@ -80,7 +76,6 @@ const MenuStyle = styled.div`
       justify-content: center;
       align-items: center;
     }
-
     .third {
       background-color: #375498;
       margin-bottom: 20px;
@@ -113,13 +108,9 @@ const LoginPage = () => {
 
         <LoginStyle>
             <div className="text">Email</div>
-            <Input
-            type="email" 
-            />
+            <Input type="email" />
             <div className="text">Password</div>
-            <Input
-            type="password" 
-            />
+            <Input type="password" />
         <Button><div className="log">Log in</div></Button>
         </LoginStyle>
         </DirectionStyle>

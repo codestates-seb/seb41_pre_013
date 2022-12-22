@@ -59,6 +59,10 @@ const Button = styled.button`
     border-radius: 4px;
     color: white;
     font-size: 13px;
+    border-top: 1px solid black inset;
+    :hover {
+       background-color: #4d5eff
+    }
 `;
 
 const MenuStyle = styled.div`
@@ -144,42 +148,41 @@ const Text = styled.div`
 
 const SignUpPage = () => { 
     return (
-        <>      
-    <ContainerStyle>
-      <Text>
-        <div className="extext">Join the Stack Overflow community</div>
-        <div className="extextt"><img src={one} alt="1st" />Get unstuck — ask a question</div>
-        <div className="extextt"><img src={two} alt="2nd" />Unlock new privileges like voting and commenting</div>
-        <div className="extextt"><img src={thr} alt="3rd" />Save your favorite tags, filters, and jobs</div>
-        <div className="extextt"><img src={fou} alt="4th" />Earn reputation and badges</div>
+      <>
+        <ContainerStyle>
+          <Text>
+            <div className="extext">Join the Stack Overflow community</div>
+            <div className="extextt"><img src={one} alt="1st" />Get unstuck — ask a question</div>
+            <div className="extextt"><img src={two} alt="2nd" />Unlock new privileges like voting and commenting</div>
+            <div className="extextt"><img src={thr} alt="3rd" />Save your favorite tags, filters, and jobs</div>
+            <div className="extextt"><img src={fou} alt="4th" />Earn reputation and badges</div>
+            <div className="extexttt">Collaborate and share knowledge with a private group for FREE.</div>
+            <a href="https://stackoverflow.co/teams/?utm_source=so-owned&utm_medium=product&utm_campaign=free-50&utm_content=public-sign-up"
+               target="_blank"
+               rel="noopener noreferrer">Get Stack Overflow for Teams free for up to 50 users.</a>
+          </Text>
 
-        <div className="extexttt">Collaborate and share knowledge with a private group for FREE.</div>
-        <a href="https://stackoverflow.co/teams/?utm_source=so-owned&utm_medium=product&utm_campaign=free-50&utm_content=public-sign-up" 
-        target="_blank"
-        rel="noopener noreferrer">Get Stack Overflow for Teams free for up to 50 users.</a>
-      </Text>
-   
-        <DirectionStyle>
-        <MenuStyle>
-          <MenuButton className="first"><FcGoogle />Sign up with Goole</MenuButton>
-          <MenuButton className="second"><VscGithub />Sign up with GitHub</MenuButton>
-          <MenuButton className="third"><AiFillFacebook />Sign up with Facebook</MenuButton>
-        </MenuStyle>
+          <DirectionStyle>
+            <MenuStyle>
+              <MenuButton className="first"><FcGoogle />Sign up with Goole</MenuButton>
+              <MenuButton className="second"><VscGithub />Sign up with GitHub</MenuButton>
+              <MenuButton className="third"><AiFillFacebook />Sign up with Facebook</MenuButton>
+            </MenuStyle>
 
-        <LoginStyle>
-        <div className="text">Display name</div>
-            <Input type="name" />
-            <div className="text">Email</div>
-            <Input type="email" />
-            <div className="text">Password</div>
-            <Input type="password" />
-        <Button><div className="log">Sign up</div></Button>
-        <div className="endtext">By clicking “Sign up”, you agree to our terms of service, privacy policy and cookie policy</div>
-        </LoginStyle>
-        </DirectionStyle>
-    </ContainerStyle>
-        </>
-    )
+            <LoginStyle>
+              <div className="text">Display name</div>
+              <Input type="name" />
+              <div className="text">Email</div>
+              <Input type="email" />
+              <div className="text">Password</div>
+              <Input type="password" />
+              <Button><div className="log">Sign up</div></Button>
+              <div className="endtext">By clicking “Sign up”, you agree to our terms of service, privacy policy and cookie policy</div>
+            </LoginStyle>
+          </DirectionStyle>
+        </ContainerStyle>
+      </>
+    );
 }
 
 export default SignUpPage;

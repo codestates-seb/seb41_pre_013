@@ -27,6 +27,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 0.9rem;
     color: var(--font-color-base);
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: hidden;
   }
 
   .app {
@@ -34,7 +35,9 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
+    width: 100vw;
   }
 
   a {
@@ -69,7 +72,7 @@ function App() {
           <Route path="/question" element={<QuestionList />} />
           <Route path="/companies" element={<QuestionList />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/users" element={<SignUpPage />} />
         </Routes>
       </div>
     </BrowserRouter>
