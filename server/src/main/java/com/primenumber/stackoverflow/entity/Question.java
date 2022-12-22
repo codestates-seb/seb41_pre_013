@@ -39,12 +39,13 @@ public class Question extends Auditable {
     @OneToMany(mappedBy = "question", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<QuestionTag> questionTags = new ArrayList<>();
 
-    private Question(String title, String content) {
+    private Question(String title, String content, Member member) {
         this.title = title;
         this.content = content;
+        this.member = member;
     }
 
-    public static Question of(String title, String content) {
-        return new Question(title, content);
+    public static Question of(String title, String content, Member member) {
+        return new Question(title, content, member);
     }
 }
