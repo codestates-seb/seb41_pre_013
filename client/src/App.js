@@ -3,7 +3,9 @@ import { createGlobalStyle } from "styled-components";
 import Header from './components/Header';
 import QuestionList from './pages/Sample';
 import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
 import AskQuestion from './pages/AskQuestion';
+
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -27,6 +29,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 0.9rem;
     color: var(--font-color-base);
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: hidden;
   }
 
   .app {
@@ -34,7 +37,9 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
+    width: 100vw;
   }
 
   a {
@@ -69,6 +74,7 @@ function App() {
           <Route path="/question" element={<QuestionList />} />
           <Route path="/companies" element={<QuestionList />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/users" element={<SignUpPage />} />
           <Route path="/askquestion" element={<AskQuestion />} />
         </Routes>
       </div>
