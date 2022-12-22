@@ -10,15 +10,16 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class QuestionTag {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "TAG_ID")
     private Tag tag;
 
     private QuestionTag(Question question, Tag tag) {
