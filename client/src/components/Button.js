@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const BasicButton = styled.button`
 	color: white;
 	height: ${(props) => (props.height ? props.height : '32')}px;
-	border-radius: 3px;
+	border-radius: 4px;
 	padding: 7px 12px;
 	border: 1px solid #398df7;
 	background-color: #4393f7;
@@ -18,10 +18,25 @@ export const BasicButton = styled.button`
 	}
 `;
 
+export const CancelButton = styled.button`
+	color: #4393f7;
+	height: ${(props) => (props.height ? props.height : '32')}px;
+	border-radius: 4px;
+	padding: 6px 12px;
+	background-color: white;
+
+	:hover {
+		background-color: #f1f8fe;
+	}
+	:active {
+		outline: var(--outline-btn-press);
+	}
+`;
+
 export const LoginButton = styled.button`
 	color: #537a9f;
 	height: ${(props) => (props.height ? props.height : '32')}px;
-	border-radius: 3px;
+	border-radius: 4px;
 	padding: 6px 12px;
 	border: 1px solid #9eb9d0;
 	background-color: #e3ecf3;

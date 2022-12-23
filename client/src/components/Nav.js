@@ -9,13 +9,10 @@ const NavContainer = styled.div`
 	nav {
 		width: 164px;
 		position: fixed;
-		overflow-y: scroll;
 		top: 74px;
 		bottom: 0;
-		/* flex-shrink: 0; */
 		font-size: var(--font-size-0-8rem);
-
-		font-family: BlinkMacSystemFont, sans-serif, -apple-system;
+		font-family: var(--font-fmaily-nav);
 
 		.group {
 			height: 24px;
@@ -33,7 +30,7 @@ const NavContainer = styled.div`
 				width: 100%;
 			}
 			svg {
-				font-size: 1.2rem;
+				font-size: var(--font-size-1-2rem);
 				margin-right: 3px;
 				vertical-align: middle;
 			}
