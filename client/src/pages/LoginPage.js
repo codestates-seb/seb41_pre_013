@@ -25,16 +25,20 @@ const LoginStyle = styled.div`
         .text {
             padding: 2px;
             margin-bottom: 4px;
-            font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
+            color: black;
         }`;
 
 const Input = styled.input`
     width: 100%;
-    padding: 7px 0;
+    padding: 7px;
     margin-bottom: 16px;
     border-radius: 4px;
     border: 1px solid #c0c3c4;
+    :focus {
+		border: var(--border-input-focus);
+		outline: var(--outline-input-focus);
+	}
 `;
 
 const Button = styled.button`
@@ -48,6 +52,12 @@ const Button = styled.button`
     .log {
       margin-bottom: 4px;
     }
+    :hover {
+	  background-color: #0074cc;
+ 	}
+	:active {
+	  outline: var(--outline-btn-press);
+	}
 `;
 
 const MenuStyle = styled.div`
