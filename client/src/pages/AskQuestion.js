@@ -9,7 +9,6 @@ const ContentContainer = styled.div`
 
 const MainContent = styled.main`
 	margin: 0 var(--main-outline-margin) 80px var(--main-outline-margin);
-	/* bacground image right top */
 	background-image: url('https://cdn.sstatic.net/Img/ask/background.svg?v=2e9a8205b368');
 	background-repeat: no-repeat;
 	background-position: right top;
