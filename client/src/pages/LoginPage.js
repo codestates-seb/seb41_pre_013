@@ -25,8 +25,8 @@ const LoginStyle = styled.div`
         .text {
             padding: 2px;
             margin-bottom: 4px;
-            font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
+            color: black;
         }`;
 
 const Input = styled.input`
@@ -35,6 +35,10 @@ const Input = styled.input`
     margin-bottom: 16px;
     border-radius: 4px;
     border: 1px solid #c0c3c4;
+    :focus {
+		border: var(--border-input-focus);
+		outline: var(--outline-input-focus);
+	}
 `;
 
 const Button = styled.button`

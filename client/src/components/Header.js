@@ -113,7 +113,7 @@ function Header() {
 					<Link to="/login">
 						<LoginButton>Log in</LoginButton>
 					</Link>
-					<Link to="/users">
+					<Link to="/signup">
 						<BasicButton>Sign up</BasicButton>
 					</Link>
 				</div>
