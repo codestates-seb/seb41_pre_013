@@ -8,6 +8,7 @@ import Nav from '../components/Nav';
 import Aside from '../components/Aside';
 import Item from '../components/questions/Item';
 import Pagination from '../components/Pagination';
+import { useNavigate } from 'react-router-dom';
 
 const ContentContainer = styled.div`
 	width: 100%;
@@ -15,7 +16,6 @@ const ContentContainer = styled.div`
 	background: none;
 	display: flex;
 	justify-content: space-between;
-	margin: 0 auto;
 
 	.content_wrapper {
 		max-width: calc(var(--max-width) - var(--nav-width));
@@ -100,6 +100,8 @@ const List = styled.ul`
 `;
 
 function QuestionList() {
+	const data = [1];
+	const navigate = useNavigate();
 	return (
 		<ContentContainer>
 			<Nav />
@@ -107,7 +109,9 @@ function QuestionList() {
 				<MainContent>
 					<div className="content_title">
 						<h2>Al Questions</h2>
-						<BasicButton height="38">Ask Question</BasicButton>
+						<BasicButton height="38" onClick={() => navigate('/askquestion')}>
+							Ask Question
+						</BasicButton>
 					</div>
 					<ListOption>
 						<h4>254 questions with bounties</h4>
@@ -129,7 +133,9 @@ function QuestionList() {
 						</div>
 					</ListOption>
 					<List>
-						<Item />
+						{data.map((item) => (
+							<Item key={item} />
+						))}
 					</List>
 					<Pagination />
 				</MainContent>

@@ -4,15 +4,18 @@ const GlobalStyle = createGlobalStyle`
   :root {
     --line-color-top-orange: #f48123; /* #EC8A3C */
     --line-color: #d7d9dd;
-    --font-color-base: #737A82;
+    --font-color-base: #545860;
     --font-color-title: #24262a;
+    --font-color-footer: #babec4;
     --max-width: 1264px; /* 164(left) / 24+730+24(main) / 298(aside) */
+    --max-width-main: 1100px;
     --nav-width: 164px;
     --aside-width: 298px;
     --main-outline-margin: 24px;
-    --footer-bg-color: #24262a;
-    --font-color-footer: #babec4;
-    --font-family-tag: Haettenschweiler;
+    --footer-bg-color: #24262a;    
+    --font-family-body: Geneva, Verdana, sans-serif, -apple-system;
+    --font-family-tag: Haettenschweiler, sans-serif, -apple-system;
+    --font-fmaily-nav: BlinkMacSystemFont, sans-serif, -apple-system;
     --font-size-0-8rem: 0.8rem; 
     --font-size-0-9rem: 0.9rem;
     --font-size-1-2rem: 1.2rem;
@@ -28,8 +31,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
+    width: 100%;
     color: var(--font-color-base);  
-    font-family: Geneva, Verdana, sans-serif;
+    font-family: var(--font-family-body);
    }
 
   .app {
@@ -38,7 +42,8 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
+    min-height: 100vh;
   }
 
   a {
