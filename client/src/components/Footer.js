@@ -2,23 +2,25 @@ import styled from 'styled-components';
 
 const FooterContainer = styled.div`
 	width: 100%;
-	z-index: 0;
+	z-index: 1;
 	display: flex;
 	justify-content: center;
-	font-size: var(--font-size-0-9rem);
 	color: var(--font-color-footer);
+	font-size: var(--font-size-0-9rem);
 	background-color: var(--footer-bg-color);
 	padding: 32px 12px 12px 12px;
 	font-family: var(--font-family-tag);
+	margin-top: auto;
 
 	footer {
 		width: 100%;
-		max-width: 1100px;
+		max-width: var(--max-width-main);
 		display: flex;
 		justify-content: space-between;
 	}
-	a {
-		color: #9098a1;
+	a,
+	a:visited {
+		color: var(--font-color-footer);
 	}
 	.footer_logo {
 		margin-right: 32px;
@@ -39,6 +41,9 @@ const FooterContainer = styled.div`
 		}
 		.row_gap {
 			flex-grow: 1;
+		}
+		.copyright {
+			color: var(--font-color-footer);
 		}
 		.underline {
 			text-decoration: underline;
@@ -154,25 +159,25 @@ function Footer() {
 							<a href="/">Press</a>
 						</li>
 						<li>
-							<a href="/">Work&nbsp;Here </a>
+							<a href="/">Work Here </a>
 						</li>
 						<li>
 							<a href="/">Legal</a>
 						</li>
 						<li>
-							<a href="/">Privacy&nbsp;Policy </a>
+							<a href="/">Privacy Policy </a>
 						</li>
 						<li>
-							<a href="/">Terms&nbsp;of&nbsp;Service </a>
+							<a href="/">Terms of Service </a>
 						</li>
 						<li>
-							<a href="/">Contract&nbsp;Us</a>
+							<a href="/">Contract Us</a>
 						</li>
 						<li>
-							<a href="/">Cookie&nbsp;Settings</a>
+							<a href="/">Cookie Settings</a>
 						</li>
 						<li>
-							<a href="/">Cookie&nbsp;Policy</a>
+							<a href="/">Cookie Policy</a>
 						</li>
 					</ul>
 				</SiteMapBox>
