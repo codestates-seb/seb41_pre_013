@@ -30,12 +30,11 @@ const LoginStyle = styled.div`
         padding: 24px;
         border-radius: 8px;
         box-shadow: 1px 1px 8px 2px lightgray;
-
         .text {
             padding: 2px;
             margin-bottom: 4px;
-            font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
+            color: black;
         }
         .endtext {
             margin-top: 32px;
@@ -45,10 +44,14 @@ const LoginStyle = styled.div`
 
 const Input = styled.input`
     width: 100%;
-    padding: 7px 0;
+    padding: 7px;
     margin-bottom: 16px;
     border-radius: 4px;
     border: 1px solid #c0c3c4;
+    :focus {
+		border: var(--border-input-focus);
+		outline: var(--outline-input-focus);
+	}
 `;
 
 const Button = styled.button`
@@ -61,8 +64,11 @@ const Button = styled.button`
     font-size: 13px;
     border-top: 1px solid black inset;
     :hover {
-       background-color: #4d5eff
-    }
+		background-color: #0074cc;
+ 	}
+	  :active {
+		outline: var(--outline-btn-press);
+	}
 `;
 
 const MenuStyle = styled.div`
@@ -116,20 +122,22 @@ const Text = styled.div`
     margin-right: 50px;
 
     .extext {
-        font-size: 24px;
+        font-size: 28px;
         margin-bottom: 20px;
         margin-left: 6px;
+        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif;;
     }
     .extextt {
         display: flex;
         align-items: center;
         margin-bottom: 10px;
-     
+        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif;;
     }
     .extexttt {
         margin-top: 10px;
         margin-left: 6px;
         font-size: 12px;
+        color: gray;
     }
     img {
         width: 36px;
@@ -140,7 +148,7 @@ const Text = styled.div`
         margin-left: 6px;
         color:#197dce;
         :hover {
-            color: #64afe1;
+          color: #64afe1;
         }
     }
 `;
