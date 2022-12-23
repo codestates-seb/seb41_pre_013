@@ -31,7 +31,7 @@ const LoginStyle = styled.div`
 
 const Input = styled.input`
     width: 100%;
-    padding: 7px 0;
+    padding: 7px;
     margin-bottom: 16px;
     border-radius: 4px;
     border: 1px solid #c0c3c4;
@@ -52,6 +52,12 @@ const Button = styled.button`
     .log {
       margin-bottom: 4px;
     }
+    :hover {
+	  background-color: #0074cc;
+ 	}
+	:active {
+	  outline: var(--outline-btn-press);
+	}
 `;
 
 const MenuStyle = styled.div`
