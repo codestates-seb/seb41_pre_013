@@ -18,6 +18,7 @@ const HeaderContainer = styled.header`
 	border-bottom: 2px solid #ececec;
 	box-shadow: 0 5px 5px -5px #e5e5e5;
 	background-color: #f8f9f9;
+	z-index: 2;
 `;
 
 const TopBarContainer = styled.div`
@@ -113,7 +114,7 @@ function Header() {
 					<Link to="/login">
 						<LoginButton>Log in</LoginButton>
 					</Link>
-					<Link to="/users">
+					<Link to="/signup">
 						<BasicButton>Sign up</BasicButton>
 					</Link>
 				</div>
