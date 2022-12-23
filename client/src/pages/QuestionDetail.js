@@ -1,10 +1,15 @@
 import styled from 'styled-components';
-import { RxTriangleUp, RxTriangleDown } from 'react-icons/rx';
 import Nav from '../components/Nav';
 import { TagButton as Tag } from '../components/Button';
 // import { BasicButton } from '../components/Button';
 import Pagination from '../components/Pagination';
 import Aside from '../components/Aside';
+import { RxTriangleUp, RxTriangleDown } from 'react-icons/rx';
+import { RiFileCodeFill, RiAlignCenter, RiAlignJustify, RiLinksLine } from 'react-icons/ri';
+import { BsFillImageFill, BsBraces } from 'react-icons/bs';
+import { MdFormatListNumbered, MdFormatListBulleted, MdHelp, MdFormatQuote } from 'react-icons/md';
+import { ImUndo, ImRedo, ImBold, ImItalic } from 'react-icons/im';
+import { BasicButton } from '../components/Button';
 
 const Container = styled.div`
 	width: 100%;
@@ -168,17 +173,80 @@ const AnswerContent = styled.div`
     }
   }
 
-  /* .comment-box {
-    border-bottom: 1px solid black;
-    padding-bottom: 16px;
-  } */
-
   .content-wrapper {
     border-bottom: 1px solid var(--line-color);
   }
 
   .edit-delete-box {
     padding-top: 42px;
+  }
+`;
+
+const CreateAnswer = styled.div`
+
+  h3 {
+    height: 44px;
+    font-size: 18px;
+    font-weight: lighter;
+  }
+
+  .post-editor {
+    border: 1px solid #BABFC3;
+    border-radius: 4px;
+  }
+
+  .post-style {
+    border-bottom: 1px solid #BABFC3;
+  }
+
+  .style-btn-row {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    list-style-type: none;
+
+    width: 719px;
+    height: 44px;
+    margin: 0 4px 0 8px;
+    
+    .style-btn {
+      height: 100%;
+      width: 28px;
+      font-size: 18px;
+      align-items: center;
+      line-height: 44px;
+      cursor: pointer;
+    }
+
+    .space-btn {
+      cursor: default;
+    }
+
+    .style-info {
+      font-size: 14px;
+      margin-right: 0px;
+    }
+
+    #space-btn4 {
+      width: 200px;
+    }
+  }
+
+  textarea {
+    width: 100%;
+    height: 200px;
+    resize: vertical;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+
+    :focus {
+      outline: solid 5px rgba(0, 164, 228, 0.2);
+    }
+  }
+
+  .post-answer {
+    margin: 30px 0;
   }
 `;
 
@@ -210,9 +278,6 @@ function QuestionDetail() {
                   </div>
                 </div>
               </div>
-              {/*<div className="create-question">
-                <BasicButton height="38">Ask Question</BasicButton>
-            </div>*/}
             </div>
             <div className="content-wrapper">
               <div className="vote-box">
@@ -234,18 +299,6 @@ function QuestionDetail() {
                   <button className="question-edit-btn">Edit</button>
                   <button className="question-delete-btn">Delete</button>
                 </div>
-                {/* <div className="comment-box">
-                  <div className="comment-box-content">
-                    <span className="comment-num">543</span>
-                    <span className="comment-content">
-                      You know what git needs? git undo, that's it. Then the reputation git has for handling mistakes made
-                      by us mere mortals disappears. Implement by pushing the current state on a git stack before executing
-                      any git command. It would affect performance, so it would be best to add a config flag as to whether
-                      to enable it. - Yimin Rong Mar 20, 2018 at 1:45
-                    </span>
-                  </div>
-                  <span className="more-comments">show <strong>8</strong> more comments</span>
-                </div> */}
               </div>
             </div>
           </QuestionContent>
@@ -273,6 +326,41 @@ function QuestionDetail() {
               </div>
             </div>
           </AnswerContent>
+          <CreateAnswer>
+            <form id="post-answer" action="" method="post" className="answer-form">
+              <h3>Your Answer</h3>
+              <div className="post-editor">
+                <div className="post-style">
+                  <ul className="style-btn-row">
+                    <li className="style-btn" id="bold-btn"><ImBold /></li>
+                    <li className="style-btn" id="italic-btn"><ImItalic /></li>
+                    <li className="style-btn space-btn" id="space-btn1"></li>
+                    <li className="style-btn" id="link-btn"><RiLinksLine /></li>
+                    <li className="style-btn" id="blockquote-btn"><MdFormatQuote /></li>
+                    <li className="style-btn" id="code-btn"><BsBraces /></li>
+                    <li className="style-btn" id="image-btn"><BsFillImageFill /></li>
+                    <li className="style-btn" id="snippet-btn"><RiFileCodeFill /></li>
+                    <li className="style-btn space-btn" id="space-btn2"></li>
+                    <li className="style-btn" id="olist-btn"><MdFormatListNumbered /></li>
+                    <li className="style-btn" id="ulist-btn"><MdFormatListBulleted /></li>
+                    <li className="style-btn" id="heading-btn"><RiAlignCenter /></li>
+                    <li className="style-btn" id="hr-btn"><RiAlignJustify /></li>
+                    <li className="style-btn space-btn" id="space-btn3"></li>
+                    <li className="style-btn" id="undo-btn"><ImUndo /></li>
+                    <li className="style-btn" id="redo-btn"><ImRedo /></li>
+                    <li className="style-btn space-btn" id="space-btn4"></li>
+                    <li className="style-btn" id="help-btn"><MdHelp /></li>
+                  </ul>
+                </div>
+                <div className="post-content">
+                  <textarea></textarea>
+                </div>
+              </div>
+              <div className="post-answer">
+                <BasicButton height="38">Post Your Answer</BasicButton>
+              </div>
+            </form>
+          </CreateAnswer>
           </div>
           <Aside />
         </div>
