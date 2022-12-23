@@ -3,8 +3,7 @@ import AskQuestionForm from '../components/AskQuestionForm';
 
 const MainContainer = styled.div`
   width: 100%;
-  max-width: var(--max-width);  
-  /* background: none; */
+  max-width: var(--max-width);
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
@@ -19,6 +18,7 @@ const MainContent = styled.main`
   background-repeat: no-repeat;
   background-position: right top;
   background-size: 550px;
+
   h2 {
     color: var(--font-color-title);  
   }
@@ -50,7 +50,7 @@ const MainContent = styled.main`
       margin-bottom: 8px;
     }
   }
-
+  
   li {
     list-style-position: inside;
     margin-left: 15px;

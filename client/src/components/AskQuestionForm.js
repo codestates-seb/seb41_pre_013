@@ -3,7 +3,6 @@ import styled from 'styled-components';
 const AskQuestionFormContainer = styled.div`
   width: 850px;
   height: 100%;
-  // height: 20px;
 `;
 
 const AskQuestionBox = styled.div`
@@ -42,7 +41,6 @@ const AskQuestionBox = styled.div`
       resize: vertical;
       border: 1px solid #BABFC3;
       border-radius: 4px;
-
       :focus {
         outline: 1px solid #90CCF9;
       }
@@ -63,7 +61,7 @@ const Input = styled.input`
   ::placeholder {
     color: #CCD2DC;
   }
-
+  
   :focus {
     outline: 1px solid #90CCF9;
   }
