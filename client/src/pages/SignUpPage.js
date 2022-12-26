@@ -6,7 +6,7 @@ import one from "../images/one.PNG";
 import two from "../images/two.PNG";
 import thr from "../images/thr.PNG";
 import fou from "../images/fou.PNG";
-import React, { useState, useCallback }from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
@@ -48,11 +48,15 @@ const LoginStyle = styled.div`
           color: green;
           font-size: 13px;
           margin-left: 2px;
+          margin-bottom: 8px;
+          display: block;
         }
         .messageerror{
           color: red;
           font-size: 13px;
           margin-left: 2px;
+          margin-bottom: 8px;
+          display: block;
         }
 `;
 
@@ -176,9 +180,9 @@ const SignUpPage = () => {
   const [password, setPassword] = useState('');
 
   // success, error 메세지
-  const [nameMessage, setNameMessage] = useState('')
-  const [emailMessage, setEmailMessage] = useState('')
-  const [passwordMessage, setPasswordMessage] = useState('')
+  const [nameMessage, setNameMessage] = useState('');
+  const [emailMessage, setEmailMessage] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
 
   // 유효성 검사
   const [isName, setIsName] = useState(false);
@@ -189,7 +193,7 @@ const SignUpPage = () => {
   const signUpSubmit = async () => {
     try {
       const response = await axios
-        .post('http://localhost:3001/signup', { 
+        .post('http://localhost:3001/users', { 
           name, 
           email, 
           password, 
@@ -208,7 +212,7 @@ const SignUpPage = () => {
     setName(e.target.value);
 
     if ((e.target.value.length < 2 || e.target.value.length > 8) && !nameRegex.test(e.target.value)) {
-      setNameMessage('숫자나 영문을 2자리 이상 8자리 미만으로 입력해주세요.');
+      setNameMessage('숫자나 영문을 2자리 이상 8자리 미만으로 입력하세요.');
       setIsName(false);
     } else {
       setNameMessage('올바른 이름입니다.');
