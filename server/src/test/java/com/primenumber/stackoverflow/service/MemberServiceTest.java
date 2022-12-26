@@ -26,7 +26,6 @@ import static org.mockito.BDDMockito.*;
 class MemberServiceTest {
     @InjectMocks
     private MemberService sut;
-    // @Mock -> 그 외의 나머지 모든 Mock
     @Mock
     private MemberRepository memberRepository;
 

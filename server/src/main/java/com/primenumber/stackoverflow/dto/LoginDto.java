@@ -10,7 +10,7 @@ public class LoginDto {
     private String password;
 
     @JsonCreator
-    public LoginDto(@JsonProperty("username") String email, @JsonProperty("password") String password) {
+    public LoginDto(@JsonProperty("email") String email, @JsonProperty("password") String password) {
         this.email = email;
         this.password = password;
     }
