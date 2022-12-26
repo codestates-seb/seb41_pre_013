@@ -6,7 +6,8 @@ import one from "../images/one.PNG";
 import two from "../images/two.PNG";
 import thr from "../images/thr.PNG";
 import fou from "../images/fou.PNG";
-import React, { useState, useNavigate, useCallback }from "react";
+import React, { useState, useCallback }from "react";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const ContainerStyle = styled.div`
@@ -166,85 +167,60 @@ const Text = styled.div`
     }
 `;
 
-
 const SignUpPage = () => { 
-  //const navigate = useNavigate();
-
-  const [displayName, setDisplayName] = useState('');
+  const navigate = useNavigate();
+  
+  // 이름, 이메일, 비밀번호
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // success, error 메세지
   const [nameMessage, setNameMessage] = useState('')
   const [emailMessage, setEmailMessage] = useState('')
   const [passwordMessage, setPasswordMessage] = useState('')
 
+  // 유효성 검사
   const [isName, setIsName] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
 
   // const signUpSubmit = () => {
   //   axios
-  //   .post(``, { displayName, email, password })
+  //   .post(``, { name: name, email: email, password: password })
   //   .then((res) => {
+  //     alert('회원가입이 완료되었습니다.');
   //     navigate('/login')
   //   })
   //   .catch((err) => {
+  //  if(err.message === "Request failed with status code 500"){
+  //    alert("이미 가입된 이메일입니다.")
+  //  }
+  //   consloe.log(err);  
   //   })
   // }
 
-  // const signUpSubmit = async () => {
-  //   try {
-  //     const response = await axios
-  //       .post(``, { email, displayName, password, })
-  //       .then(() => navigate('/login'));
-  //   } catch (error) {
-  //     window.alert('오류가 발생했습니다. 입력 사항을 확인해 주세요.');
-  //   }
-  // };
+  // 회원가입 데이터 전송
+  const signUpSubmit = async () => {
+    try {
+      const response = await axios
+        .post('http://localhost:3001/signup', { 
+          name, 
+          email, 
+          password, 
+        })
+        .then(() => navigate('/login'));
+        alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
+    } catch (err) {
+      console.error(err)
+      // 에러 처리하기 if(~~~) alert('http 에러 이유');
+    }
+  };
 
-  // const onSubmit = useCallback(
-  //   async (e) => {
-  //     e.preventDefault()
-  //     try {
-  //       await axios
-  //         .post('', { username: name,
-  //           password: password,
-  //           email: email,
-  //         })
-  //         .then((res) => {
-  //           console.log('response:', res)
-  //           if (res.status === 200) {
-  //             router.push('/sign_up/profile_start')
-  //           }
-  //         })
-  //     } catch (err) {
-  //       console.error(err)
-  //     }
-  //   },
-  //   [email, name, password, router]
-  // )
-
-     // 회원가입 기능 구현
-    // const onSignupHandler = (e) => {
-    //   e.preventDefault();
-    //   let validationName = validationNameCheck(displayName);
-    //   let validationEmail = validationEmailCheck(email);
-    //   let validationPassword = validationPasswordCheck(password);
-    //   if (validationName && validationEmail && validationPassword) {
-    //     signUpSubmit();
-    //   } else {
-    //     setIsValidName(!validationName);
-    //     setIsValidEmail(!validationEmail);
-    //     setisValidPassword(!validationPassword);
-    //     return;
-    //   }
-    // };
-
-    
   // display
   const onChangeName = useCallback((e) => {
     const nameRegex = /^[a-zA-z0-9]{2,8}$/;
-    setDisplayName(e.target.value);
+    setName(e.target.value);
 
     if ((e.target.value.length < 2 || e.target.value.length > 8) && !nameRegex.test(e.target.value)) {
       setNameMessage('숫자나 영문을 2자리 이상 8자리 미만으로 입력해주세요.');
@@ -270,7 +246,7 @@ const SignUpPage = () => {
     }
   }, []);
 
-
+  // password
   const onChangePassword = useCallback((e) => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     setPassword(e.target.value);
@@ -284,9 +260,16 @@ const SignUpPage = () => {
     }
   }, []);
 
-
-
-
+  const onSignUp = (e) => {
+    e.preventDefault();
+    // 유효성 검사가 통과 되어야 sign up 가능
+    if (name.length !== 0 && email.length !== 0 && password.length !== 0 &&
+    isName === true && isEmail === true && isPassword === true) 
+    signUpSubmit();
+    else if (isName === false) alert('Display name을 확인해주세요.');
+    else if (isEmail === false) alert('Email을 확인해주세요.');
+    else if (isPassword === false) alert('Password를 확인해주세요.');
+  }
 
     return (
       <>
@@ -313,20 +296,17 @@ const SignUpPage = () => {
             <LoginStyle>
               <div className="text">Display name</div>
               <Input type="name" onChange={onChangeName}/>
-              {displayName.length > 0 && (<span className={`message${isName ? 'success' : 'error'}`}>{nameMessage}</span>)}
+              {name.length > 0 && (<span className={`message${isName ? 'success' : 'error'}`}>{nameMessage}</span>)}
               
-
               <div className="text">Email</div>
               <Input type="email" onChange={onChangeEmail}/>
               {email.length > 0 && (<span className={`message${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>)}
-              
 
               <div className="text">Password</div>
               <Input type="password" onChange={onChangePassword}/>
               {password.length > 0 && (<span className={`message${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>)}
-              
 
-              <Button><div className="log">Sign up</div></Button>
+              <Button onClick={onSignUp}><div className="log">Sign up</div></Button>
               <div className="endtext">By clicking “Sign up”, you agree to our terms of service, privacy policy and cookie policy</div>
             </LoginStyle>
           </DirectionStyle>
