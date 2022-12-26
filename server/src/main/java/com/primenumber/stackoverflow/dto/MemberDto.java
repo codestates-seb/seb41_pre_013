@@ -5,6 +5,7 @@ import com.primenumber.stackoverflow.entity.util.MemberStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ public class MemberDto {
     public static class Post {
         @NotBlank
         private String email;
+        @Setter
         @NotBlank
         private String password;
 
@@ -32,6 +34,7 @@ public class MemberDto {
     @Getter
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Patch {
+        @Setter
         private String password;
 
         private String displayName;
