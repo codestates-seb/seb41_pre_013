@@ -6,6 +6,8 @@ import one from "../images/one.PNG";
 import two from "../images/two.PNG";
 import thr from "../images/thr.PNG";
 import fou from "../images/fou.PNG";
+import React, { useState, useNavigate, useCallback }from "react";
+import axios from 'axios';
 
 const ContainerStyle = styled.div`
     display: flex;
@@ -25,13 +27,14 @@ const DirectionStyle = styled.div`
 
 const LoginStyle = styled.div`
         width: 320px;
-        height: 400px;
+        height: 480px;
         background-color: white;
         padding: 24px;
         border-radius: 8px;
         box-shadow: 1px 1px 8px 2px lightgray;
         .text {
             padding: 2px;
+            margin-top: 4px;
             margin-bottom: 4px;
             font-size: 14px;
             color: black;
@@ -40,12 +43,22 @@ const LoginStyle = styled.div`
             margin-top: 32px;
             font-size: 12px;
         }
+        .messagesuccess {
+          color: green;
+          font-size: 13px;
+          margin-left: 2px;
+        }
+        .messageerror{
+          color: red;
+          font-size: 13px;
+          margin-left: 2px;
+        }
 `;
 
 const Input = styled.input`
     width: 100%;
     padding: 7px;
-    margin-bottom: 16px;
+    margin-bottom: 6px;
     border-radius: 4px;
     border: 1px solid #c0c3c4;
     :focus {
@@ -155,6 +168,126 @@ const Text = styled.div`
 
 
 const SignUpPage = () => { 
+  //const navigate = useNavigate();
+
+  const [displayName, setDisplayName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [nameMessage, setNameMessage] = useState('')
+  const [emailMessage, setEmailMessage] = useState('')
+  const [passwordMessage, setPasswordMessage] = useState('')
+
+  const [isName, setIsName] = useState(false);
+  const [isEmail, setIsEmail] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+
+  // const signUpSubmit = () => {
+  //   axios
+  //   .post(``, { displayName, email, password })
+  //   .then((res) => {
+  //     navigate('/login')
+  //   })
+  //   .catch((err) => {
+  //   })
+  // }
+
+  // const signUpSubmit = async () => {
+  //   try {
+  //     const response = await axios
+  //       .post(``, { email, displayName, password, })
+  //       .then(() => navigate('/login'));
+  //   } catch (error) {
+  //     window.alert('오류가 발생했습니다. 입력 사항을 확인해 주세요.');
+  //   }
+  // };
+
+  // const onSubmit = useCallback(
+  //   async (e) => {
+  //     e.preventDefault()
+  //     try {
+  //       await axios
+  //         .post('', { username: name,
+  //           password: password,
+  //           email: email,
+  //         })
+  //         .then((res) => {
+  //           console.log('response:', res)
+  //           if (res.status === 200) {
+  //             router.push('/sign_up/profile_start')
+  //           }
+  //         })
+  //     } catch (err) {
+  //       console.error(err)
+  //     }
+  //   },
+  //   [email, name, password, router]
+  // )
+
+     // 회원가입 기능 구현
+    // const onSignupHandler = (e) => {
+    //   e.preventDefault();
+    //   let validationName = validationNameCheck(displayName);
+    //   let validationEmail = validationEmailCheck(email);
+    //   let validationPassword = validationPasswordCheck(password);
+    //   if (validationName && validationEmail && validationPassword) {
+    //     signUpSubmit();
+    //   } else {
+    //     setIsValidName(!validationName);
+    //     setIsValidEmail(!validationEmail);
+    //     setisValidPassword(!validationPassword);
+    //     return;
+    //   }
+    // };
+
+    
+  // display
+  const onChangeName = useCallback((e) => {
+    const nameRegex = /^[a-zA-z0-9]{2,8}$/;
+    setDisplayName(e.target.value);
+
+    if ((e.target.value.length < 2 || e.target.value.length > 8) && !nameRegex.test(e.target.value)) {
+      setNameMessage('숫자나 영문을 2자리 이상 8자리 미만으로 입력해주세요.');
+      setIsName(false);
+    } else {
+      setNameMessage('올바른 이름입니다.');
+      setIsName(true);
+    }
+  }, []);
+
+
+  // email
+  const onChangeEmail = useCallback((e) => {
+    const emailRegex = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    setEmail(e.target.value);
+
+    if (!emailRegex.test(e.target.value)) {
+      setEmailMessage('이메일 형식을 확인해주세요.');
+      setIsEmail(false);
+    } else {
+      setEmailMessage('올바른 이메일입니다.');
+      setIsEmail(true);
+    }
+  }, []);
+
+
+  const onChangePassword = useCallback((e) => {
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    setPassword(e.target.value);
+
+    if (!passwordRegex.test(e.target.value)) {
+      setPasswordMessage('숫자, 영문, 특수기호(!, & 등)를 조합한 여섯 자리 이상의 비밀번호를 입력하세요.');
+      setIsPassword(false);
+    } else {
+      setPasswordMessage('올바른 비밀번호입니다');
+      setIsPassword(true);
+    }
+  }, []);
+
+
+
+
+
     return (
       <>
         <ContainerStyle>
@@ -179,11 +312,20 @@ const SignUpPage = () => {
 
             <LoginStyle>
               <div className="text">Display name</div>
-              <Input type="name" />
+              <Input type="name" onChange={onChangeName}/>
+              {displayName.length > 0 && (<span className={`message${isName ? 'success' : 'error'}`}>{nameMessage}</span>)}
+              
+
               <div className="text">Email</div>
-              <Input type="email" />
+              <Input type="email" onChange={onChangeEmail}/>
+              {email.length > 0 && (<span className={`message${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>)}
+              
+
               <div className="text">Password</div>
-              <Input type="password" />
+              <Input type="password" onChange={onChangePassword}/>
+              {password.length > 0 && (<span className={`message${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>)}
+              
+
               <Button><div className="log">Sign up</div></Button>
               <div className="endtext">By clicking “Sign up”, you agree to our terms of service, privacy policy and cookie policy</div>
             </LoginStyle>
