@@ -7,6 +7,7 @@ import com.primenumber.stackoverflow.response.PagingResponse;
 import com.primenumber.stackoverflow.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -28,7 +29,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public ResponseEntity getMembers(@PageableDefault(size = 10, page = 0, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity getMembers(@PageableDefault(size = 10, page = 1, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        pageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
+
         Page<MemberDto.Response> pageMembers = memberService.searchMembers(pageable).map(MemberDto.Response::from);
         List<MemberDto.Response> members = pageMembers.getContent();
 
