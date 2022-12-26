@@ -15,9 +15,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.primenumber.stackoverflow.util.Stub.createMember;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -49,8 +51,9 @@ public class AuthControllerTest {
         // Given
         Member member = createMember();
         LoginDto dto = LoginDto.of(member.getEmail(), member.getPassword());
-        given(memberService.searchMember(anyString()))
-                .willReturn(member);
+
+        member.setPassword(new BCryptPasswordEncoder().encode(member.getPassword()));
+        given(memberService.searchMember(anyString())).willReturn(member);
 
         Gson gson = new Gson();
 
@@ -64,9 +67,9 @@ public class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson)
                 )
+                .andExpect(status().isOk())
                 .andExpect(header().exists(jwtTokenizer.getHeaderString()))
                 .andExpect(header().exists("Refresh"))
-                .andExpect(status().isOk())
                 .andDo(document("post-login",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -85,6 +88,7 @@ public class AuthControllerTest {
                         responseFields(
                                 List.of(
                                         fieldWithPath("response").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                        fieldWithPath("response.id").type(JsonFieldType.NUMBER).description("회원 식별자"),
                                         fieldWithPath("response.email").type(JsonFieldType.STRING).description("이메일"),
                                         fieldWithPath("response.displayName").type(JsonFieldType.STRING).description("닉네임"),
                                         fieldWithPath("response.status").type(JsonFieldType.STRING).description("회원 상태: 활동 상태 / 탈퇴 상태")
