@@ -1,8 +1,11 @@
 package com.primenumber.stackoverflow.auth.filter;
 
 import com.primenumber.stackoverflow.auth.JwtTokenizer;
+import com.primenumber.stackoverflow.dto.security.MemberPrincipal;
+import com.primenumber.stackoverflow.service.MemberService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,12 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
-
-    public JwtVerificationFilter(JwtTokenizer jwtTokenizer) {
-        this.jwtTokenizer = jwtTokenizer;
-    }
+    private final MemberService memberService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -53,8 +54,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
-        String username = (String) claims.get("username");
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null);
+        String email = (String) claims.get("email");
+
+        MemberPrincipal principal = MemberPrincipal.from(memberService.searchMember(email));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
