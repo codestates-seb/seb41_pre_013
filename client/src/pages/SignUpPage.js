@@ -185,21 +185,6 @@ const SignUpPage = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
 
-  // const signUpSubmit = () => {
-  //   axios
-  //   .post(``, { name: name, email: email, password: password })
-  //   .then((res) => {
-  //     alert('회원가입이 완료되었습니다.');
-  //     navigate('/login')
-  //   })
-  //   .catch((err) => {
-  //  if(err.message === "Request failed with status code 500"){
-  //    alert("이미 가입된 이메일입니다.")
-  //  }
-  //   consloe.log(err);  
-  //   })
-  // }
-
   // 회원가입 데이터 전송
   const signUpSubmit = async () => {
     try {
@@ -260,15 +245,15 @@ const SignUpPage = () => {
     }
   }, []);
 
+  // 회원가입 기능, 모든 유효성 검사가 통과 되어야 sign up 가능
   const onSignUp = (e) => {
     e.preventDefault();
-    // 유효성 검사가 통과 되어야 sign up 가능
     if (name.length !== 0 && email.length !== 0 && password.length !== 0 &&
     isName === true && isEmail === true && isPassword === true) 
     signUpSubmit();
-    else if (isName === false) alert('Display name을 확인해주세요.');
-    else if (isEmail === false) alert('Email을 확인해주세요.');
-    else if (isPassword === false) alert('Password를 확인해주세요.');
+    else if (!isName) alert('Display name을 확인해주세요.');
+    else if (!isEmail) alert('Email을 확인해주세요.');
+    else if (!isPassword) alert('Password를 확인해주세요.');
   }
 
     return (
