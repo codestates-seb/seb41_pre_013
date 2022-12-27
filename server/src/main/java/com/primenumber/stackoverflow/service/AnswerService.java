@@ -5,6 +5,8 @@ import com.primenumber.stackoverflow.dto.security.MemberPrincipal;
 import com.primenumber.stackoverflow.entity.Answer;
 import com.primenumber.stackoverflow.entity.Member;
 import com.primenumber.stackoverflow.entity.Question;
+import com.primenumber.stackoverflow.exception.BusinessLogicException;
+import com.primenumber.stackoverflow.exception.ExceptionCode;
 import com.primenumber.stackoverflow.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,5 +37,19 @@ public class AnswerService {
     public Page<Answer> getAnswers(long questionId, int page, int size) {
         return answerRepository.findAllByQuestionId(PageRequest.of(page, size, Sort.by("createAt").descending())
                 , questionId);
+    }
+
+    @Transactional
+    public Answer updateAnswer(long answerId, AnswerDto.Patch requestBody, MemberPrincipal memberPrincipal) {
+        Answer findAnswer = findAnswerOfAuthorizedMember(answerId, memberPrincipal.getId());
+        findAnswer.setContent(requestBody.getContent());
+
+        return answerRepository.save(findAnswer);
+
+    }
+
+    private Answer findAnswerOfAuthorizedMember(long answerId, long memberId) {
+        return answerRepository.findByIdAndMemberId(answerId, memberId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER));
     }
 }

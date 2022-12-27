@@ -18,6 +18,13 @@ public class AnswerDto {
 
     @Getter
     @AllArgsConstructor
+    public static class Patch {
+        @NotBlank
+        private String content;
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class Response {
         private long answerId;
         private String content;

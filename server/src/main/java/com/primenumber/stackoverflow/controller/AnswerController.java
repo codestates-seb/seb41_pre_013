@@ -22,7 +22,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/{question-id}/answers")
+@RequestMapping("/answers")
 @Validated
 @RequiredArgsConstructor
 public class AnswerController {
@@ -38,7 +38,7 @@ public class AnswerController {
     }
 
     @GetMapping
-    public ResponseEntity findAnswers(@Positive @PathVariable("question-id") long questionId,
+    public ResponseEntity findAnswers(@Positive @RequestParam("question-id") long questionId,
                                       @Positive @RequestParam(name = "page", defaultValue = "1", required = false) int page,
                                       @Positive @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
 
@@ -46,5 +46,15 @@ public class AnswerController {
         List<AnswerDto.Response> answers = pageAnswers.getContent();
 
         return new ResponseEntity<>(new PagingResponse<>(answers, pageAnswers), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{answer-id}")
+    public ResponseEntity modifyAnswer(@Positive @PathVariable("answer-id") long answerId,
+                                       @Valid @RequestBody AnswerDto.Patch requestBody,
+                                       @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+
+        Answer answer = answerService.updateAnswer(answerId, requestBody, memberPrincipal);
+
+        return new ResponseEntity<>(new BaseResponse<>(AnswerDto.Response.from(answer)), HttpStatus.OK);
     }
 }

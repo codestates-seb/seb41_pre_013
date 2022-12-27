@@ -5,6 +5,7 @@ import com.primenumber.stackoverflow.entity.util.BasicStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -17,6 +18,7 @@ public class Answer extends Auditable {
     private Long id;
 
     @Column(nullable = false)
+    @Setter
     private String content;
 
     @Enumerated(value = EnumType.STRING)
