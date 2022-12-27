@@ -175,7 +175,7 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   
   // 이름, 이메일, 비밀번호
-  const [name, setName] = useState('');
+  const [displayName, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -193,13 +193,9 @@ const SignUpPage = () => {
   const signUpSubmit = async () => {
     try {
       const response = await axios
-        .post('http://localhost:3001/users', { 
-          name, 
-          email, 
-          password, 
-        })
-        .then(() => navigate('/login'));
-        alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
+        .post("/members", { displayName, email, password })
+        navigate("/login");
+        alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
     } catch (err) {
       console.error(err)
       // 에러 처리하기 if(~~~) alert('http 에러 이유');
@@ -252,7 +248,7 @@ const SignUpPage = () => {
   // 회원가입 기능, 모든 유효성 검사가 통과 되어야 sign up 가능
   const onSignUp = (e) => {
     e.preventDefault();
-    if (name.length !== 0 && email.length !== 0 && password.length !== 0 &&
+    if (displayName.length !== 0 && email.length !== 0 && password.length !== 0 &&
     isName === true && isEmail === true && isPassword === true) 
     signUpSubmit();
     else if (!isName) alert('Display name을 확인해주세요.');
@@ -285,7 +281,7 @@ const SignUpPage = () => {
             <LoginStyle>
               <div className="text">Display name</div>
               <Input type="name" onChange={onChangeName}/>
-              {name.length > 0 && (<span className={`message${isName ? 'success' : 'error'}`}>{nameMessage}</span>)}
+              {displayName.length > 0 && (<span className={`message${isName ? 'success' : 'error'}`}>{nameMessage}</span>)}
               
               <div className="text">Email</div>
               <Input type="email" onChange={onChangeEmail}/>

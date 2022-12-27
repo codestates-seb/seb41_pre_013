@@ -125,9 +125,11 @@ const MenuButton = styled.button`
 const LoginPage = ({ setIsLogin }) => { 
     const navigate = useNavigate();
 
+    // 이메일, 비밀번호
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    // success, error 메세지
     const [emailMessage, setEmailMessage] = useState('');
     const [passwordMessage, setPasswordMessage] = useState('');
     
@@ -135,18 +137,38 @@ const LoginPage = ({ setIsLogin }) => {
     const [isEmail, setIsEmail] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
 
-    // 회원가입 데이터 전송
+    //const [accessToken, setAccessToken] = useState('');
+
+    // 로그인 데이터 전송
     const signUpSubmit = async () => {
       try {
-        const response = await axios
-          .post('http://localhost:3001/login', { 
-            email, 
-            password, 
-          })
-          .then(() => navigate('/'));
-          alert('로그인되었습니다. 메인 페이지로 이동합니다.');
+        const response = await axios.post(
+          "/login", { email, password },
+          {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+          }
+        );
+        const { data: token, status } = response;
+        if (status === 200 || status === "200") {
+          localStorage.setItem("token", token);
+          localStorage.setItem("email", email);
+          //setEmail('');
+          //setPassword('');
+          setIsLogin(true);
+          alert("로그인되었습니다. 메인 페이지로 이동합니다.");
+          navigate("/");
+        } else {
+          alert("아이디 혹은 비밀번호를 다시 확인 해주세요");
+        }
+
+        //.then(() => navigate('/'));
+        //const { accessToken } = response.data;
+        //setIsLogin(true);
+        //setAccessToken(accessToken);
+        // navigate('/') 1순위
       } catch (err) {
-        console.error(err)
+        console.error(err);
         // 에러 처리하기 if(~~~) alert('http 에러 이유');
       }
     };
