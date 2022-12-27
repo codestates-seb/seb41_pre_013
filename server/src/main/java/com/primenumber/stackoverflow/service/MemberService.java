@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
@@ -40,15 +40,19 @@ public class MemberService {
     }
 
     // TODO : create, update 가 결과값을 리턴해야 할지 결정
+    // TODO : passwordEncoder 순환 주입 문제를 해결하고 깔끔한 코드 만들기
     public void saveMember(MemberDto.Post dto) {
+        dto.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
         memberRepository.save(MemberDto.Post.toEntity(dto));
     }
 
+    // TODO : 일치 하지 않는 경우 HttpStatus
     public void updateMember(Long memberId, MemberPrincipal memberPrincipal, MemberDto.Patch dto) {
         try {
-            Member member = memberRepository.getReferenceById(memberId);
-            if (member.getEmail() == memberPrincipal.getUsername()) {
+            if (memberId == memberPrincipal.getId()) {
+                Member member = memberRepository.getReferenceById(memberId);
                 if (dto.getPassword() != null) {
+                    dto.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
                     member.setPassword(dto.getPassword());
                 }
                 if (dto.getDisplayName() != null) {

@@ -53,7 +53,7 @@ class MemberControllerTest {
 
         // When & Then
         mvc.perform(get("/members")
-                        .queryParam("page", String.valueOf(0))
+                        .queryParam("page", String.valueOf(1))
                         .queryParam("size", String.valueOf(10))
                 )
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

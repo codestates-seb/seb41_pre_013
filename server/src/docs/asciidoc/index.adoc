@@ -11,16 +11,6 @@ v1.0.0, 2022.12.23
 
 ***
 == AuthController
-=== 로그아웃
-.curl-request
-include::{snippets}/get-logout/curl-request.adoc[]
-
-.http-request
-include::{snippets}/get-logout/http-request.adoc[]
-
-.http-response
-include::{snippets}/get-logout/http-response.adoc[]
-
 === 로그인
 .curl-request
 include::{snippets}/get-logout/curl-request.adoc[]
@@ -39,6 +29,16 @@ include::{snippets}/post-login/response-headers.adoc[]
 
 .response-fields
 include::{snippets}/post-login/response-fields.adoc[]
+
+=== 로그아웃
+.curl-request
+include::{snippets}/get-logout/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-logout/http-request.adoc[]
+
+.http-response
+include::{snippets}/get-logout/http-response.adoc[]
 
 == MemberController
 === 회원 목록 조회

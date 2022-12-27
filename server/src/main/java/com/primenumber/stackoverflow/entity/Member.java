@@ -42,14 +42,20 @@ public class Member extends Auditable {
     @Column(nullable = false, length = 20)
     private MemberStatus status = MemberStatus.ACTIVE;
 
-    private Member(String email, String password, String displayName) {
+    private Member(Long id, String email, String password, String displayName, MemberStatus status) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.displayName = displayName;
+        this.status = status;
+    }
+
+    public static Member of(Long id, String email, String password, String displayName, MemberStatus status) {
+        return new Member(id, email, password, displayName, status);
     }
 
     public static Member of(String email, String password, String displayName) {
-        return new Member(email, password, displayName);
+        return new Member(null, email, password, displayName, MemberStatus.ACTIVE);
     }
 
     @Override
