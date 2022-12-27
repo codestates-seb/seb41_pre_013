@@ -8,6 +8,9 @@ import com.primenumber.stackoverflow.entity.Question;
 import com.primenumber.stackoverflow.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,5 +30,10 @@ public class AnswerService {
         Answer answer = Answer.of(requestBody.getContent(), findmember, findQuestion);
 
         return answerRepository.save(answer);
+    }
+
+    public Page<Answer> getAnswers(long questionId, int page, int size) {
+        return answerRepository.findAllByQuestionId(PageRequest.of(page, size, Sort.by("createAt").descending())
+                , questionId);
     }
 }
