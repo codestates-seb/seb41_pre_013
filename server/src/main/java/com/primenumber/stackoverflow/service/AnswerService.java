@@ -36,8 +36,8 @@ public class AnswerService {
     }
 
     public Page<Answer> getAnswers(long questionId, int page, int size) {
-        return answerRepository.findAllByQuestionId(PageRequest.of(page, size, Sort.by("createAt").descending())
-                , questionId);
+        return answerRepository.findAllByQuestionIdAndStatus(PageRequest.of(page, size, Sort.by("createAt"))
+                , questionId, BasicStatus.ACTIVE);
     }
 
     @Transactional
