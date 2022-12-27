@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { GrSearch } from 'react-icons/gr';
 import { BasicButton, LoginButton } from './Button';
 import { Link } from 'react-router-dom';
+import axios from "axios";
 
 const HeaderContainer = styled.header`
 	width: 100%;
@@ -87,39 +88,62 @@ const SearchBar = styled.div`
 	}
 `;
 
-function Header() {
-	return (
-		<HeaderContainer>
-			<TopBarContainer>
-				<a href="/">
-					<span className="logo_img">stack overflow</span>
-				</a>
-				<span className="header_menu">About</span>
-				<span className="header_menu">Products</span>
-				<span className="header_menu">For Teams</span>
-				<SearchBar>
-					<GrSearch />
-					<input
-						name="q_text"
-						type="text"
-						role="combobox"
-						aria-label="Search"
-						aria-controls="top-search"
-						aria-expanded="true"
-						placeholder="Search…"
-					/>
-				</SearchBar>
-				<div className="top_buttons">
-					<Link to="/login">
-						<LoginButton>Log in</LoginButton>
-					</Link>
-					<Link to="/signup">
-						<BasicButton>Sign up</BasicButton>
-					</Link>
-				</div>
-			</TopBarContainer>
-		</HeaderContainer>
-	);
-}
+function Header({isLogin, setIsLogin}) {
+	// 로그아웃 요청
+	const logout = async () => {
+    try {
+      const response = await axios
+	  .get("/logout");
+      const { status } = response;
+      if (status === 200) {
+        localStorage.removeItem("email");
+        localStorage.removeItem("token");
+        setIsLogin(false)
+        alert("로그아웃되었습니다.");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
+	return (
+    <HeaderContainer>
+      <TopBarContainer>
+        <a href="/">
+          <span className="logo_img">stack overflow</span>
+        </a>
+        <span className="header_menu">About</span>
+        <span className="header_menu">Products</span>
+        <span className="header_menu">For Teams</span>
+        <SearchBar>
+          <GrSearch />
+          <input
+            name="q_text"
+            type="text"
+            role="combobox"
+            aria-label="Search"
+            aria-controls="top-search"
+            aria-expanded="true"
+            placeholder="Search…"
+          />
+        </SearchBar>
+
+        {isLogin ? (
+          <div className="top_buttons">
+            <LoginButton onClick={logout}>Logout</LoginButton>
+          </div>
+        ) : (
+          <div className="top_buttons">
+            <Link to="/login">
+              <LoginButton>Login</LoginButton>
+            </Link>
+            <Link to="/signup">
+              <BasicButton>Sign up</BasicButton>
+            </Link>
+          </div>
+        )}
+      </TopBarContainer>
+    </HeaderContainer>
+  );
+}
 export default Header;
