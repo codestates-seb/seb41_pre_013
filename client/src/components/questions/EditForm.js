@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { BasicButton, CancelButton } from '../Button';
+import { useState } from 'react';
 
 const AskQuestionEditForm = styled.form`
 	margin-bottom: 20px;
@@ -64,7 +65,7 @@ const Input = styled.input`
 		outline: var(--outline-input-focus);
 	}
 `;
-
+// questionId
 const EditForm = ({ item }) => {
 	const defaultValue =
 		'I\'d say it\'s not supported. https://fullcalendar.io/docs/selection/select_callback/ indicates that when a selection is made, the callback will return a single "resource" object which will indicate the resource chosen by the user. This implies that selecting multiple resources\n\n via dragging the mouse on the timeline is not possible.\n';
@@ -73,6 +74,18 @@ const EditForm = ({ item }) => {
 		e.preventDefault();
 		alert('submit');
 	};
+
+
+	const [editTitle, setEditTitle] = useState('');
+	const [editContent, setEditContent] = useState('');
+	
+	const handleEdit = (editTitle, editContent) => {
+		// console.log(questionId);
+		console.log("질문 수정");
+		setEditTitle(editTitle);
+		setEditContent(editContent);
+	}
+
 	return (
 		<AskQuestionEditForm onSubmit={handleSubmit}>
 			<div className="titleBox">
@@ -83,13 +96,14 @@ const EditForm = ({ item }) => {
 						id="title"
 						name="title_text"
 						placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
+						value={editTitle}
+						onChange={(e) => setEditTitle(e.target.value)}
 					/>
 				</label>
 			</div>
 			<div className="bodyBox">
 				<label className="body" htmlFor="body">
-					<h4>Body</h4>
-					<textarea id="body" name="body_text" defaultValue={defaultValue} />
+					<textarea id="body" name="body_text" defaultValue={defaultValue} onChange={(e) => setEditContent(e.target.value)}/>
 				</label>
 				<div className="explain">
 					<p>
@@ -121,7 +135,7 @@ const EditForm = ({ item }) => {
 				</label>
 			</div>
 			<div className="buttonBox">
-				<BasicButton type="submit" height="40">
+				<BasicButton type="submit" height="40" onClick={handleEdit}>
 					Save edits
 				</BasicButton>
 				&nbsp;

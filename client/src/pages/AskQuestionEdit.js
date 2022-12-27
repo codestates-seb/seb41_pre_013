@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import Nav from '../components/Nav';
 import Aside from '../components/Aside';
 import EditForm from '../components/questions/EditForm';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { questionPatch } from '../api/Question';
 
 const ContentContainer = styled.div`
 	width: 100%;
@@ -40,8 +41,16 @@ const NoticeBox = styled.div`
 `;
 
 function AskQuestionEdit() {
+	const navigate = useNavigate();
 	const { questionId } = useParams();
-	console.log('questionId', questionId);
+	// console.log('questionId', questionId);
+
+	const handleEdit = (askTitle, askContent) => {
+		questionPatch(askTitle, askContent);
+		navigate(-1);
+	}
+
+
 	return (
 		<ContentContainer>
 			<Nav />
@@ -59,7 +68,7 @@ function AskQuestionEdit() {
 							resources and hyperlinks.
 						</div>
 					</NoticeBox>
-					<EditForm />
+					<EditForm handleEdit={handleEdit}/>
 				</MainContent>
 				<Aside />
 			</div>
