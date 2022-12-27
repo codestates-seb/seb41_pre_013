@@ -4,6 +4,7 @@ import { useState } from 'react';
 import AskQuestionEdit from '../../pages/AskQuestionEdit';
 import { useNavigate, useParams } from 'react-router-dom';
 import { questionPatch } from '../../api/Question';
+import Tag from '../Tag';
 
 const AskQuestionEditForm = styled.form`
 	margin-bottom: 20px;
@@ -74,19 +75,25 @@ const EditForm = ({ item, handleEditQuestion }) => {
 		'I\'d say it\'s not supported. https://fullcalendar.io/docs/selection/select_callback/ indicates that when a selection is made, the callback will return a single "resource" object which will indicate the resource chosen by the user. This implies that selecting multiple resources\n\n via dragging the mouse on the timeline is not possible.\n';
 
 	const handleSubmit = (e) => {
+		console.log("handlesubmit");
 		e.preventDefault();
-		alert('submit');
+		// alert('submit');
 	};
 
 
 	const [editTitle, setEditTitle] = useState('');
 	const [editContent, setEditContent] = useState('');
-	const { questionId } = useParams();
-	console.log(questionId);
+	//const { questionId } = useParams();
+	//console.log(questionId);
+	const id = useParams();
+	let saveId = id.questionId;
 
-	const handleEdit = (questionId, editTitle, editContent) => {
-		console.log(questionId);
-		questionPatch(questionId, editTitle, editContent);
+	console.log(editTitle);
+	console.log(editContent);
+	
+	const handleEdit = (saveId, editTitle, editContent) => {
+		console.log(saveId);
+		questionPatch(saveId.detail, editTitle, editContent);
 		console.log("질문 수정");
 	}
 
@@ -107,8 +114,8 @@ const EditForm = ({ item, handleEditQuestion }) => {
 			</div>
 			<div className="bodyBox">
 				<label className="body" htmlFor="body">
-					{/*onChange={(e) => setEditContent(e.target.value)}*/}
-					<textarea id="body" name="body_text" defaultValue={defaultValue} value={editContent} onChange={(e) => setEditContent(e.target.value)}/>
+					{/*onChange={(e) => setEditContent(e.target.value)} defaultValue={defaultValue}*/}
+					<textarea id="body" name="body_text" value={editContent} onChange={(e) => setEditContent(e.target.value)}/>
 				</label>
 				<div className="explain">
 					<p>
@@ -131,12 +138,13 @@ const EditForm = ({ item, handleEditQuestion }) => {
 			<div className="tagBox">
 				<label className="tag" htmlFor="tag">
 					<h4>Tags</h4>
-					<Input
+					{/*<Input
 						type="text"
 						id="tag"
 						name="tag_text"
 						placeholder="e.g. (c# php objective-c)"
-					/>
+					/>*/}
+					<Tag />
 				</label>
 			</div>
 			<div className="buttonBox">

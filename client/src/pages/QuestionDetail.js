@@ -126,8 +126,9 @@ const QuestionContent = styled.section`
 
 function QuestionDetail({ handleDeleteQuestion }) {
 	const id = useParams();
-	console.log(id);
 	let saveId = id.questionId;
+
+	const [questionData, setQuestionData] = useState(null);
 
 	const navigate = useNavigate();
 
@@ -143,7 +144,7 @@ function QuestionDetail({ handleDeleteQuestion }) {
 				<QuestionHeader>
 					<div className="title-box">
 						<div className="question-title">
-							<h4>How do...</h4>
+							<h4>How to...</h4>
 						</div>
 						<div className="question-info">
 							<div className="info-box">
@@ -207,6 +208,7 @@ function QuestionDetail({ handleDeleteQuestion }) {
 			</div>
 		</Container>
 	);
+	
 }
 
 export default QuestionDetail;

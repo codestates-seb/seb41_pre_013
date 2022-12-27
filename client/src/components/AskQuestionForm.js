@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { questionCreate } from '../api/Question';
+import Tag from './Tag';
 
 const AskQuestionFormContainer = styled.div`
 	width: 850px;
@@ -84,7 +85,6 @@ const SubmitBtn = styled.button`
 function AskQuestionForm({askTitle, setAskTitle, askContent, setAskContent, handleSubmit}) {
 	return (
 		<AskQuestionFormContainer>
-			<form action="" method="get" className="form">
 				<AskQuestionBox className="titleContainer">
 					<div className="titleBox">
 						<label className="title" htmlFor="titleInput">
@@ -128,11 +128,12 @@ function AskQuestionForm({askTitle, setAskTitle, askContent, setAskContent, hand
 							Add up to 5 tags to describe what your question is about. Start
 							typing to see suggestions.
 						</label>
-						<Input
+						{/*<Input
 							type="text"
 							placeholder="e.g. (css sql-server asp.net-mvc)"
 							id="tagInput"
-						/>
+						/>*/}
+						<Tag />
 					</div>
 				</AskQuestionBox>
 				<SubmitBtn>
@@ -141,7 +142,6 @@ function AskQuestionForm({askTitle, setAskTitle, askContent, setAskContent, hand
 						onClick={() => handleSubmit(askTitle, askContent)}
 					>Post your question</div>
 				</SubmitBtn>
-			</form>
 		</AskQuestionFormContainer>
 	);
 }
