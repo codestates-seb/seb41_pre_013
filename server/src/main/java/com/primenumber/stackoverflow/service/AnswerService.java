@@ -5,6 +5,7 @@ import com.primenumber.stackoverflow.dto.security.MemberPrincipal;
 import com.primenumber.stackoverflow.entity.Answer;
 import com.primenumber.stackoverflow.entity.Member;
 import com.primenumber.stackoverflow.entity.Question;
+import com.primenumber.stackoverflow.entity.util.BasicStatus;
 import com.primenumber.stackoverflow.exception.BusinessLogicException;
 import com.primenumber.stackoverflow.exception.ExceptionCode;
 import com.primenumber.stackoverflow.repository.AnswerRepository;
@@ -46,6 +47,14 @@ public class AnswerService {
 
         return answerRepository.save(findAnswer);
 
+    }
+
+    @Transactional
+    public Answer modifyDeletedAnswerStatus(long answerId, long memberId) {
+        Answer findAnswer = findAnswerOfAuthorizedMember(answerId, memberId);
+        findAnswer.setStatus(BasicStatus.DELETED);
+
+        return answerRepository.save(findAnswer);
     }
 
     private Answer findAnswerOfAuthorizedMember(long answerId, long memberId) {

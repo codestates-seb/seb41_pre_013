@@ -57,4 +57,12 @@ public class AnswerController {
 
         return new ResponseEntity<>(new BaseResponse<>(AnswerDto.Response.from(answer)), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{answer-id}")
+    public ResponseEntity deleteAnswer(@Positive @PathVariable("answer-id") long answerId,
+                                       @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+
+        answerService.modifyDeletedAnswerStatus(answerId, memberPrincipal.getId());
+        return new ResponseEntity("해당 답변이 성공적으로 삭제되었습니다.", HttpStatus.OK);
+    }
 }

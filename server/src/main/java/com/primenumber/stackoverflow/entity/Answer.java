@@ -21,6 +21,7 @@ public class Answer extends Auditable {
     @Setter
     private String content;
 
+    @Setter
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false, length = 20)
     private BasicStatus status = BasicStatus.ACTIVE;
