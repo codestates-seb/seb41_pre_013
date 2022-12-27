@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import { BasicButton, CancelButton } from '../Button';
 import { useState } from 'react';
+import AskQuestionEdit from '../../pages/AskQuestionEdit';
+import { useNavigate, useParams } from 'react-router-dom';
+import { questionPatch } from '../../api/Question';
 
 const AskQuestionEditForm = styled.form`
 	margin-bottom: 20px;
@@ -66,7 +69,7 @@ const Input = styled.input`
 	}
 `;
 // questionId
-const EditForm = ({ item }) => {
+const EditForm = ({ item, handleEditQuestion }) => {
 	const defaultValue =
 		'I\'d say it\'s not supported. https://fullcalendar.io/docs/selection/select_callback/ indicates that when a selection is made, the callback will return a single "resource" object which will indicate the resource chosen by the user. This implies that selecting multiple resources\n\n via dragging the mouse on the timeline is not possible.\n';
 
@@ -78,12 +81,13 @@ const EditForm = ({ item }) => {
 
 	const [editTitle, setEditTitle] = useState('');
 	const [editContent, setEditContent] = useState('');
-	
-	const handleEdit = (editTitle, editContent) => {
-		// console.log(questionId);
+	const { questionId } = useParams();
+	console.log(questionId);
+
+	const handleEdit = (questionId, editTitle, editContent) => {
+		console.log(questionId);
+		questionPatch(questionId, editTitle, editContent);
 		console.log("질문 수정");
-		setEditTitle(editTitle);
-		setEditContent(editContent);
 	}
 
 	return (
@@ -103,7 +107,8 @@ const EditForm = ({ item }) => {
 			</div>
 			<div className="bodyBox">
 				<label className="body" htmlFor="body">
-					<textarea id="body" name="body_text" defaultValue={defaultValue} onChange={(e) => setEditContent(e.target.value)}/>
+					{/*onChange={(e) => setEditContent(e.target.value)}*/}
+					<textarea id="body" name="body_text" defaultValue={defaultValue} value={editContent} onChange={(e) => setEditContent(e.target.value)}/>
 				</label>
 				<div className="explain">
 					<p>

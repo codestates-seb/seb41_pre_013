@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import AskQuestionForm from '../components/AskQuestionForm';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { questionCreate } from '../api/Question';
 
 const ContentContainer = styled.div`
@@ -76,7 +76,6 @@ const AskQuestionDescription = styled.div`
 function AskQuestion() {
 	const [askTitle, setAskTitle] = useState('');
 	const [askContent, setAskContent] = useState('');
-
 	const navigate = useNavigate();
 
 	const handleSubmit = (askTitle, askContent) => {
@@ -85,7 +84,7 @@ function AskQuestion() {
 		console.log("질문 post");
 		console.log(askTitle);
 		console.log(askContent);
-		navigate('/');
+		// navigate('/');
 	}
 
 	return (

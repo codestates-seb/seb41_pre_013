@@ -45,8 +45,9 @@ function AskQuestionEdit() {
 	const { questionId } = useParams();
 	// console.log('questionId', questionId);
 
-	const handleEdit = (askTitle, askContent) => {
-		questionPatch(askTitle, askContent);
+	const handleEditQuestion = (askTitle, askContent) => {
+		console.log(questionId);
+		questionPatch(questionId);
 		navigate(-1);
 	}
 
@@ -68,7 +69,7 @@ function AskQuestionEdit() {
 							resources and hyperlinks.
 						</div>
 					</NoticeBox>
-					<EditForm handleEdit={handleEdit}/>
+					<EditForm handleEdit={handleEditQuestion}/>
 				</MainContent>
 				<Aside />
 			</div>

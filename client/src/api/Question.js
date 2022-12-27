@@ -23,9 +23,9 @@ export const questionCreate = (questionTitle, questionContent) => {
 };
 
 // 질문 수정
-export const questionPatch = (questionTitle, questionContent) => {
+export const questionPatch = (id, questionTitle, questionContent) => {
 	axios
-		.patch(QUES_ENDPOINT, {
+		.patch(`${QUES_ENDPOINT}/${id}`, {
 				title: questionTitle,
 				content: questionContent
 		})
@@ -40,15 +40,14 @@ export const questionPatch = (questionTitle, questionContent) => {
 };
 
 // 질문 삭제
-export const questionDelete = (id, callback) => {
+export const questionDelete = (id) => {
 	axios
-		.delete(QUES_ENDPOINT, {
-			data: { questionId: id },
-		})
+		.delete(`${QUES_ENDPOINT}/${id}`)
 		.then((res) => {
-			// setIsLogin(false);
+			console.log(res);
+			console.log("질문 삭제");
 		})
 		.catch((e) => {
-			console.log(e.response.statusText);
+			console.log(e);
 		});
 };

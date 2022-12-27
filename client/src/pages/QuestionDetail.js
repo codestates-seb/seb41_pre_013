@@ -6,6 +6,8 @@ import { RxTriangleUp, RxTriangleDown } from 'react-icons/rx';
 import { default as AnswerDetailList } from '../components/answers/DetailList';
 import { default as AnswerAddForm } from '../components/answers/AddForm';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { questionDelete } from '../api/Question';
 
 const Container = styled.div`
 	width: 100%;
@@ -122,14 +124,18 @@ const QuestionContent = styled.section`
 	}
 `;
 
-function QuestionDetail({ question, handleDeleteQuestion }) {
-	// const { id } = useParams();
+function QuestionDetail({ handleDeleteQuestion }) {
+	const id = useParams();
+	console.log(id);
+	let saveId = id.questionId;
+
 	const navigate = useNavigate();
 
-	const handleDeleteClick = (questionTitle, questionContent) => {
-		//const data = { askTitle, askContent };
-		if(window.confirm(`1번째 삭제?`));
+	const handleDeleteClick = (saveId) => {
+		questionDelete(saveId.detail);
+		navigate(-1);
 	}
+
 	return (
 		<Container>
 			<Nav />
@@ -188,15 +194,13 @@ function QuestionDetail({ question, handleDeleteQuestion }) {
 									<Tag>undo</Tag>
 								</div>
 								<div className="edit-delete-box">
-									<button className="question-edit-btn" onClick={() => navigate(`/questions/1/edit`)}>Edit</button>
-									<button className="question-delete-btn" onClick={() => handleDeleteQuestion(question.id)}>Delete</button>
+									<button className="question-edit-btn" onClick={() => navigate(`/questions/${saveId}/edit`)}>Edit</button>
+									<button className="question-delete-btn" onClick={handleDeleteClick}>Delete</button>
 								</div>
 							</div>
 						</QuestionContent>
 						{/* 답변 조회 */}
 						<AnswerDetailList />
-						{/* 답변 추가 */}
-						<AnswerAddForm />
 					</ContentBox>
 					<Aside />
 				</div>
