@@ -80,10 +80,7 @@ public class AuthControllerTest {
                                 )
                         ),
                         responseHeaders(
-                                List.of(
-                                        headerWithName("Authorization").description("Access Token"),
-                                        headerWithName("Refresh").description("Refresh Token")
-                                )
+                                headerWithName("Authorization").description("Access Token")
                         ),
                         responseFields(
                                 List.of(
