@@ -189,7 +189,7 @@ const SignUpPage = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
 
-  // 회원가입 데이터 전송
+  // 회원가입 요청
   const signUpSubmit = async () => {
     try {
       const response = await axios
@@ -248,13 +248,19 @@ const SignUpPage = () => {
   // 회원가입 기능, 모든 유효성 검사가 통과 되어야 sign up 가능
   const onSignUp = (e) => {
     e.preventDefault();
-    if (displayName.length !== 0 && email.length !== 0 && password.length !== 0 &&
-    isName === true && isEmail === true && isPassword === true) 
-    signUpSubmit();
-    else if (!isName) alert('Display name을 확인해주세요.');
-    else if (!isEmail) alert('Email을 확인해주세요.');
-    else if (!isPassword) alert('Password를 확인해주세요.');
-  }
+    if (
+      displayName.length !== 0 &&
+      email.length !== 0 &&
+      password.length !== 0 &&
+      isName === true &&
+      isEmail === true &&
+      isPassword === true
+    )
+      signUpSubmit();
+    else if (!isName) alert("Display name을 확인해주세요.");
+    else if (!isEmail) alert("Email을 확인해주세요.");
+    else if (!isPassword) alert("Password를 확인해주세요.");
+  };
 
     return (
       <>

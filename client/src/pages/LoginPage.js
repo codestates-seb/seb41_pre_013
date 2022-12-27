@@ -137,10 +137,8 @@ const LoginPage = ({ setIsLogin }) => {
     const [isEmail, setIsEmail] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
 
-    //const [accessToken, setAccessToken] = useState('');
-
-    // 로그인 데이터 전송
-    const signUpSubmit = async () => {
+    // 로그인 요청
+    const loginSubmit = async () => {
       try {
         const response = await axios.post(
           "/login", { email, password },
@@ -149,27 +147,27 @@ const LoginPage = ({ setIsLogin }) => {
             withCredentials: true,
           }
         );
-        const { data: token, status } = response;
+        const { status } = response;
+        const token = response.headers.authorization;
+
+        console.log(response)
         if (status === 200 || status === "200") {
           localStorage.setItem("token", token);
           localStorage.setItem("email", email);
-          //setEmail('');
-          //setPassword('');
+
+          //localStorage.setItem('Token', res.data.token);
+          //localStorage.setItem('UserID', res.data.id);
+
           setIsLogin(true);
           alert("로그인되었습니다. 메인 페이지로 이동합니다.");
           navigate("/");
         } else {
           alert("아이디 혹은 비밀번호를 다시 확인 해주세요");
         }
-
-        //.then(() => navigate('/'));
-        //const { accessToken } = response.data;
-        //setIsLogin(true);
-        //setAccessToken(accessToken);
-        // navigate('/') 1순위
       } catch (err) {
         console.error(err);
         // 에러 처리하기 if(~~~) alert('http 에러 이유');
+        // alert('아이디 혹은 비밀번호를 다시 확인 해주세요 :)');
       }
     };
 
@@ -204,11 +202,16 @@ const LoginPage = ({ setIsLogin }) => {
     // 로그인 기능, 모든 유효성 검사가 통과 되어야 login 가능
     const onLogin = (e) => {
       e.preventDefault();
-      if ((email.length !== 0 && password.length !== 0) && (isEmail === true && isPassword === true)) 
-      signUpSubmit();
-      else if (!isEmail) alert('Email을 확인해주세요.');
-      else if (!isPassword) alert('Password를 확인해주세요.');
-    }
+      if (
+        email.length !== 0 &&
+        password.length !== 0 &&
+        isEmail === true &&
+        isPassword === true
+      )
+        loginSubmit();
+      else if (!isEmail) alert("Email을 확인해주세요.");
+      else if (!isPassword) alert("Password를 확인해주세요.");
+    };
 
     return (
         <>      
