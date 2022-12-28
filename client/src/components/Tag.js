@@ -83,14 +83,14 @@ function Tag() {
       event.target.value = '';
     }
   };
-
+  console.log("tag comp", tags);
   return (
     <>
       <TagsInput>
         <ul id='tags'>
           {tags.map((tag, index) => (
             <li key={index} className='tag'>
-              <span className='tag-title'>{tag}</span>
+              <span className='tag-title' value={tag}>{tag}</span>
               <span className='tag-close-icon' onClick={() => removeTags(index)}>
                 &times;
               </span>

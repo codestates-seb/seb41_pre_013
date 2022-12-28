@@ -4,7 +4,8 @@ import { BasicButton, TagButton as Tag } from '../components/Button';
 import Aside from '../components/Aside';
 import { RxTriangleUp, RxTriangleDown } from 'react-icons/rx';
 import AnswerDetailList from './AnswerDetailList';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { questionDelete } from '../api/Question';
 
 const Container = styled.div`
 	width: 100%;
@@ -122,7 +123,18 @@ const QuestionContent = styled.section`
 `;
 
 function QuestionDetail() {
+	const { questionId } = useParams();
 	const navigate = useNavigate();
+
+	const handleEditClick = (e) => {
+		navigate(`/questions/${questionId}/edit`);
+	}
+
+	const handleDelClick = (e) => {
+		console.log("questionId", questionId);
+		questionDelete(questionId);
+	}
+
 	return (
 		<Container>
 			<Nav />
@@ -181,8 +193,8 @@ function QuestionDetail() {
 									<Tag>undo</Tag>
 								</div>
 								<div className="edit-delete-box">
-									<button className="question-edit-btn">Edit</button>
-									<button className="question-delete-btn">Delete</button>
+									<button className="question-edit-btn" onClick={handleEditClick}>Edit</button>
+									<button className="question-delete-btn" onClick={handleDelClick}>Delete</button>
 								</div>
 							</div>
 						</QuestionContent>
