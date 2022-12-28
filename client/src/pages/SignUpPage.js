@@ -251,7 +251,7 @@ const SignUpPage = () => {
 
   // 회원가입 기능, 모든 유효성 검사가 통과 되어야 sign up 가능
   const onSignUp = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     if (
       displayName.length !== 0 &&
       email.length !== 0 &&

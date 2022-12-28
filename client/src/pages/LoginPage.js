@@ -6,6 +6,7 @@ import img from "../images/stack.PNG";
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { LOGIN_ENDPOINT } from "../api/Login";
 
 const DirectionStyle = styled.div`
     display: flex;
@@ -147,16 +148,13 @@ const LoginPage = ({ setIsLogin }) => {
             withCredentials: true,
           }
         );
-        console.log(response)
+        //console.log(response)
         const { status } = response;
         const token = response.headers.authorization;
-        const refresh = response.headers.refresh;
         const disName = response.data.response.displayName;
         
         if (status === 200) {
           localStorage.setItem("token", token);
-          localStorage.setItem("refresh", refresh);
-          localStorage.setItem("email", email);
           localStorage.setItem("displayName", disName);
           setIsLogin(true);
           alert("로그인되었습니다. 메인 페이지로 이동합니다.");
@@ -167,7 +165,7 @@ const LoginPage = ({ setIsLogin }) => {
       } catch (err) {
         console.error(err);
         // 에러 처리하기 if(~~~) alert('http 에러 이유');
-        // alert('아이디 혹은 비밀번호를 다시 확인 해주세요 :)');
+        // alert('아이디, 비밀번호를 다시 확인 해주세요');
       }
     };
 
