@@ -14,9 +14,12 @@ import {
 	MdFormatQuote,
 } from 'react-icons/md';
 import { ImUndo, ImRedo, ImBold, ImItalic } from 'react-icons/im';
+import { useParams } from 'react-router-dom';
+import { answerCreate } from '../../api/Answer';
 
 const CreateAnswerForm = styled.form`
 	width: 100%;
+	margin-top: 30px;
 
 	h3 {
 		height: 44px;
@@ -37,6 +40,10 @@ const CreateAnswerForm = styled.form`
 		align-items: center;
 		list-style-type: none;
 		border-bottom: 1px solid #babfc3;
+
+		:first-child {
+			padding-left: 10px;
+		}
 
 		.editor-btn {
 			width: 28px;
@@ -79,9 +86,31 @@ const CreateAnswerForm = styled.form`
 	}
 `;
 
-const AddForm = () => {
+const AddForm = ({ rerender }) => {
+	const { questionId } = useParams();
+
+	const handleAnswerAdd = (e) => {
+		e.preventDefault();
+		const form = e.target;
+
+		const successCb = () => rerender();
+		const failCb = () => alert('답변 등록에 실패했습니다.');
+		answerCreate(
+			{
+				memberId: 1,
+				displayName: 'yesman',
+				questionId: Number(questionId),
+				content: form.answer_text.value,
+				createdAt: new Date(),
+			},
+			successCb,
+			failCb
+		);
+		form.answer_text.value = '';
+	};
+
 	return (
-		<CreateAnswerForm>
+		<CreateAnswerForm onSubmit={handleAnswerAdd}>
 			<h3>Your Answer</h3>
 			<div className="editor-box">
 				<ul className="editor-row">
@@ -132,9 +161,11 @@ const AddForm = () => {
 						<MdHelp />
 					</li>
 				</ul>
-				<textarea name="answer-content"></textarea>
+				<textarea name="answer_text" required />
 			</div>
-			<BasicButton height="38">Post Your Answer</BasicButton>
+			<BasicButton type="submit" height="38">
+				Post Your Answer
+			</BasicButton>
 		</CreateAnswerForm>
 	);
 };

@@ -6,7 +6,7 @@ import { ImPencil } from 'react-icons/im';
 const AsideBox = styled.div`
 	width: var(--aside-width);
 	color: #515659;
-	font-size: var(--font-size-0-9rem);
+	font-size: var(--font-size-0-8-5rem);
 	font-family: var(--font-family-tag);
 	border-radius: 2px;
 	border: 1px solid #f1e5bc;
@@ -29,6 +29,7 @@ const AsideBox = styled.div`
 		margin-left: 5px;
 		list-style: none;
 		padding-bottom: 10px;
+		line-height: 1.2rem;
 
 		:first-child {
 			svg {

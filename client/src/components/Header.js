@@ -18,6 +18,7 @@ const HeaderContainer = styled.header`
 	border-bottom: 2px solid #ececec;
 	box-shadow: 0 5px 5px -5px #e5e5e5;
 	background-color: #f8f9f9;
+	z-index: 2;
 `;
 
 const TopBarContainer = styled.div`

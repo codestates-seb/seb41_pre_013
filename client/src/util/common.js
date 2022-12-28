@@ -23,13 +23,30 @@ export const DateConvert = (createAt) => {
 	if (weeks < 5) return `${Math.floor(weeks)} weeks ago`;
 
 	const lastDayOfMonth = new Date(
-			cDate.getFullYear(),
-			cDate.getMonth() + 1,
-			0
+		cDate.getFullYear(),
+		cDate.getMonth() + 1,
+		0
 	).getDate();
 	const months = days / lastDayOfMonth;
 	if (months < 12) return `${Math.floor(months)} months ago`;
 
 	const years = days / 365;
 	return `${Math.floor(years)} years ago`;
+};
+
+// 날짜 표시 포맷(Jun 8, 2011 at 2:43)
+export const DateFormat = (createAt) => {
+	const strDate = new Date(createAt).toLocaleString('en-US', {
+		month: 'short',
+		day: 'numeric',
+		year: 'numeric',
+		hour: 'numeric',
+		minute: 'numeric',
+	});
+	const arrDate = strDate.split(',');
+	const time = arrDate[2].trim().split(' '); // '5:02 PM'
+	let [hour, minute] = time[0].split(':');
+	if (time[1] === 'PM') hour = Number(hour) + 12;
+
+	return `${arrDate[0]}, ${arrDate[1]} at ${hour}:${minute}`;
 };

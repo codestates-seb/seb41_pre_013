@@ -3,11 +3,16 @@ import Nav from '../components/Nav';
 import { BasicButton, TagButton as Tag } from '../components/Button';
 import Aside from '../components/Aside';
 import { RxTriangleUp, RxTriangleDown } from 'react-icons/rx';
+<<<<<<< HEAD
 import { default as AnswerDetailList } from '../components/answers/DetailList';
 import { default as AnswerAddForm } from '../components/answers/AddForm';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { questionDelete } from '../api/Question';
+=======
+import AnswerDetailList from './AnswerDetailList';
+import { useNavigate } from 'react-router-dom';
+>>>>>>> 2ad753a351f954cdbf1f48d66627d99e1bd28f42
 
 const Container = styled.div`
 	width: 100%;
@@ -95,6 +100,7 @@ const QuestionContent = styled.section`
 	.sub-info {
 		display: flex;
 		flex-direction: column;
+<<<<<<< HEAD
 
 		.question-body {
 			margin: 17px 0 20px;
@@ -137,6 +143,39 @@ function QuestionDetail({ handleDeleteQuestion }) {
 		navigate(-1);
 	}
 
+=======
+
+		.question-body {
+			margin: 17px 0 20px;
+			font-size: 15px;
+			color: #232629;
+			line-height: 1.5;
+			overflow-wrap: break-word;
+		}
+
+		.tag-box {
+			height: 45px;
+			vertical-align: top;
+			margin-bottom: 20px;
+		}
+
+		.edit-delete-box {
+			/* height: 75px; */
+			vertical-align: top;
+
+			button {
+				background-color: transparent;
+				font-size: 13px;
+				margin-right: 10px;
+				color: #6a737c;
+			}
+		}
+	}
+`;
+
+function QuestionDetail() {
+	const navigate = useNavigate();
+>>>>>>> 2ad753a351f954cdbf1f48d66627d99e1bd28f42
 	return (
 		<Container>
 			<Nav />
@@ -144,7 +183,11 @@ function QuestionDetail({ handleDeleteQuestion }) {
 				<QuestionHeader>
 					<div className="title-box">
 						<div className="question-title">
+<<<<<<< HEAD
 							<h4>How to...</h4>
+=======
+							<h4>How do I undo the most recent local commits in Git?</h4>
+>>>>>>> 2ad753a351f954cdbf1f48d66627d99e1bd28f42
 						</div>
 						<div className="question-info">
 							<div className="info-box">
@@ -195,6 +238,7 @@ function QuestionDetail({ handleDeleteQuestion }) {
 									<Tag>undo</Tag>
 								</div>
 								<div className="edit-delete-box">
+<<<<<<< HEAD
 									<button className="question-edit-btn" onClick={() => navigate(`/questions/${saveId}/edit`)}>Edit</button>
 									<button className="question-delete-btn" onClick={handleDeleteClick}>Delete</button>
 								</div>
@@ -204,12 +248,25 @@ function QuestionDetail({ handleDeleteQuestion }) {
 						<AnswerDetailList />
 					</ContentBox>
 					
+=======
+									<button className="question-edit-btn">Edit</button>
+									<button className="question-delete-btn">Delete</button>
+								</div>
+							</div>
+						</QuestionContent>
+						{/* 답변 조회, 작성 */}
+						<AnswerDetailList />
+					</ContentBox>
+>>>>>>> 2ad753a351f954cdbf1f48d66627d99e1bd28f42
 					<Aside />
 				</div>
 			</div>
 		</Container>
 	);
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 2ad753a351f954cdbf1f48d66627d99e1bd28f42
 }
 
 export default QuestionDetail;

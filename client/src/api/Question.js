@@ -2,7 +2,7 @@ import axios from 'axios';
 // import { useNavigate } from 'react-router-dom';
 
 export const QUES_ENDPOINT =
-	process.env.REACT_APP_API_URL + process.env.REACT_APP_API_QUESTION_ENDPOINT;
+	process.env.REACT_APP_API + process.env.REACT_APP_API_QUESTION_ENDPOINT;
 
 // 질문 생성
 export const questionCreate = (questionTitle, questionContent) => {

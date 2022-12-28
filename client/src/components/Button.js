@@ -65,7 +65,7 @@ export const TagButton = styled.button`
 	}
 `;
 
-export const PageButton = styled.a`
+export const PageButton = styled.button`
 	color: ${(props) => (props.selected ? 'white' : 'var(--font-color-title)')};
 	padding: 5px 10px;
 	border: 1px solid var(--line-color);
