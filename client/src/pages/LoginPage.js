@@ -140,24 +140,24 @@ const LoginPage = ({ setIsLogin }) => {
     // 로그인 요청
     const loginSubmit = async () => {
       try {
-        const response = await axios.post(
-          "/login", { email, password },
+        const response = await axios
+        .post("/login", { email, password },
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
           }
         );
+        console.log(response)
         const { status } = response;
         const token = response.headers.authorization;
-
-        console.log(response)
-        if (status === 200 || status === "200") {
+        const refresh = response.headers.refresh;
+        const disName = response.data.response.displayName;
+        
+        if (status === 200) {
           localStorage.setItem("token", token);
+          localStorage.setItem("refresh", refresh);
           localStorage.setItem("email", email);
-
-          //localStorage.setItem('Token', res.data.token);
-          //localStorage.setItem('UserID', res.data.id);
-
+          localStorage.setItem("displayName", disName);
           setIsLogin(true);
           alert("로그인되었습니다. 메인 페이지로 이동합니다.");
           navigate("/");
@@ -201,7 +201,7 @@ const LoginPage = ({ setIsLogin }) => {
 
     // 로그인 기능, 모든 유효성 검사가 통과 되어야 login 가능
     const onLogin = (e) => {
-      e.preventDefault();
+      //e.preventDefault();
       if (
         email.length !== 0 &&
         password.length !== 0 &&

@@ -175,7 +175,7 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   
   // 이름, 이메일, 비밀번호
-  const [displayName, setName] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -193,11 +193,15 @@ const SignUpPage = () => {
   const signUpSubmit = async () => {
     try {
       const response = await axios
-        .post("/members", { displayName, email, password })
-        navigate("/login");
-        alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+      .post("/members", {
+        displayName,
+        email,
+        password,
+      });
+      navigate("/login");
+      alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
     } catch (err) {
-      console.error(err)
+      console.error(err);
       // 에러 처리하기 if(~~~) alert('http 에러 이유');
     }
   };
@@ -205,7 +209,7 @@ const SignUpPage = () => {
   // display
   const onChangeName = useCallback((e) => {
     const nameRegex = /^[a-zA-z0-9]{2,8}$/;
-    setName(e.target.value);
+    setDisplayName(e.target.value);
 
     if ((e.target.value.length < 2 || e.target.value.length > 8) && !nameRegex.test(e.target.value)) {
       setNameMessage('숫자나 영문을 2자리 이상 8자리 미만으로 입력하세요.');
