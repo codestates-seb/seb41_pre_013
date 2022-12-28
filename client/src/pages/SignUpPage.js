@@ -193,7 +193,7 @@ const SignUpPage = () => {
   const signUpSubmit = async () => {
     try {
       const response = await axios
-      .post("/members", {
+      .post(process.env.REACT_APP_API_SIGNUP_ENDPOINT, {
         displayName,
         email,
         password,

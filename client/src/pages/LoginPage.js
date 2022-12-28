@@ -123,7 +123,7 @@ const MenuButton = styled.button`
     border-radius: 4px;
 `;
 
-const LoginPage = ({ setIsLogin }) => { 
+const LoginPage = ({ setIsLogin }) => {
     const navigate = useNavigate();
 
     // 이메일, 비밀번호
@@ -142,7 +142,7 @@ const LoginPage = ({ setIsLogin }) => {
     const loginSubmit = async () => {
       try {
         const response = await axios
-        .post("/login", { email, password },
+        .post(process.env.REACT_APP_API_LOGIN_ENDPOINT, { email, password },
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,

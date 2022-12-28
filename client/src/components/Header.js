@@ -94,7 +94,7 @@ function Header({isLogin, setIsLogin}) {
 	const logout = async () => {
     try {
       const response = await axios
-	  .get("/logout");
+	  .get(process.env.REACT_APP_API_LOGOUT_ENDPOINT);
       const { status } = response;
       if (status === 200) {
         localStorage.removeItem("email");
