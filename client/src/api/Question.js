@@ -1,21 +1,17 @@
 import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
 
 export const QUES_ENDPOINT =
 	process.env.REACT_APP_API + process.env.REACT_APP_API_QUESTION_ENDPOINT;
 
 // 질문 생성
-export const questionCreate = (questionTitle, questionContent) => {
+export const questionCreate = (body) => {
+	console.log("body", body);
 	console.log(QUES_ENDPOINT);
 	axios
-		.post(QUES_ENDPOINT, {
-				title: questionTitle,
-				content: questionContent
-		})
+		.post(QUES_ENDPOINT, body)
 		.then((res) => {
 			console.log(res);
 			console.log("질문 생성");
-			// navigate('/');
 		})
 		.catch((e) => {
 			console.log(e);
@@ -24,6 +20,8 @@ export const questionCreate = (questionTitle, questionContent) => {
 
 // 질문 수정
 export const questionPatch = (id, questionTitle, questionContent) => {
+	console.log(id, questionTitle, questionContent);
+	console.log(`${QUES_ENDPOINT}/${id}`);
 	axios
 		.patch(`${QUES_ENDPOINT}/${id}`, {
 				title: questionTitle,
@@ -32,7 +30,6 @@ export const questionPatch = (id, questionTitle, questionContent) => {
 		.then((res) => {
 			console.log(res);
 			console.log("질문 수정");
-			// navigate('/');
 		})
 		.catch((e) => {
 			console.log(e);

@@ -6,6 +6,9 @@ import { RxTriangleUp, RxTriangleDown } from 'react-icons/rx';
 import AnswerDetailList from './AnswerDetailList';
 import { useNavigate, useParams } from 'react-router-dom';
 import { questionDelete } from '../api/Question';
+import { QUES_ENDPOINT } from '../api/Question';
+import useFetch from '../hooks/useFetch';
+import Loading from '../components/Loading';
 
 const Container = styled.div`
 	width: 100%;
@@ -124,6 +127,20 @@ const QuestionContent = styled.section`
 
 function QuestionDetail() {
 	const { questionId } = useParams();
+	// console.log(`${QUES_ENDPOINT}/${questionId}`);
+	const [quesList, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
+	//console.log(quesList.tagList[0].tagName);
+	// console.log(quesList.tagList[0].tagName);
+	// console.log(typeof quesList.tagList);
+	// console.log(Object.values(quesList.tagList[id]));
+	// const tagLists = quesList.tagList;
+	// console.log(Object.entries(tagLists));
+	// console.log(tagLists);
+	// console.log("quesList", quesList.tagList[1].tagName);
+	//console.log(quesList.tagList[0].tagName)
+	// let mapList = Object.keys(quesList.tagList).map(item => quesList.tagList[item]);
+	// console.log("mapList", mapList);
+
 	const navigate = useNavigate();
 
 	const handleEditClick = (e) => {
@@ -138,11 +155,15 @@ function QuestionDetail() {
 	return (
 		<Container>
 			<Nav />
+			{error && <div>질문 리스트 조회 실패</div>}
+			{isLoading ? (
+				<Loading />
+			) : (
 			<div className="main-content">
 				<QuestionHeader>
 					<div className="title-box">
 						<div className="question-title">
-							<h4>How do I undo the most recent local commits in Git?</h4>
+							<h4>{quesList.title}</h4>
 						</div>
 						<div className="question-info">
 							<div className="info-box">
@@ -173,14 +194,10 @@ function QuestionDetail() {
 							</div>
 							<div className="sub-info">
 								<div className="question-body">
-									This program prints the values stored inside vector num.
-									<br />
-									<br />
-									What I want to ask is, why we used const keyword for 'i' in
-									the for loop. Can't we use pointer variable? And why we don't
-									need to increment i?
+									{quesList.content}
 								</div>
 								<div className="tag-box">
+									{/*
 									<Tag>git</Tag>
 									<Tag>version-control</Tag>
 									<Tag>git-commit</Tag>
@@ -191,6 +208,10 @@ function QuestionDetail() {
 									<Tag>git</Tag>
 									<Tag>git-commit</Tag>
 									<Tag>undo</Tag>
+									*/}
+									{quesList.tagList.map((tag) => {
+										<Tag key={tag.id}>{tag.tagName}</Tag>
+									})}
 								</div>
 								<div className="edit-delete-box">
 									<button className="question-edit-btn" onClick={handleEditClick}>Edit</button>
@@ -204,6 +225,7 @@ function QuestionDetail() {
 					<Aside />
 				</div>
 			</div>
+			)}
 		</Container>
 	);
 }

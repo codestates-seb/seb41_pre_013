@@ -82,12 +82,34 @@ function AskQuestion() {
 
 	const handleSubmit = (askTitle, askContent, askTag) => {
 		//const data = { askTitle, askContent };
-		questionCreate(askTitle, askContent, askTag);
 		console.log("질문 post");
 		console.log(askTitle);
 		console.log(askContent);
 		console.log(askTag);
-		// navigate('/');
+
+		questionCreate(
+			{
+				id: 13,
+				questionId: 13,
+				title: askTitle, 
+				content: askContent,
+				createdAt: new Date(),
+				memberId: 100,
+				displayName: 'localhost',
+				answerCount: 1,
+				tagList: [
+					{
+						id: 1,
+						tagName: 'C++'
+					},
+					{
+						id: 2,
+						tag: 'Java'
+					}
+				]
+			}
+		);
+		navigate(`/questions/8`);
 	}
 
 	return (
