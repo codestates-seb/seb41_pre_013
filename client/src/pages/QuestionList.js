@@ -2,13 +2,15 @@ import styled from 'styled-components';
 import { BiFilter } from 'react-icons/bi';
 import { AiFillCaretDown } from 'react-icons/ai';
 import { BasicButton } from '../components/Button';
-// import useFetch from '../hooks/useFetch';
-// import Loading from '../components/Loading';
 import Nav from '../components/Nav';
 import Aside from '../components/Aside';
 import Item from '../components/questions/Item';
 import Pagination from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
+import { QUES_ENDPOINT } from '../api/Question';
+import Loading from '../components/Loading';
+import useFetch from '../hooks/useFetch';
+import { AmountDisplay } from '../util/common';
 
 const ContentContainer = styled.div`
 	width: 100%;
@@ -43,6 +45,10 @@ const ListOption = styled.div`
 	align-items: center;
 	text-align: right;
 	margin-bottom: 15px;
+
+	h4 {
+		font-weight: lighter;
+	}
 
 	.content_option_btns {
 		height: 100%;
@@ -86,6 +92,7 @@ const ListOption = styled.div`
 		background-color: #e1ecf4;
 		border-radius: 4px;
 		padding: 6px;
+
 		:hover {
 			background-color: #b9d2e8;
 		}
@@ -100,7 +107,7 @@ const List = styled.ul`
 `;
 
 function QuestionList() {
-	const data = [1];
+	const [quesList, isLoading, error] = useFetch(QUES_ENDPOINT);
 	const navigate = useNavigate();
 	return (
 		<ContentContainer>
@@ -108,36 +115,47 @@ function QuestionList() {
 			<div className="content_wrapper">
 				<MainContent>
 					<div className="content_title">
-						<h2>Al Questions</h2>
+						<h2>All Questions</h2>
 						<BasicButton height="38" onClick={() => navigate('/askquestion')}>
 							Ask Question
 						</BasicButton>
 					</div>
-					<ListOption>
-						<h4>254 questions with bounties</h4>
-						<div className="content_option_btns">
-							<div className="content_optoin_btn_general">
-								<button>Newest</button>
-								<button>Active</button>
-								<button>Bountied</button>
-								<button>Unanswered</button>
-								<button>
-									More&nbsp;
-									<AiFillCaretDown />
-								</button>
-							</div>
-							<button className="content_option_btn_filter">
-								<BiFilter />
-								Filter
-							</button>
-						</div>
-					</ListOption>
-					<List>
-						{data.map((item) => (
-							<Item key={item} />
-						))}
-					</List>
-					<Pagination />
+					{error && <div>질문 리스트 조회 실패</div>}
+					{isLoading ? (
+						<Loading />
+					) : (
+						<>
+							<ListOption>
+								<h4>
+									{AmountDisplay(quesList.length)} questions with bounties
+								</h4>
+								<div className="content_option_btns">
+									<div className="content_optoin_btn_general">
+										<button>Newest</button>
+										<button>Active</button>
+										<button>Bountied</button>
+										<button>Unanswered</button>
+										<button>
+											More&nbsp;
+											<AiFillCaretDown />
+										</button>
+									</div>
+									<button className="content_option_btn_filter">
+										<BiFilter />
+										Filter
+									</button>
+								</div>
+							</ListOption>
+							<List>
+								{quesList.map((item) => (
+									<Item key={item.id} item={item} />
+								))}
+							</List>
+							<Pagination
+								pageInfo={{ viewPerPage: true, totalCnt: quesList.length }}
+							/>
+						</>
+					)}
 				</MainContent>
 				<Aside />
 			</div>

@@ -12,12 +12,17 @@ const GlobalStyle = createGlobalStyle`
     --nav-width: 164px;
     --aside-width: 298px;
     --main-outline-margin: 24px;
-    --footer-bg-color: #24262a;    
-    --font-family-body: Geneva, Verdana, sans-serif, -apple-system;
-    --font-family-tag: Haettenschweiler, sans-serif, -apple-system;
-    --font-fmaily-nav: BlinkMacSystemFont, sans-serif, -apple-system;
-    --font-size-0-8rem: 0.8rem; 
+    --footer-bg-color: #24262a;
+    /* --font-family-body: Geneva, Arial;
+    --font-family-tag: Haettenschweiler, Arial, Geneva, ;
+    --font-fmaily-nav: BlinkMacSystemFontm, Arial, Geneva; */
+    --font-family-body: Arial, Garamond, Geneva;
+    --font-family-tag: Arial, Haettenschweiler, Geneva;
+    --font-fmaily-nav: Arial, BlinkMacSystemFontm, Geneva;
+    --font-size-0-8rem: 0.8rem;
+    --font-size-0-8-5rem: 0.85rem; 
     --font-size-0-9rem: 0.9rem;
+    --font-size-0-9-3rem: 0.93rem;
     --font-size-1-2rem: 1.2rem;
     --border-input-focus: 1px solid #76B5F2;
     --outline-input-focus: 4px solid #D8E4F1;
@@ -34,6 +39,7 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     color: var(--font-color-base);  
     font-family: var(--font-family-body);
+    letter-spacing: 0.02em;
    }
 
   .app {
@@ -48,13 +54,6 @@ const GlobalStyle = createGlobalStyle`
 
   a {
     text-decoration: none;
-    cursor: pointer;
-  }
-  a:hover {
-    color: var(--font-color-title);
-  }
-  a:visited {
-    color: var(--font-color-base);
   }
 
   button {

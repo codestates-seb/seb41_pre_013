@@ -6,8 +6,19 @@ const NavContainer = styled.div`
 	width: 164px;
 	border-right: 1px solid var(--line-color);
 
+	a {
+		:hover {
+			font-weight: 450;
+			color: var(--font-color-title);
+		}
+		:visited {
+			color: var(--font-color-base);
+		}
+	}
+
 	nav {
 		width: 164px;
+		border-right: 1px solid var(--line-color);
 		position: fixed;
 		top: 74px;
 		bottom: 0;
@@ -29,11 +40,13 @@ const NavContainer = styled.div`
 			a {
 				width: 100%;
 			}
+
 			svg {
 				font-size: var(--font-size-1-2rem);
 				margin-right: 3px;
 				vertical-align: middle;
 			}
+
 			.sub_menu {
 				padding-left: 22px;
 			}
@@ -42,6 +55,7 @@ const NavContainer = styled.div`
 			font-weight: bold;
 			border-right: 3px solid var(--line-color-top-orange);
 			background-color: #f1f2f3;
+
 			a {
 				color: var(--font-color-title);
 			}
