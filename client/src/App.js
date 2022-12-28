@@ -1,12 +1,11 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
-import React, { Suspense, useState, useEffect } from 'react';
-import useScrollTop from './hooks/useScrollTop';
-import SampleWithNav from './pages/SampleWithNav';
-import SampleNoneNav from './pages/SampleNoneNav';
+import React, { Suspense, useState } from 'react';
+import ScrollTop from './components/ScrollTop';
 
 const Header = React.lazy(() => import('./components/Header'));
-const Questoins = React.lazy(() => import('./pages/QuestionList'));
+const Questions = React.lazy(() => import('./pages/QuestionList'));
+const QuestionDetail = React.lazy(() => import('./pages/QuestionDetail'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
 const SignUpPage = React.lazy(() => import('./pages/SignUpPage'));
 const AskQuestion = React.lazy(() => import('./pages/AskQuestion'));
@@ -18,7 +17,6 @@ const Loading = React.lazy(() => import('./components/Loading'));
 function App() {
 	const [isLogin, setIsLogin] = useState(false);
 
-	useScrollTop();
 	const { pathname } = useLocation();
 	const viewFooter = !(
 		pathname.indexOf('/login') > -1 || pathname.indexOf('/signup') > -1
@@ -26,11 +24,13 @@ function App() {
 	return (
 		<Suspense fallback={<Loading />}>
 			<GlobalStyle />
+			<ScrollTop />
 			<div className="app">
 				<Header isLogin={isLogin} setIsLogin={setIsLogin}/>
 				<Routes>
-					<Route exact path="/" element={<Questoins />} />
-					<Route path="/questions" element={<Questoins />} />
+					<Route exact path="/" element={<Questions />} />
+					<Route path="/questions" element={<Questions />} />
+					<Route path="/questions/:questionId" element={<QuestionDetail />} />
 					<Route path="/login" element={<LoginPage setIsLogin={setIsLogin}/>} />
 					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/askquestion" element={<AskQuestion />} />
@@ -38,10 +38,13 @@ function App() {
 						path="/questions/:questionId/edit"
 						element={<AskQuestionEdit />}
 					/>
-					<Route path="/answers/:answerId/edit" element={<AnswerEdit />} />
-					<Route path="/tags" element={<Questoins />} />
-					<Route path="/users" element={<SampleNoneNav />} />
-					<Route path="/companies" element={<SampleWithNav />} />
+					<Route
+						path="/questions/:questionId/answers/:answerId/edit"
+						element={<AnswerEdit />}
+					/>
+					<Route path="/tags" element={<Questions />} />
+					<Route path="/users" element={<Questions />} />
+					<Route path="/companies" element={<Questions />} />
 				</Routes>
 				{viewFooter && <Footer />}
 			</div>

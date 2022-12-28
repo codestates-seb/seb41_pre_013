@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Nav from '../components/Nav';
 import Aside from '../components/Aside';
 import EditForm from '../components/answers/EditForm';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 const ContentContainer = styled.div`
 	width: 100%;
@@ -25,34 +25,58 @@ const MainContent = styled.main`
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 20px;
-
-	a,
-	a:visited {
-		color: #0162be;
-		text-decoration: underline;
-	}
-
-	.explain_01 {
-		margin-bottom: 40px;
-
-		h4 {
-			margin-bottom: 24px;
-		}
-		p {
-			font-size: var(--font-size-0-9rem);
-		}
-	}
 `;
 
 const NoticeBox = styled.div`
 	padding: 16px;
-	font-size: var(--font-size-0-8rem);
+	font-size: var(--font-size-0-8-5rem);
 	border: 1px solid #dacfa8;
 	background-color: #fdf7e3;
-	margin-bottom: 40px;
 
 	p {
-		margin-bottom: 15px;
+		margin-bottom: 1rem;
+	}
+
+	div {
+		line-height: 1.1rem;
+	}
+`;
+
+const QuestionContent = styled.section`
+	.question-title {
+		color: #0162be;
+		margin: 16px 0 19px;
+
+		a:visited {
+			color: #0162be;
+		}
+	}
+
+	.question-content {
+		color: #3b4043;
+		margin-bottom: 6px;
+		border: 1px solid red;
+		resize: vertical;
+		height: 32px;
+		overflow: hidden;
+		margin-bottom: 3px;
+	}
+
+	.grippie {
+		background-position: calc(50% + 34px) -364px;
+		border: 1px solid #d6d8dc;
+		border-width: 0 1px 1px;
+		cursor: s-resize;
+		height: 11px;
+		overflow: hidden;
+		background-color: #f0f2f4;
+		margin-right: 0px;
+		background-image: url(https://cdn.sstatic.net/Img/unified/sprites.svg?v=fcc0ea44ba27),
+			none;
+		background-size: initial;
+		background-repeat: no-repeat;
+		border-bottom-left-radius: 3px;
+		border-bottom-right-radius: 3px;
 	}
 `;
 
@@ -77,23 +101,19 @@ function AnswerEdit() {
 							resources and hyperlinks.
 						</div>
 					</NoticeBox>
-					<div className="explain_01">
-						<h4>
-							Fullcalendar: How is possible to select multiple resource and days
-							in timelive view
+					<QuestionContent>
+						<h4 className="question-title">
+							<Link to={`/questions/`}>제목</Link>
 						</h4>
-						<p>
-							I'm using fullcalendar and I need to let user select multiple rows
-							for create a multi-resource event (
-							<a
-								href="https://fullcalendar.io/docs/resource_data/associating_events/"
-								rel="nofollow noreferrer"
-							>
-								documentation
-							</a>
-							) but I not find how to do so. Anyone have any idea?
-						</p>
-					</div>
+						<div className="question-content">
+							We welcome edits that make the post easier to understand and more
+							valuable for readers. Because community members review edits,
+							please try to make the post substantially better than how you
+							found it, for example, by fixing grammar or adding additional
+							resources and hyperlinks.
+						</div>
+						<div className="grippie"></div>
+					</QuestionContent>
 					<EditForm />
 				</MainContent>
 				<Aside />
