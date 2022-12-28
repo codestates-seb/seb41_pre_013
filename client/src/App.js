@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import ScrollTop from './components/ScrollTop';
 
 const Header = React.lazy(() => import('./components/Header'));
@@ -15,6 +15,8 @@ const Footer = React.lazy(() => import('./components/Footer'));
 const Loading = React.lazy(() => import('./components/Loading'));
 
 function App() {
+	const [isLogin, setIsLogin] = useState(false);
+
 	const { pathname } = useLocation();
 	const viewFooter = !(
 		pathname.indexOf('/login') > -1 || pathname.indexOf('/signup') > -1
@@ -24,12 +26,12 @@ function App() {
 			<GlobalStyle />
 			<ScrollTop />
 			<div className="app">
-				<Header />
+				<Header isLogin={isLogin} setIsLogin={setIsLogin}/>
 				<Routes>
 					<Route exact path="/" element={<Questions />} />
 					<Route path="/questions" element={<Questions />} />
 					<Route path="/questions/:questionId" element={<QuestionDetail />} />
-					<Route path="/login" element={<LoginPage />} />
+					<Route path="/login" element={<LoginPage setIsLogin={setIsLogin}/>} />
 					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/askquestion" element={<AskQuestion />} />
 					<Route

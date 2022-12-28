@@ -6,6 +6,9 @@ import one from "../images/one.PNG";
 import two from "../images/two.PNG";
 import thr from "../images/thr.PNG";
 import fou from "../images/fou.PNG";
+import React, { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const ContainerStyle = styled.div`
     display: flex;
@@ -25,13 +28,14 @@ const DirectionStyle = styled.div`
 
 const LoginStyle = styled.div`
         width: 320px;
-        height: 400px;
+        height: 480px;
         background-color: white;
         padding: 24px;
         border-radius: 8px;
         box-shadow: 1px 1px 8px 2px lightgray;
         .text {
             padding: 2px;
+            margin-top: 4px;
             margin-bottom: 4px;
             font-size: 14px;
             color: black;
@@ -40,12 +44,26 @@ const LoginStyle = styled.div`
             margin-top: 32px;
             font-size: 12px;
         }
+        .messagesuccess {
+          color: green;
+          font-size: 13px;
+          margin-left: 2px;
+          margin-bottom: 8px;
+          display: block;
+        }
+        .messageerror{
+          color: red;
+          font-size: 13px;
+          margin-left: 2px;
+          margin-bottom: 8px;
+          display: block;
+        }
 `;
 
 const Input = styled.input`
     width: 100%;
     padding: 7px;
-    margin-bottom: 16px;
+    margin-bottom: 6px;
     border-radius: 4px;
     border: 1px solid #c0c3c4;
     :focus {
@@ -153,8 +171,101 @@ const Text = styled.div`
     }
 `;
 
-
 const SignUpPage = () => { 
+  const navigate = useNavigate();
+  
+  // 이름, 이메일, 비밀번호
+  const [displayName, setDisplayName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // success, error 메세지
+  const [nameMessage, setNameMessage] = useState('');
+  const [emailMessage, setEmailMessage] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
+
+  // 유효성 검사
+  const [isName, setIsName] = useState(false);
+  const [isEmail, setIsEmail] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+
+  // 회원가입 요청
+  const signUpSubmit = async () => {
+    try {
+      const response = await axios
+      .post(process.env.REACT_APP_API_SIGNUP_ENDPOINT, {
+        displayName,
+        email,
+        password,
+      });
+      navigate("/login");
+      alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+    } catch (err) {
+      console.error(err);
+      // 에러 처리하기 if(~~~) alert('http 에러 이유');
+    }
+  };
+
+  // display
+  const onChangeName = useCallback((e) => {
+    const nameRegex = /^[a-zA-z0-9]{2,8}$/;
+    setDisplayName(e.target.value);
+
+    if ((e.target.value.length < 2 || e.target.value.length > 8) && !nameRegex.test(e.target.value)) {
+      setNameMessage('숫자나 영문을 2자리 이상 8자리 미만으로 입력하세요.');
+      setIsName(false);
+    } else {
+      setNameMessage('올바른 이름입니다.');
+      setIsName(true);
+    }
+  }, []);
+
+
+  // email
+  const onChangeEmail = useCallback((e) => {
+    const emailRegex = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    setEmail(e.target.value);
+
+    if (!emailRegex.test(e.target.value)) {
+      setEmailMessage('이메일 형식을 확인해주세요.');
+      setIsEmail(false);
+    } else {
+      setEmailMessage('올바른 이메일입니다.');
+      setIsEmail(true);
+    }
+  }, []);
+
+  // password
+  const onChangePassword = useCallback((e) => {
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    setPassword(e.target.value);
+
+    if (!passwordRegex.test(e.target.value)) {
+      setPasswordMessage('숫자, 영문, 특수기호(!, & 등)를 조합한 여섯 자리 이상의 비밀번호를 입력하세요.');
+      setIsPassword(false);
+    } else {
+      setPasswordMessage('올바른 비밀번호입니다');
+      setIsPassword(true);
+    }
+  }, []);
+
+  // 회원가입 기능, 모든 유효성 검사가 통과 되어야 sign up 가능
+  const onSignUp = (e) => {
+    //e.preventDefault();
+    if (
+      displayName.length !== 0 &&
+      email.length !== 0 &&
+      password.length !== 0 &&
+      isName === true &&
+      isEmail === true &&
+      isPassword === true
+    )
+      signUpSubmit();
+    else if (!isName) alert("Display name을 확인해주세요.");
+    else if (!isEmail) alert("Email을 확인해주세요.");
+    else if (!isPassword) alert("Password를 확인해주세요.");
+  };
+
     return (
       <>
         <ContainerStyle>
@@ -179,12 +290,18 @@ const SignUpPage = () => {
 
             <LoginStyle>
               <div className="text">Display name</div>
-              <Input type="name" />
+              <Input type="name" onChange={onChangeName}/>
+              {displayName.length > 0 && (<span className={`message${isName ? 'success' : 'error'}`}>{nameMessage}</span>)}
+              
               <div className="text">Email</div>
-              <Input type="email" />
+              <Input type="email" onChange={onChangeEmail}/>
+              {email.length > 0 && (<span className={`message${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>)}
+
               <div className="text">Password</div>
-              <Input type="password" />
-              <Button><div className="log">Sign up</div></Button>
+              <Input type="password" onChange={onChangePassword}/>
+              {password.length > 0 && (<span className={`message${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>)}
+
+              <Button onClick={onSignUp}><div className="log">Sign up</div></Button>
               <div className="endtext">By clicking “Sign up”, you agree to our terms of service, privacy policy and cookie policy</div>
             </LoginStyle>
           </DirectionStyle>
