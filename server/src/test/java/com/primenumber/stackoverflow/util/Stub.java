@@ -1,5 +1,6 @@
 package com.primenumber.stackoverflow.util;
 
+import com.primenumber.stackoverflow.auth.JwtTokenizer;
 import com.primenumber.stackoverflow.dto.MemberDto;
 import com.primenumber.stackoverflow.dto.security.MemberPrincipal;
 import com.primenumber.stackoverflow.entity.Member;
@@ -9,10 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Stub {
-
     public static Member createMember() {
         Member member = Member.of(
                 "hong@email.com",
@@ -20,6 +22,8 @@ public class Stub {
                 "홍길동"
         );
         ReflectionTestUtils.setField(member, "id", 1L);
+        ReflectionTestUtils.setField(member, "createdAt", LocalDateTime.now());
+        ReflectionTestUtils.setField(member, "modifiedAt", LocalDateTime.now());
 
         return member;
     }
@@ -58,4 +62,21 @@ public class Stub {
     public static MemberPrincipal createMemberPrincipal() {
         return MemberPrincipal.from(createMember());
     }
+
+    public static String createJwt(Member member) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", member.getEmail());
+
+        String subject = member.getEmail();
+
+        JwtTokenizer jwtTokenizer = new JwtTokenizer();
+
+        String accessToken = jwtTokenizer.generateAccessToken(claims, subject, jwtTokenizer.getAccessExpirationTime());
+
+        return accessToken;
+    }
+
+    public static String getJwtHeader() { return (new JwtTokenizer()).getHeaderString(); }
+
+    public static String getJwtPrefix() { return (new JwtTokenizer()).getTokenPrefix(); }
 }
