@@ -13,7 +13,7 @@ v1.0.0, 2022.12.23
 == AuthController
 === 로그인
 .curl-request
-include::{snippets}/get-logout/curl-request.adoc[]
+include::{snippets}/post-login/curl-request.adoc[]
 
 .http-request
 include::{snippets}/post-login/http-request.adoc[]
@@ -48,24 +48,75 @@ include::{snippets}/get-members/curl-request.adoc[]
 .http-request
 include::{snippets}/get-members/http-request.adoc[]
 
-.http-response
-include::{snippets}/get-members/http-response.adoc[]
-
 .request-parameters
 include::{snippets}/get-members/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-members/http-response.adoc[]
 
 .response-fields
 include::{snippets}/get-members/response-fields.adoc[]
 
-=== 회원 가입
+=== 단일 회원 정보 조회
 .curl-request
-include::{snippets}/post-members/curl-request.adoc[]
+include::{snippets}/get-member/curl-request.adoc[]
 
 .http-request
-include::{snippets}/post-members/http-request.adoc[]
+include::{snippets}/get-member/http-request.adoc[]
+
+.path-parameter
+include::{snippets}/get-member/path-parameters.adoc[]
 
 .http-response
-include::{snippets}/post-members/http-response.adoc[]
+include::{snippets}/get-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-member/response-fields.adoc[]
+
+=== 회원 가입
+.curl-request
+include::{snippets}/post-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/post-member/http-request.adoc[]
 
 .request-parameters
-include::{snippets}/post-members/request-fields.adoc[]
+include::{snippets}/post-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-member/http-response.adoc[]
+
+=== 회원 정보 수정
+.curl-request
+include::{snippets}/patch-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/patch-member/http-request.adoc[]
+
+.path-parameter
+include::{snippets}/patch-member/path-parameters.adoc[]
+
+.request-headers
+include::{snippets}/patch-member/request-headers.adoc[]
+
+.request-parameters
+include::{snippets}/patch-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-member/http-response.adoc[]
+
+=== 회원 삭제
+.curl-request
+include::{snippets}/delete-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/delete-member/http-request.adoc[]
+
+.path-parameter
+include::{snippets}/delete-member/path-parameters.adoc[]
+
+.request-headers
+include::{snippets}/delete-member/request-headers.adoc[]
+
+.http-response
+include::{snippets}/delete-member/http-response.adoc[]
