@@ -29,7 +29,7 @@ public class AnswerController {
     private final AnswerService answerService;
 
     @PostMapping
-    public ResponseEntity registerAnswer(@Positive @PathVariable("question-id") long questionId,
+    public ResponseEntity registerAnswer(@Positive @RequestParam("question-id") long questionId,
                                          @Valid @RequestBody AnswerDto.Post requestBody,
                                          @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
 
