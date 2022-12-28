@@ -203,6 +203,7 @@ function QuestionDetail({ handleDeleteQuestion }) {
 						{/* 답변 조회 */}
 						<AnswerDetailList />
 					</ContentBox>
+					
 					<Aside />
 				</div>
 			</div>

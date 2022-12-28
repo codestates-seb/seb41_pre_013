@@ -76,14 +76,17 @@ const AskQuestionDescription = styled.div`
 function AskQuestion() {
 	const [askTitle, setAskTitle] = useState('');
 	const [askContent, setAskContent] = useState('');
+	const [askTag, setAskTag] = useState('');
+
 	const navigate = useNavigate();
 
-	const handleSubmit = (askTitle, askContent) => {
+	const handleSubmit = (askTitle, askContent, askTag) => {
 		//const data = { askTitle, askContent };
-		questionCreate(askTitle, askContent);
+		questionCreate(askTitle, askContent, askTag);
 		console.log("질문 post");
 		console.log(askTitle);
 		console.log(askContent);
+		console.log(askTag);
 		// navigate('/');
 	}
 
@@ -126,6 +129,8 @@ function AskQuestion() {
 					setAskTitle = {setAskTitle}
 					askContent = {askContent}
 					setAskContent = {setAskContent}
+					askTag = {askTag}
+					setAskTag = {setAskTag}
 					handleSubmit = {handleSubmit}
 				/>
 			</MainContent>

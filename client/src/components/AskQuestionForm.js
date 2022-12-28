@@ -82,7 +82,7 @@ const SubmitBtn = styled.button`
 	border-radius: 4px;
 `;
 
-function AskQuestionForm({askTitle, setAskTitle, askContent, setAskContent, handleSubmit}) {
+function AskQuestionForm({askTitle, setAskTitle, askContent, setAskContent, askTag, setAskTag, handleSubmit}) {
 	return (
 		<AskQuestionFormContainer>
 				<AskQuestionBox className="titleContainer">
@@ -133,13 +133,15 @@ function AskQuestionForm({askTitle, setAskTitle, askContent, setAskContent, hand
 							placeholder="e.g. (css sql-server asp.net-mvc)"
 							id="tagInput"
 						/>*/}
-						<Tag />
+						<Tag
+							value={askTag}
+							onChange={(e) => setAskTag(e.target.value)}/>
 					</div>
 				</AskQuestionBox>
 				<SubmitBtn>
 					<div 
 						className="submit"
-						onClick={() => handleSubmit(askTitle, askContent)}
+						onClick={() => handleSubmit(askTitle, askContent, askTag)}
 					>Post your question</div>
 				</SubmitBtn>
 		</AskQuestionFormContainer>

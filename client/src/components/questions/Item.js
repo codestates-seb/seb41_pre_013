@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { TagButton as Tag } from '../Button';
+import data from '../../data/data.json';
 
 const ItemStyle = styled.li`
 	display: flex;
@@ -85,9 +86,11 @@ const Item = ({ item }) => {
 					<strong>3</strong> views
 				</span>
 			</div>
+			{/* {data.questions.map((question) => ( */}
 			<div className="list_item">
 				<h4 className="list_item_title">
-					how to display array with main title and sub titles in SectionList?
+					{/* {question.title} */}
+					how to display
 				</h4>
 				<div className="list_item_content">
 					I have restaurant data array , I should make another array by grouping
@@ -108,6 +111,7 @@ const Item = ({ item }) => {
 					</div>
 				</div>
 			</div>
+			{/* ))} */}
 		</ItemStyle>
 	);
 };
