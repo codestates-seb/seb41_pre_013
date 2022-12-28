@@ -1,5 +1,4 @@
 {
   "/questions/:id/answers": "/answers?questionId=:id&_sort=id&_order=desc",
-  "/questions/:id": "/questions?questionId=:id",
-  "/questions/:id/answers/:id": "/answers?answerId=:id"
+  "/questions/:id/answers/:id": "/answers?id=:id"
 }
