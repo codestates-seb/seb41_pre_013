@@ -41,6 +41,7 @@ export const questionPatch = (id, questionTitle, questionContent) => {
 
 // 질문 삭제
 export const questionDelete = (id) => {
+	console.log(`${QUES_ENDPOINT}/${id}`);
 	axios
 		.delete(`${QUES_ENDPOINT}/${id}`)
 		.then((res) => {
