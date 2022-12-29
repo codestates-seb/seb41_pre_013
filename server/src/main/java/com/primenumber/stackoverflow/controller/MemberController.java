@@ -29,8 +29,11 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public ResponseEntity getMembers(@PageableDefault(size = 10, page = 1, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        pageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(), pageable.getSort());
+    public ResponseEntity getMembers(
+            @Positive @RequestParam(defaultValue = "1", required = false) int page,
+            @Positive @RequestParam(defaultValue = "10", required = false) int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         Page<MemberDto.Response> pageMembers = memberService.searchMembers(pageable).map(MemberDto.Response::from);
         List<MemberDto.Response> members = pageMembers.getContent();
@@ -69,7 +72,6 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // TODO : 성공 여부에 따라 다른 응답 보내기
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(
             @PathVariable("member-id") @Positive Long memberId,

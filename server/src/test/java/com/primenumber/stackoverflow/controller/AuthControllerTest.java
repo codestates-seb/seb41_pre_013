@@ -69,7 +69,6 @@ public class AuthControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(header().exists(jwtTokenizer.getHeaderString()))
-                .andExpect(header().exists("Refresh"))
                 .andDo(document("post-login",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),

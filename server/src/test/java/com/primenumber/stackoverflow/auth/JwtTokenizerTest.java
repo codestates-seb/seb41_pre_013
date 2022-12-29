@@ -1,10 +1,7 @@
 package com.primenumber.stackoverflow.auth;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +38,7 @@ class JwtTokenizerTest {
         assertThat(accessToken, notNullValue());
     }
 
+    @Disabled
     @DisplayName("RefreshToken 을 생성한다")
     @Test
     public void generateRefreshTokenTest() {
