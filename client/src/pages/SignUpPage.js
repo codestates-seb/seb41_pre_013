@@ -266,10 +266,6 @@ const SignUpPage = () => {
     else if (!isPassword) alert("Password를 확인해주세요.");
   };
 
-   // pw 입력후 엔터 눌렀을때 Login
-   const onKeyDown = (e) => {
-    if(e.key === 'Enter') onSignUp();
-  }
     return (
       <>
         <ContainerStyle>
@@ -294,15 +290,15 @@ const SignUpPage = () => {
 
             <LoginStyle>
               <div className="text">Display name</div>
-              <Input type="name" onChange={onChangeName}/>
+              <Input type="name" onChange={onChangeName} />
               {displayName.length > 0 && (<span className={`message${isName ? 'success' : 'error'}`}>{nameMessage}</span>)}
               
               <div className="text">Email</div>
-              <Input type="email" onChange={onChangeEmail}/>
+              <Input type="email" onChange={onChangeEmail} />
               {email.length > 0 && (<span className={`message${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>)}
 
               <div className="text">Password</div>
-              <Input type="password" onChange={onChangePassword} onKeyDown={onKeyDown}/>
+              <Input type="password" onChange={onChangePassword} />
               {password.length > 0 && (<span className={`message${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>)}
 
               <Button onClick={onSignUp}><div className="log">Sign up</div></Button>
