@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import ScrollTop from './components/ScrollTop';
 
 const Header = React.lazy(() => import('./components/Header'));
@@ -16,11 +16,18 @@ const Loading = React.lazy(() => import('./components/Loading'));
 
 function App() {
 	const [isLogin, setIsLogin] = useState(false);
-
 	const { pathname } = useLocation();
 	const viewFooter = !(
 		pathname.indexOf('/login') > -1 || pathname.indexOf('/signup') > -1
 	);
+
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		if (!!token) {
+		  setIsLogin(true);
+		}
+	  }, [isLogin]);
+
 	return (
 		<Suspense fallback={<Loading />}>
 			<GlobalStyle />
