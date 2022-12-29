@@ -5,6 +5,7 @@ import com.primenumber.stackoverflow.entity.util.BasicStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,12 +20,15 @@ public class Question extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     @Column(nullable = false, length = 150)
     private String title;
 
+    @Setter
     @Column(nullable = false)
     private String content;
 
+    @Setter
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false, length = 20)
     private BasicStatus status = BasicStatus.ACTIVE;
