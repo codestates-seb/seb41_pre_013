@@ -121,6 +121,16 @@ function Header({ isLogin, setIsLogin }) {
     }
   };
 
+  	// 페이지 새로고침 onClick에 "location.reload"를 넣으면 warning뜨므로 함수로 만들기
+	const onReloadLogin = () => {
+      window.location.replace("/login");
+    };
+
+    const onReloadSignUp = () => {
+      window.location.replace("/signup");
+    };
+
+
 	return (
     <HeaderContainer>
       <TopBarContainer>
@@ -153,10 +163,10 @@ function Header({ isLogin, setIsLogin }) {
         ) : (
           <div className="top_buttons">
             <Link to="/login">
-              <LoginButton onClick="location.reload">Login</LoginButton>
+              <LoginButton onClick={onReloadLogin}>Login</LoginButton>
             </Link>
             <Link to="/signup">
-              <BasicButton onClick="location.reload">Sign up</BasicButton>
+              <BasicButton onClick={onReloadSignUp}>Sign up</BasicButton>
             </Link>
           </div>
         )}
