@@ -5,6 +5,7 @@ import com.primenumber.stackoverflow.auth.JwtTokenizer;
 import com.primenumber.stackoverflow.dto.LoginDto;
 import com.primenumber.stackoverflow.dto.security.MemberPrincipal;
 import com.primenumber.stackoverflow.entity.Member;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,14 +20,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
-
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenizer jwtTokenizer) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenizer = jwtTokenizer;
-    }
 
     @SneakyThrows
     @Override
@@ -50,12 +47,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Member member = memberPrincipal.toEntity();
 
         String accessToken = delegateAccessToken(member);
-        String refreshToken = delegateRefreshToken(member);
+        //String refreshToken = delegateRefreshToken(member);
 
         response.setHeader(jwtTokenizer.getHeaderString(), jwtTokenizer.getTokenPrefix() + " " + accessToken);
-        response.setHeader("Refresh", refreshToken);
+        //response.setHeader("Refresh", refreshToken);
 
-        this.getSuccessHandler().onAuthenticationSuccess(request, response, authentication);  // 추가
+        this.getSuccessHandler().onAuthenticationSuccess(request, response, authentication);
     }
 
     private String delegateAccessToken(Member member) {
@@ -69,11 +66,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return accessToken;
     }
 
-    private String delegateRefreshToken(Member member) {
-        String subject = member.getEmail();
-
-        String refreshToken = jwtTokenizer.generateRefreshToken(subject, jwtTokenizer.getRefreshExpirationTime());
-
-        return refreshToken;
-    }
+//    private String delegateRefreshToken(Member member) {
+//        String subject = member.getEmail();
+//
+//        String refreshToken = jwtTokenizer.generateRefreshToken(subject, jwtTokenizer.getRefreshExpirationTime());
+//
+//        return refreshToken;
+//    }
 }
