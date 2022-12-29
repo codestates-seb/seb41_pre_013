@@ -33,7 +33,7 @@ public class MemberController {
             @Positive @RequestParam(defaultValue = "1", required = false) int page,
             @Positive @RequestParam(defaultValue = "10", required = false) int size
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("createdAt").descending());
 
         Page<MemberDto.Response> pageMembers = memberService.searchMembers(pageable).map(MemberDto.Response::from);
         List<MemberDto.Response> members = pageMembers.getContent();
