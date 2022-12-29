@@ -105,7 +105,7 @@ function Header({ isLogin, setIsLogin }) {
 	const disName = localStorage.getItem('displayName')
 
 	// 로그아웃 요청
-	const logout = async () => {
+	const onlogout = async () => {
     try {
       const response = await axios
 	  .get(process.env.REACT_APP_API_LOGOUT_ENDPOINT);
@@ -121,7 +121,7 @@ function Header({ isLogin, setIsLogin }) {
     }
   };
 
-  	// 페이지 새로고침 onClick에 "location.reload"를 넣으면 warning뜨므로 함수로 만들기
+  	// 페이지 새로고침
 	const onReloadLogin = () => {
       window.location.replace("/login");
     };
@@ -129,7 +129,6 @@ function Header({ isLogin, setIsLogin }) {
     const onReloadSignUp = () => {
       window.location.replace("/signup");
     };
-
 
 	return (
     <HeaderContainer>
@@ -157,7 +156,7 @@ function Header({ isLogin, setIsLogin }) {
           <>
             <DisNameStyle>{disName.slice(0, 1)}</DisNameStyle>
             <div className="top_buttons">
-              <LoginButton onClick={logout}>Logout</LoginButton>
+              <LoginButton onClick={onlogout}>Logout</LoginButton>
             </div>
           </>
         ) : (
