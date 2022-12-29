@@ -28,7 +28,7 @@ const DirectionStyle = styled.div`
 
 const LoginStyle = styled.div`
         width: 320px;
-        height: 480px;
+        height: 460px;
         background-color: white;
         padding: 24px;
         border-radius: 8px;
@@ -46,14 +46,14 @@ const LoginStyle = styled.div`
         }
         .messagesuccess {
           color: green;
-          font-size: 13px;
+          font-size: 12px;
           margin-left: 2px;
           margin-bottom: 8px;
           display: block;
         }
         .messageerror{
           color: red;
-          font-size: 13px;
+          font-size: 12px;
           margin-left: 2px;
           margin-bottom: 8px;
           display: block;
@@ -208,11 +208,11 @@ const SignUpPage = () => {
 
   // display
   const onChangeName = useCallback((e) => {
-    const nameRegex = /^[a-zA-z0-9]{2,8}$/;
+    const nameRegex = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{3,20}$/;
     setDisplayName(e.target.value);
 
-    if ((e.target.value.length < 2 || e.target.value.length > 8) && !nameRegex.test(e.target.value)) {
-      setNameMessage('숫자나 영문을 2자리 이상 8자리 미만으로 입력하세요.');
+    if (!nameRegex.test(e.target.value)) {
+      setNameMessage('영문과 한글, 숫자를 3~20자리로 입력하세요.');
       setIsName(false);
     } else {
       setNameMessage('올바른 이름입니다.');
@@ -237,11 +237,11 @@ const SignUpPage = () => {
 
   // password
   const onChangePassword = useCallback((e) => {
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    const passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\S+$).{8,20}$/;
     setPassword(e.target.value);
 
     if (!passwordRegex.test(e.target.value)) {
-      setPasswordMessage('숫자, 영문, 특수기호(!, & 등)를 조합한 여섯 자리 이상의 비밀번호를 입력하세요.');
+      setPasswordMessage('숫자와 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요.');
       setIsPassword(false);
     } else {
       setPasswordMessage('올바른 비밀번호입니다');
