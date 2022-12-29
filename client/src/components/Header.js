@@ -136,10 +136,10 @@ function Header({isLogin, setIsLogin}) {
         ) : (
           <div className="top_buttons">
             <Link to="/login">
-              <LoginButton onClick="location.reload">Login</LoginButton>
+              <LoginButton>Login</LoginButton>
             </Link>
             <Link to="/signup">
-              <BasicButton onClick="location.reload">Sign up</BasicButton>
+              <BasicButton>Sign up</BasicButton>
             </Link>
           </div>
         )}
