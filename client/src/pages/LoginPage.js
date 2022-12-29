@@ -254,11 +254,11 @@ const LoginPage = ({ setIsLogin }) => {
    <Main>
      <DirectionStyle>
         <MenuStyle>
-          <img src={img} alt="stack" />
+          <a href="/"><img src={img} alt="stack" /></a>
             <MenuButtonStyle className="first"><FcGoogle />Log in with Goole</MenuButtonStyle>
             <MenuButtonStyle className="second"><VscGithub />Log in with GitHub</MenuButtonStyle>
             <MenuButtonStyle className="third"><AiFillFacebook />Log in with Facebook</MenuButtonStyle>
-          </MenuStyle>
+        </MenuStyle>
 
         <LoginStyle>
             <div className="text">Email</div>

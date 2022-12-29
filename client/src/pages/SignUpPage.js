@@ -246,7 +246,7 @@ const SignUpPage = () => {
     setDisplayName(e.target.value);
 
     if (!nameRegex.test(e.target.value)) {
-      setNameMessage('영문과 한글, 숫자를 3~20자리로 입력하세요.');
+      setNameMessage('영문과 한글 또는 숫자를 3~20자리로 입력하세요.');
       setIsName(false);
     } else {
       setNameMessage('올바른 이름입니다.');
@@ -275,7 +275,7 @@ const SignUpPage = () => {
     setPassword(e.target.value);
 
     if (!passwordRegex.test(e.target.value)) {
-      setPasswordMessage('숫자와 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요.');
+      setPasswordMessage('숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요.');
       setIsPassword(false);
     } else {
       setPasswordMessage('올바른 비밀번호입니다.');
@@ -345,7 +345,7 @@ const SignUpPage = () => {
             </LoginStyle>
 
             <UnderTextStyle>
-              <div className="underText">Already have an account? <a href="/signup" className="underLink">Log in</a></div>
+              <div className="underText">Already have an account? <a href="/login" className="underLink">Log in</a></div>
               <div className="underText">Are you an employer? <a href="https://talent.stackoverflow.com/users/login" className="underLink">Sign up on Talent
                 <HiArrowTopRightOnSquare/></a></div>
             </UnderTextStyle>
