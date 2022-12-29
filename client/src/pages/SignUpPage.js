@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { AiFillFacebook } from "react-icons/ai";
 import { VscGithub } from "react-icons/vsc";
 import { FcGoogle } from "react-icons/fc";
+import { HiArrowTopRightOnSquare } from "react-icons/hi2";
 import one from "../images/one.PNG";
 import two from "../images/two.PNG";
 import thr from "../images/thr.PNG";
@@ -10,165 +11,197 @@ import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
+const Main = styled.body`
+  overflow: hidden;
+`;
+
 const ContainerStyle = styled.div`
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    background-color: #f1f2f4; 
+  display: flex;
+  width: 100vw;
+  height: 110vh;  // 높이 더 크게
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f2f4;
 `;
 
 const DirectionStyle = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LoginStyle = styled.div`
-        width: 320px;
-        height: 460px;
-        background-color: white;
-        padding: 24px;
-        border-radius: 8px;
-        box-shadow: 1px 1px 8px 2px lightgray;
-        .text {
-            padding: 2px;
-            margin-top: 4px;
-            margin-bottom: 4px;
-            font-size: 14px;
-            color: black;
-        }
-        .endtext {
-            margin-top: 32px;
-            font-size: 12px;
-        }
-        .messagesuccess {
-          color: green;
-          font-size: 12px;
-          margin-left: 2px;
-          margin-bottom: 8px;
-          display: block;
-        }
-        .messageerror{
-          color: red;
-          font-size: 12px;
-          margin-left: 2px;
-          margin-bottom: 8px;
-          display: block;
-        }
+  width: 320px;
+  height: 460px;
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 8px 2px lightgray;
+  .text {
+    padding: 2px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: black;
+  }
+  .endtext {
+    margin-top: 32px;
+    font-size: 12px;
+  }
+  .messagesuccess {
+    color: green;
+    font-size: 12px;
+    margin-left: 2px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .messageerror {
+    color: red;
+    font-size: 12px;
+    margin-left: 2px;
+    margin-bottom: 8px;
+    display: block;
+  }
 `;
 
 const Input = styled.input`
-    width: 100%;
-    padding: 7px;
-    margin-bottom: 6px;
-    border-radius: 4px;
-    border: 1px solid #c0c3c4;
-    :focus {
-		border: var(--border-input-focus);
-		outline: var(--outline-input-focus);
-	}
+  width: 100%;
+  padding: 7px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  border: 1px solid #c0c3c4;
+  :focus {
+    border: var(--border-input-focus);
+    outline: var(--outline-input-focus);
+  }
 `;
 
 const Button = styled.button`
-    background-color: #0A95FF;
-    width: 100%;
-    height: 38px;
-    margin-top: 20px;
-    border-radius: 4px;
-    color: white;
-    font-size: 13px;
-    border-top: 1px solid black inset;
-    :hover {
-		background-color: #0074cc;
- 	}
-	  :active {
-		outline: var(--outline-btn-press);
-	}
+  background-color: #0a95ff;
+  width: 100%;
+  height: 38px;
+  margin-top: 20px;
+  border-radius: 4px;
+  color: white;
+  font-size: 13px;
+  border-top: 1px solid black inset;
+  :hover {
+    background-color: #0074cc;
+  }
+  :active {
+    outline: var(--outline-btn-press);
+  }
 `;
 
 const MenuStyle = styled.div`
-    img {
-        display: block;
-        margin: auto;
-        width: 50px;
-        margin-bottom: 15px;
-    }
-    svg {
-        font-size: 20px;
-        margin-right: 4px;
-    }
-    .first {
-      background-color: #ffffff;
-      color: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .second {
-      background-color: #2f3237;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .third {
-      background-color: #375498;
-      margin-bottom: 20px;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  margin-top: -50px;  // 110vh라서 올려주기
+  img {
+    display: block;
+    margin: auto;
+    width: 50px;
+    margin-bottom: 15px;
+  }
+  svg {
+    font-size: 20px;
+    margin-right: 4px;
+  }
+  .first {
+    background-color: #ffffff;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .second {
+    background-color: #2f3237;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .third {
+    background-color: #375498;
+    margin-bottom: 20px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const MenuButton = styled.button`
-    display: block;
-    width: 320px;
-    height: 38px;
-    border: 1px solid #d9dcdf;
-    margin: 10px 0;
-    border-radius: 4px;
+  display: block;
+  width: 320px;
+  height: 38px;
+  border: 1px solid #d9dcdf;
+  margin: 10px 0;
+  border-radius: 4px;
 `;
 
 const Text = styled.div`
-    display: flex;
-    flex-direction: column;
-    color: black;
-    margin-right: 50px;
+  display: flex;
+  flex-direction: column;
+  color: black;
+  margin-right: 50px;
 
-    .extext {
-        font-size: 28px;
-        margin-bottom: 20px;
-        margin-left: 6px;
-        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif;;
+  .extext {
+    font-size: 28px;
+    margin-bottom: 20px;
+    margin-left: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Adjusted",
+      "Segoe UI", "Liberation Sans", sans-serif;
+  }
+  .extextt {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Adjusted",
+      "Segoe UI", "Liberation Sans", sans-serif;
+  }
+  .extexttt {
+    margin-top: 10px;
+    margin-left: 6px;
+    font-size: 12px;
+    color: gray;
+  }
+  img {
+    width: 36px;
+    margin-right: 6px;
+  }
+  a {
+    font-size: 12px;
+    margin-left: 6px;
+    color: #197dce;
+    :hover {
+      color: #64afe1;
     }
-    .extextt {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif;;
-    }
-    .extexttt {
-        margin-top: 10px;
-        margin-left: 6px;
-        font-size: 12px;
-        color: gray;
-    }
-    img {
-        width: 36px;
-        margin-right: 6px;
-    }
-    a {
-        font-size: 12px;
-        margin-left: 6px;
-        color:#197dce;
-        :hover {
-          color: #64afe1;
-        }
-    }
+  }
+`;
+
+const UnderTextStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  font-size: 12px;
+
+  .underText {
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    display: block;
+  }
+  .underLink {
+    color: #368ad2;
+  }
+  svg {
+    font-size: 18px;
+    vertical-align: middle;
+    margin-bottom: 5px;
+    margin-left: 3px;
+  }
 `;
 
 const SignUpPage = () => { 
@@ -202,7 +235,8 @@ const SignUpPage = () => {
       alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
     } catch (err) {
       console.error(err);
-      // 에러 처리하기 if(~~~) alert('http 에러 이유');
+      if (err.response.status === 404) alert("페이지를 찾을 수 없습니다.");
+      if (err.response.status === 500) alert("서버 점검 중...");
     }
   };
 
@@ -244,7 +278,7 @@ const SignUpPage = () => {
       setPasswordMessage('숫자와 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요.');
       setIsPassword(false);
     } else {
-      setPasswordMessage('올바른 비밀번호입니다');
+      setPasswordMessage('올바른 비밀번호입니다.');
       setIsPassword(true);
     }
   }, []);
@@ -272,7 +306,7 @@ const SignUpPage = () => {
   }
 
     return (
-      <>
+      <Main>
         <ContainerStyle>
           <Text>
             <div className="extext">Join the Stack Overflow community</div>
@@ -309,9 +343,16 @@ const SignUpPage = () => {
               <Button onClick={onSignUp}><div className="log">Sign up</div></Button>
               <div className="endtext">By clicking “Sign up”, you agree to our terms of service, privacy policy and cookie policy</div>
             </LoginStyle>
+
+            <UnderTextStyle>
+              <div className="underText">Already have an account? <a href="/signup" className="underLink">Log in</a></div>
+              <div className="underText">Are you an employer? <a href="https://talent.stackoverflow.com/users/login" className="underLink">Sign up on Talent
+                <HiArrowTopRightOnSquare/></a></div>
+            </UnderTextStyle>
+
           </DirectionStyle>
         </ContainerStyle>
-      </>
+      </Main>
     );
 }
 

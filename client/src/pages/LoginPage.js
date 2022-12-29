@@ -2,125 +2,159 @@ import styled from "styled-components";
 import { AiFillFacebook } from "react-icons/ai";
 import { VscGithub } from "react-icons/vsc";
 import { FcGoogle } from "react-icons/fc";
+import { HiArrowTopRightOnSquare } from "react-icons/hi2";
 import img from "../images/stack.PNG";
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { LOGIN_ENDPOINT } from "../api/Login";
+
+const Main = styled.body`
+  overflow: hidden;
+`;
 
 const DirectionStyle = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    background-color: #f1f2f4;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f2f4;
 `;
 
 const LoginStyle = styled.div`
-        width: 280px;
-        height: 290px;
-        background-color: white;
-        padding: 24px;
-        border-radius: 8px;
-        box-shadow: 1px 1px 8px 2px lightgray;
-        .text {
-            padding: 2px;
-            margin-top: 4px;
-            margin-bottom: 4px;
-            font-size: 14px;
-            color: black;
-        }
-        .messagesuccess {
-          color: green;
-          font-size: 12px;
-          margin-left: 2px;
-          margin-bottom: 8px;
-          display: block;
-        }
-        .messageerror{
-          color: red;
-          font-size: 12px;
-          margin-left: 2px;
-          display: block;
-        }
-  `;
+  width: 280px;
+  height: 280px;
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 8px 2px lightgray;
+
+  .text {
+    padding: 2px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: black;
+  }
+  .messagesuccess {
+    color: green;
+    font-size: 12px;
+    margin-left: 2px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .messageerror {
+    color: red;
+    font-size: 12px;
+    margin-left: 2px;
+    display: block;
+  }
+`;
 
 const Input = styled.input`
-    width: 100%;
-    padding: 7px;
-    margin-bottom: 6px;
-    border-radius: 4px;
-    border: 1px solid #c0c3c4;
-    :focus {
-		border: var(--border-input-focus);
-		outline: var(--outline-input-focus);
-	}
+  width: 100%;
+  padding: 7px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  border: 1px solid #c0c3c4;
+
+  :focus {
+    border: var(--border-input-focus);
+    outline: var(--outline-input-focus);
+  }
 `;
 
 const Button = styled.button`
-    background-color: #0A95FF;
-    width: 100%;
-    height: 38px;
-    margin-top: 12px;
-    border-radius: 4px;
-    color: white;
-    font-size: 13px;
-    .log {
-      margin-bottom: 4px;
-    }
-    :hover {
-	  background-color: #0074cc;
- 	}
-	:active {
-	  outline: var(--outline-btn-press);
-	}
+  background-color: #0a95ff;
+  width: 100%;
+  height: 38px;
+  margin-top: 12px;
+  border-radius: 4px;
+  color: white;
+  font-size: 13px;
+
+  .log {
+    margin-bottom: 4px;
+  }
+  :hover {
+    background-color: #0074cc;
+  }
+  :active {
+    outline: var(--outline-btn-press);
+  }
 `;
 
 const MenuStyle = styled.div`
-    img {
-        display: block;
-        margin: auto;
-        width: 50px;
-        margin-bottom: 15px;
-        margin-top: -150px;
-    }
-    svg {
-        font-size: 20px;
-        margin-right: 4px;
-    }
-    .first {
-      background-color: #ffffff;
-      color: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .second {
-      background-color: #2f3237;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .third {
-      background-color: #375498;
-      margin-bottom: 20px;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  margin-top: 100px;
+
+  img {
+    display: block;
+    margin: auto;
+    width: 50px;
+    margin-bottom: 15px;
+    margin-top: -150px;
+  }
+  svg {
+    font-size: 20px;
+    margin-right: 4px;
+  }
+  .first {
+    background-color: #ffffff;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .second {
+    background-color: #2f3237;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .third {
+    background-color: #375498;
+    margin-bottom: 20px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
-const MenuButton = styled.button`
+const MenuButtonStyle = styled.button`
+  display: block;
+  width: 280px;
+  height: 38px;
+  border: 1px solid #d9dcdf;
+  margin: 10px 0;
+  border-radius: 4px;
+`;
+
+const UnderTextStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  font-size: 12px;
+  
+  .underText {
+    padding: 6px;
+    display: flex;
+    justify-content: center;
     display: block;
-    width: 280px;
-    height: 38px;
-    border: 1px solid #d9dcdf;
-    margin: 10px 0;
-    border-radius: 4px;
+  }
+  .underLink {
+    color: #368ad2;
+  }
+  svg {
+    font-size: 18px;
+    vertical-align: middle;
+    margin-bottom: 5px;
+    margin-left: 3px;
+  }
 `;
 
 const LoginPage = ({ setIsLogin }) => {
@@ -159,13 +193,12 @@ const LoginPage = ({ setIsLogin }) => {
           setIsLogin(true);
           alert("로그인되었습니다. 메인 페이지로 이동합니다.");
           navigate("/");
-        } else {
-          alert("아이디 혹은 비밀번호를 다시 확인 해주세요");
         }
       } catch (err) {
         console.error(err);
-        // 에러 처리하기 if(~~~) alert('http 에러 이유');
-        // alert('아이디, 비밀번호를 다시 확인 해주세요');
+        if (err.response.status === 401) alert("이메일 또는 비밀번호를 잘못 입력하셨거나 등록되지 않은 회원입니다.");
+        if (err.response.status === 404) alert("페이지를 찾을 수 없습니다.");
+        if (err.response.status === 500) alert("서버 점검 중...");
       }
     };
 
@@ -192,7 +225,7 @@ const LoginPage = ({ setIsLogin }) => {
         setPasswordMessage('숫자와 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요.');
         setIsPassword(false);
       } else {
-        setPasswordMessage('올바른 비밀번호입니다');
+        setPasswordMessage('올바른 비밀번호입니다.');
         setIsPassword(true);
       }
     }, []);
@@ -217,16 +250,17 @@ const LoginPage = ({ setIsLogin }) => {
     }
 
     return (
-        <>      
-        <DirectionStyle>
+              
+   <Main>
+     <DirectionStyle>
         <MenuStyle>
-        <img src={img} alt="stack" />
-          <MenuButton className="first"><FcGoogle />Log in with Goole</MenuButton>
-          <MenuButton className="second"><VscGithub />Log in with GitHub</MenuButton>
-          <MenuButton className="third"><AiFillFacebook />Log in with Facebook</MenuButton>
-        </MenuStyle>
-        <LoginStyle>
+          <img src={img} alt="stack" />
+            <MenuButtonStyle className="first"><FcGoogle />Log in with Goole</MenuButtonStyle>
+            <MenuButtonStyle className="second"><VscGithub />Log in with GitHub</MenuButtonStyle>
+            <MenuButtonStyle className="third"><AiFillFacebook />Log in with Facebook</MenuButtonStyle>
+          </MenuStyle>
 
+        <LoginStyle>
             <div className="text">Email</div>
             <Input type="email" onChange={onChangeEmail} />
             {email.length > 0 && (<span className={`message${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>)}
@@ -235,10 +269,16 @@ const LoginPage = ({ setIsLogin }) => {
             <Input type="password" onChange={onChangePassword} onKeyDown={onKeyDown}/>
             {password.length > 0 && (<span className={`message${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>)}
 
-        <Button><div className="log" onClick={onLogin}>Log in</div></Button>
+          <Button><div className="log" onClick={onLogin}>Log in</div></Button>
         </LoginStyle>
-        </DirectionStyle>
-        </>
+
+        <UnderTextStyle>
+          <div className="underText">Don't have an account? <a href="/signup" className="underLink">Sign up</a></div>
+          <div className="underText">Are you an employer? <a href="https://talent.stackoverflow.com/users/login" className="underLink">Sign up on Talent 
+            <HiArrowTopRightOnSquare/></a></div>
+        </UnderTextStyle>
+      </DirectionStyle>
+   </Main>
     )
 }
 
