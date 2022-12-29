@@ -89,7 +89,21 @@ const SearchBar = styled.div`
 	}
 `;
 
-function Header({isLogin, setIsLogin}) {
+const DisNameStyle = styled.button`
+	background-color: #465a65;
+	color: white;
+	padding: 8px;
+	margin-right: 10px;
+	margin-left: 0px;
+	border-radius: 4px;
+	width: 32px;
+	height: 30px;
+	text-align: center;
+`;
+
+function Header({ isLogin, setIsLogin }) {
+	const disName = localStorage.getItem('displayName')
+
 	// 로그아웃 요청
 	const logout = async () => {
     try {
@@ -130,9 +144,12 @@ function Header({isLogin, setIsLogin}) {
         </SearchBar>
 
         {isLogin ? (
-          <div className="top_buttons">
-            <LoginButton onClick={logout}>Logout</LoginButton>
-          </div>
+          <>
+            <DisNameStyle>{disName.slice(0, 1)}</DisNameStyle>
+            <div className="top_buttons">
+              <LoginButton onClick={logout}>Logout</LoginButton>
+            </div>
+          </>
         ) : (
           <div className="top_buttons">
             <Link to="/login">
