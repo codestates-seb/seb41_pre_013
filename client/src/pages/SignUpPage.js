@@ -7,13 +7,9 @@ import one from "../images/one.PNG";
 import two from "../images/two.PNG";
 import thr from "../images/thr.PNG";
 import fou from "../images/fou.PNG";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-
-const Main = styled.body`
-  overflow: hidden;
-`;
 
 const ContainerStyle = styled.div`
   display: flex;
@@ -74,6 +70,9 @@ const Input = styled.input`
   :focus {
     border: var(--border-input-focus);
     outline: var(--outline-input-focus);
+  }
+  ::placeholder {
+    font-size: 12px;
   }
 `;
 
@@ -204,9 +203,18 @@ const UnderTextStyle = styled.div`
   }
 `;
 
+
 const SignUpPage = () => { 
   const navigate = useNavigate();
-  
+  const dref = useRef();
+  const eref = useRef();
+  const pref = useRef();
+
+     // 렌더링 될때 displayname input으로 focus
+     useEffect(() => {
+      dref.current.focus();
+    }, []);
+
   // 이름, 이메일, 비밀번호
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
@@ -300,14 +308,23 @@ const SignUpPage = () => {
     else if (!isPassword) alert("Password를 확인해주세요.");
   };
 
-   // pw 입력후 엔터 눌렀을때 Sign up
-   const onKeyDown = (e) => {
-    if(e.key === 'Enter') onSignUp();
-  }
+  // display name 입력 후 enter 누르면 email input으로 focus
+  const displayEnter = (e) => {
+    if (e.key === "Enter") eref.current.focus();
+  };
+
+  // email 입력 후 enter 누르면 pw input으로 focus
+  const emailEnter = (e) => {
+    if (e.key === "Enter") pref.current.focus();
+  };
+
+   // pw 입력후 enter 누르면 Sign up
+   const pwEnter = (e) => {
+    if (e.key === "Enter") onSignUp();
+  };
 
     return (
-      <Main>
-        <ContainerStyle>
+      <ContainerStyle>
           <Text>
             <div className="extext">Join the Stack Overflow community</div>
             <div className="extextt"><img src={one} alt="1st" />Get unstuck — ask a question</div>
@@ -320,39 +337,55 @@ const SignUpPage = () => {
                rel="noopener noreferrer">Get Stack Overflow for Teams free for up to 50 users.</a>
           </Text>
 
-          <DirectionStyle>
-            <MenuStyle>
-              <MenuButton className="first"><FcGoogle />Sign up with Goole</MenuButton>
-              <MenuButton className="second"><VscGithub />Sign up with GitHub</MenuButton>
-              <MenuButton className="third"><AiFillFacebook />Sign up with Facebook</MenuButton>
-            </MenuStyle>
+        <DirectionStyle>
+          <MenuStyle>
+            <MenuButton className="first"><FcGoogle />Sign up with Goole</MenuButton>
+            <MenuButton className="second"><VscGithub />Sign up with GitHub</MenuButton>
+            <MenuButton className="third"><AiFillFacebook />Sign up with Facebook</MenuButton>
+          </MenuStyle>
 
-            <LoginStyle>
-              <div className="text">Display name</div>
-              <Input type="name" onChange={onChangeName} />
+          <LoginStyle>
+            <div className="text">Display name</div>
+              <Input 
+              type="name" 
+              placeholder="Type Display name and press 'Enter'" 
+              onChange={onChangeName} 
+              onKeyDown={displayEnter} 
+              ref={dref} />
               {displayName.length > 0 && (<span className={`message${isName ? 'success' : 'error'}`}>{nameMessage}</span>)}
               
               <div className="text">Email</div>
-              <Input type="email" onChange={onChangeEmail} />
+              <Input 
+              type="email" 
+              placeholder="Type Email and press 'Enter'" 
+              onChange={onChangeEmail} 
+              onKeyDown={emailEnter} 
+              ref={eref} 
+              />
               {email.length > 0 && (<span className={`message${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>)}
 
-              <div className="text">Password</div>
-              <Input type="password" onChange={onChangePassword} onKeyDown={onKeyDown}/>
+            <div className="text">Password</div>
+              <Input 
+              type="password" 
+              placeholder="Type Password and press 'Enter'" 
+              onChange={onChangePassword} 
+              onKeyDown={pwEnter} 
+              ref={pref} 
+              />
               {password.length > 0 && (<span className={`message${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>)}
 
               <Button onClick={onSignUp}><div className="log">Sign up</div></Button>
-              <div className="endtext">By clicking “Sign up”, you agree to our terms of service, privacy policy and cookie policy</div>
-            </LoginStyle>
+            <div className="endtext">By clicking “Sign up”, you agree to our terms of service, privacy policy and cookie policy</div>
+          </LoginStyle>
 
-            <UnderTextStyle>
-              <div className="underText">Already have an account? <a href="/login" className="underLink">Log in</a></div>
-              <div className="underText">Are you an employer? <a href="https://talent.stackoverflow.com/users/login" className="underLink">Sign up on Talent
-                <HiArrowTopRightOnSquare/></a></div>
-            </UnderTextStyle>
+          <UnderTextStyle>
+            <div className="underText">Already have an account? <a href="/login" className="underLink">Log in</a></div>
+            <div className="underText">Are you an employer? <a href="https://talent.stackoverflow.com/users/login" className="underLink">Sign up on Talent
+              <HiArrowTopRightOnSquare/></a></div>
+          </UnderTextStyle>
 
-          </DirectionStyle>
-        </ContainerStyle>
-      </Main>
+        </DirectionStyle>
+      </ContainerStyle>
     );
 }
 

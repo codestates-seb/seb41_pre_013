@@ -4,13 +4,9 @@ import { VscGithub } from "react-icons/vsc";
 import { FcGoogle } from "react-icons/fc";
 import { HiArrowTopRightOnSquare } from "react-icons/hi2";
 import img from "../images/stack.PNG";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-const Main = styled.body`
-  overflow: hidden;
-`;
 
 const DirectionStyle = styled.div`
   display: flex;
@@ -62,6 +58,9 @@ const Input = styled.input`
   :focus {
     border: var(--border-input-focus);
     outline: var(--outline-input-focus);
+  }
+  ::placeholder {
+    font-size: 12px;
   }
 `;
 
@@ -157,8 +156,16 @@ const UnderTextStyle = styled.div`
   }
 `;
 
+
 const LoginPage = ({ setIsLogin }) => {
     const navigate = useNavigate();
+    const eref = useRef();
+    const pref = useRef();
+
+    // 렌더링 될때 email input으로 focus
+    useEffect(() => {
+      eref.current.focus();
+    }, []);
 
     // 이메일, 비밀번호
     const [email, setEmail] = useState('');
@@ -186,10 +193,12 @@ const LoginPage = ({ setIsLogin }) => {
         const { status } = response;
         const token = response.headers.authorization;
         const disName = response.data.response.displayName;
-        
+        const id = response.data.response.id;
+
         if (status === 200) {
           localStorage.setItem("token", token);
           localStorage.setItem("displayName", disName);
+          localStorage.setItem("id", id);
           setIsLogin(true);
           alert("로그인되었습니다. 메인 페이지로 이동합니다.");
           navigate("/");
@@ -244,14 +253,17 @@ const LoginPage = ({ setIsLogin }) => {
       else if (!isPassword) alert("Password를 확인해주세요.");
     };
 
-    // pw 입력후 엔터 눌렀을때 Login
-    const onKeyDown = (e) => {
+    // email 입력후 enter 누르면 pw input으로 focus
+    const emailEnter = (e) => {
+      if(e.key === 'Enter') pref.current.focus()
+    }
+
+    // pw 입력후 enter 누르면 Login
+    const pwEnter = (e) => {
       if(e.key === 'Enter') onLogin();
     }
 
     return (
-              
-   <Main>
      <DirectionStyle>
         <MenuStyle>
           <a href="/"><img src={img} alt="stack" /></a>
@@ -262,11 +274,11 @@ const LoginPage = ({ setIsLogin }) => {
 
         <LoginStyle>
             <div className="text">Email</div>
-            <Input type="email" onChange={onChangeEmail} />
+            <Input type="email" placeholder="Type Email and press 'Enter'" onChange={onChangeEmail} onKeyDown={emailEnter} ref={eref} />
             {email.length > 0 && (<span className={`message${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>)}
             
             <div className="text">Password</div>
-            <Input type="password" onChange={onChangePassword} onKeyDown={onKeyDown}/>
+            <Input type="password" placeholder="Type Password and press 'Enter'" onChange={onChangePassword} onKeyDown={pwEnter} ref={pref} />
             {password.length > 0 && (<span className={`message${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>)}
 
           <Button><div className="log" onClick={onLogin}>Log in</div></Button>
@@ -278,7 +290,6 @@ const LoginPage = ({ setIsLogin }) => {
             <HiArrowTopRightOnSquare/></a></div>
         </UnderTextStyle>
       </DirectionStyle>
-   </Main>
     )
 }
 
