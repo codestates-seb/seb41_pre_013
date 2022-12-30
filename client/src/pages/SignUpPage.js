@@ -291,6 +291,85 @@ const SignUpPage = () => {
     }
   }, []);
 
+
+const SignUpPage = () => { 
+  const navigate = useNavigate();
+  
+  // 이름, 이메일, 비밀번호
+  const [displayName, setDisplayName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // success, error 메세지
+  const [nameMessage, setNameMessage] = useState('');
+  const [emailMessage, setEmailMessage] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
+
+  // 유효성 검사
+  const [isName, setIsName] = useState(false);
+  const [isEmail, setIsEmail] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+
+  // 회원가입 요청
+  const signUpSubmit = async () => {
+    try {
+      const response = await axios
+      .post(process.env.REACT_APP_API_SIGNUP_ENDPOINT, {
+        displayName,
+        email,
+        password,
+      });
+      navigate("/login");
+      alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+    } catch (err) {
+      console.error(err);
+      // 에러 처리하기 if(~~~) alert('http 에러 이유');
+    }
+  };
+
+  // display
+  const onChangeName = useCallback((e) => {
+    const nameRegex = /^[a-zA-z0-9]{2,8}$/;
+    setDisplayName(e.target.value);
+
+    if ((e.target.value.length < 2 || e.target.value.length > 8) && !nameRegex.test(e.target.value)) {
+      setNameMessage('숫자나 영문을 2자리 이상 8자리 미만으로 입력하세요.');
+      setIsName(false);
+    } else {
+      setNameMessage('올바른 이름입니다.');
+      setIsName(true);
+    }
+  }, []);
+
+
+  // email
+  const onChangeEmail = useCallback((e) => {
+    const emailRegex = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    setEmail(e.target.value);
+
+    if (!emailRegex.test(e.target.value)) {
+      setEmailMessage('이메일 형식을 확인해주세요.');
+      setIsEmail(false);
+    } else {
+      setEmailMessage('올바른 이메일입니다.');
+      setIsEmail(true);
+    }
+  }, []);
+
+  // password
+  const onChangePassword = useCallback((e) => {
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    setPassword(e.target.value);
+
+    if (!passwordRegex.test(e.target.value)) {
+      setPasswordMessage('숫자, 영문, 특수기호(!, & 등)를 조합한 여섯 자리 이상의 비밀번호를 입력하세요.');
+      setIsPassword(false);
+    } else {
+      setPasswordMessage('올바른 비밀번호입니다');
+      setIsPassword(true);
+    }
+  }, []);
+
   // 회원가입 기능, 모든 유효성 검사가 통과 되어야 sign up 가능
   const onSignUp = (e) => {
     //e.preventDefault();

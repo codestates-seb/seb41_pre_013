@@ -271,8 +271,8 @@ const LoginPage = ({ setIsLogin }) => {
             <MenuButtonStyle className="second"><VscGithub />Log in with GitHub</MenuButtonStyle>
             <MenuButtonStyle className="third"><AiFillFacebook />Log in with Facebook</MenuButtonStyle>
         </MenuStyle>
-
         <LoginStyle>
+
             <div className="text">Email</div>
             <Input type="email" placeholder="Type Email and press 'Enter'" onChange={onChangeEmail} onKeyDown={emailEnter} ref={eref} />
             {email.length > 0 && (<span className={`message${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>)}
