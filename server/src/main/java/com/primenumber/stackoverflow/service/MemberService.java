@@ -8,7 +8,6 @@ import com.primenumber.stackoverflow.exception.BusinessLogicException;
 import com.primenumber.stackoverflow.exception.ExceptionCode;
 import com.primenumber.stackoverflow.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,12 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
-@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class MemberService {
+    // TODO: Status 가 삭제 상태인 것들에 대한 Action 생각하고 수정하기 (CRUD 모두)
     private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
@@ -52,13 +52,11 @@ public class MemberService {
         if (memberId != memberPrincipal.getId()) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
 
         Member member = memberRepository.getReferenceById(memberId);
-        if (dto.getPassword() != null) {
-            dto.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
-            member.setPassword(dto.getPassword());
-        }
-        if (dto.getDisplayName() != null) {
-            member.setDisplayName(dto.getDisplayName());
-        }
+
+        Optional.ofNullable(dto.getPassword())
+                .ifPresent(password -> member.setDisplayName(new BCryptPasswordEncoder().encode(password)));
+        Optional.ofNullable(dto.getDisplayName())
+                .ifPresent(member::setDisplayName);
     }
 
     public void deleteMember(Long memberId, MemberPrincipal memberPrincipal) {

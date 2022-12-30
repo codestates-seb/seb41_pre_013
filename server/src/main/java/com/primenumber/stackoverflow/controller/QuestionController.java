@@ -1,16 +1,16 @@
 package com.primenumber.stackoverflow.controller;
 
-import com.primenumber.stackoverflow.dto.MemberDto;
+import com.primenumber.stackoverflow.dto.QuestionDto;
 import com.primenumber.stackoverflow.dto.security.MemberPrincipal;
+import com.primenumber.stackoverflow.entity.Question;
 import com.primenumber.stackoverflow.response.BaseResponse;
 import com.primenumber.stackoverflow.response.PagingResponse;
-import com.primenumber.stackoverflow.service.MemberService;
+import com.primenumber.stackoverflow.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,63 +21,67 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+@RestController
+@RequestMapping("/questions")
 @RequiredArgsConstructor
 @Validated
-@RestController
-@RequestMapping("/members")
-public class MemberController {
-    private final MemberService memberService;
+public class QuestionController {
+    // TODO : 전체적으로
+    private final QuestionService questionService;
 
     @GetMapping
-    public ResponseEntity getMembers(
+    public ResponseEntity getQuestions(
             @Positive @RequestParam(defaultValue = "1", required = false) int page,
             @Positive @RequestParam(defaultValue = "10", required = false) int size
     ) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("createdAt").descending());
 
-        Page<MemberDto.Response> pageMembers = memberService.searchMembers(pageable).map(MemberDto.Response::from);
-        List<MemberDto.Response> members = pageMembers.getContent();
+        Page<QuestionDto.Response> pageQuestions = questionService.searchQuestions(pageable).map(QuestionDto.Response::from);
+        List<QuestionDto.Response> questions = pageQuestions.getContent();
 
         return new ResponseEntity<>(
-                new PagingResponse<>(members, pageMembers),
-                HttpStatus.OK
+                new PagingResponse<>(questions, pageQuestions)
+                , HttpStatus.OK
         );
     }
 
-    @GetMapping("/{member-id}")
-    public ResponseEntity getMember(@PathVariable("member-id") @Positive Long memberId) {
-        MemberDto.Response member = MemberDto.Response.from(memberService.searchMember(memberId));
+    @GetMapping("/{question-id}")
+    public ResponseEntity getQuestion(@PathVariable("question-id") @Positive Long questionId) {
+        QuestionDto.Response question = QuestionDto.Response.from(questionService.searchQuestion(questionId));
 
         return new ResponseEntity<>(
-                new BaseResponse<>(member),
+                new BaseResponse<>(question),
                 HttpStatus.OK
         );
     }
 
     @PostMapping
-    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post dto) {
-        memberService.saveMember(dto);
+    public ResponseEntity postQuestion(
+            @AuthenticationPrincipal MemberPrincipal memberPrincipal,
+            @Valid @RequestBody QuestionDto.Post dto
+    ) {
+        questionService.saveQuestion(memberPrincipal, dto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{member-id}")
-    public ResponseEntity patchMember(
-            @PathVariable("member-id") @Positive Long memberId,
+    @PatchMapping("/{question-id}")
+    public ResponseEntity patchQuestion(
+            @PathVariable("question-id") @Positive Long questionId,
             @AuthenticationPrincipal MemberPrincipal memberPrincipal,
-            @Valid @RequestBody MemberDto.Patch dto
+            @Valid @RequestBody QuestionDto.Patch dto
     ) {
-        memberService.updateMember(memberId, memberPrincipal, dto);
+        questionService.updateQuestion(questionId, memberPrincipal, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(
-            @PathVariable("member-id") @Positive Long memberId,
+    @DeleteMapping("/{question-id}")
+    public ResponseEntity deleteQuestion(
+            @PathVariable("question-id") @Positive Long questionId,
             @AuthenticationPrincipal MemberPrincipal memberPrincipal
     ) {
-        memberService.deleteMember(memberId, memberPrincipal);
+        questionService.deleteQuestion(questionId, memberPrincipal);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

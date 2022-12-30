@@ -29,7 +29,7 @@ public class AnswerService {
     @Transactional
     public Answer createAnswer(long questionId, AnswerDto.Post requestBody, MemberPrincipal memberPrincipal) {
         Member findmember = memberService.searchMember(memberPrincipal.getId());
-        Question findQuestion = questionService.findQuestion(questionId);
+        Question findQuestion = questionService.searchQuestion(questionId);
         Answer answer = Answer.of(requestBody.getContent(), findmember, findQuestion);
 
         return answerRepository.save(answer);
