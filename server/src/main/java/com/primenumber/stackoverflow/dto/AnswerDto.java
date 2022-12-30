@@ -1,8 +1,10 @@
 package com.primenumber.stackoverflow.dto;
 
 import com.primenumber.stackoverflow.entity.Answer;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -11,6 +13,7 @@ public class AnswerDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Post {
         @NotBlank
         private String content;
@@ -18,6 +21,7 @@ public class AnswerDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Patch {
         @NotBlank
         private String content;
