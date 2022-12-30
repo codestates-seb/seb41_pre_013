@@ -31,14 +31,14 @@ public class Stub {
     public static MemberDto.Post createMemberPostDto() {
         return MemberDto.Post.of(
                 "hong@email.com",
-                "pw1",
+                "pw1@12345",
                 "홍길동"
         );
     }
 
     public static MemberDto.Patch createMemberPatchDto() {
         return MemberDto.Patch.of(
-                "pwModified",
+                "pwModified@123",
                 "홍홍홍"
         );
     }

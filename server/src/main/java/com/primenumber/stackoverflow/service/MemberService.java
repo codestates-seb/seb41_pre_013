@@ -54,7 +54,7 @@ public class MemberService {
         Member member = memberRepository.getReferenceById(memberId);
 
         Optional.ofNullable(dto.getPassword())
-                .ifPresent(password -> member.setDisplayName(new BCryptPasswordEncoder().encode(password)));
+                .ifPresent(password -> member.setPassword(new BCryptPasswordEncoder().encode(password)));
         Optional.ofNullable(dto.getDisplayName())
                 .ifPresent(member::setDisplayName);
     }
