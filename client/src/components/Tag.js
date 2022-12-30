@@ -70,19 +70,17 @@ const TagsInput = styled.div`
   }
 `;
 
-function Tag({ askTag, setAskTag }) {
-  // askTag는 AskQuestion 질문 생성 페이지에서 생성된 값
-  // 질문 수정 페이지에서는 undefined로 표시됨
-  console.log("askTag", askTag);
-
+function Tag({askTag, setAskTag}) {
   const { questionId } = useParams(); 
   const [quesItem, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
 
   const initialTags = [];
 
   const [tags, setTags] = useState(initialTags);
+
   const removeTags = (indexToRemove) => {
     setTags(tags.filter((_, index) => index !== indexToRemove));
+    setAskTag(tags.filter((_, index) => index !== indexToRemove));
   };
 
   const addTags = (event) => {
@@ -93,21 +91,11 @@ function Tag({ askTag, setAskTag }) {
       event.target.value = '';
     }
   };
-  console.log("tag comp", tags);
-  console.log("Tag askTag", askTag);
 
   return (
     <>
       <TagsInput id={quesItem.id}>
         <ul id='tags'>
-          {/* {quesItem.tagList.map((item, index) => (
-            <li key={quesItem.id} className='tag'>
-              <span className='tag-title'>{item.tagName}</span>
-              <span className='tag-close-icon' onClick={()=> removeTags(index)}>
-                &times;
-              </span>
-            </li>
-          ))} */}
           {tags.map((tag, index) => (
             <li key={index} className='tag'>
               <span className='tag-title'>{tag}</span>
