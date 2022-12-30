@@ -152,10 +152,12 @@ const LoginPage = ({ setIsLogin }) => {
         const { status } = response;
         const token = response.headers.authorization;
         const disName = response.data.response.displayName;
+        const id = response.data.response.id;
         
         if (status === 200) {
           localStorage.setItem("token", token);
           localStorage.setItem("displayName", disName);
+          localStorage.setItem("id", id);
           setIsLogin(true);
           alert("로그인되었습니다. 메인 페이지로 이동합니다.");
           navigate("/");

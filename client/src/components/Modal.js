@@ -1,19 +1,10 @@
 import styled from 'styled-components';
 import { BasicButton, CancelButton } from './Button';
 
-const ModalOuter = styled.div`
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
-	/* background-color: rgba(0, 0, 0, 0.4); */
-`;
-
 const ModalInner = styled.div`
 	position: fixed;
-	top: 50%;
-	left: 50%;
+	top: ${(props) => (props.pointY ? props.pointY + 'px' : '50%')};
+	left: ${(props) => (props.pointX ? props.pointX + 'px' : '50%')};
 	-webkit-transform: translate(-50%, -50%);
 	-moz-transform: translate(-50%, -50%);
 	-ms-transform: translate(-50%, -50%);
@@ -22,8 +13,8 @@ const ModalInner = styled.div`
 
 	background-color: #fff;
 	border-radius: 10px;
-	border: 2px solid var(--line-color);
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+	border: 1px solid var(--line-color);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 	display: flex;
 	flex-direction: column;
 	align-items: space-around;
@@ -32,6 +23,8 @@ const ModalInner = styled.div`
 	.modal-message {
 		width: 100%;
 		text-align: center;
+		white-space: pre-wrap;
+		line-height: 2rem;
 	}
 
 	.modal-btn {
@@ -41,25 +34,28 @@ const ModalInner = styled.div`
 	}
 `;
 
-const Modal = ({ message, confirmFn, cancelFn }) => {
+const Modal = ({
+	message,
+	confirmFn,
+	cancelFn,
+	viewPoint = { x: false, y: false },
+}) => {
 	return (
-		<>
-			<ModalOuter>
-				<ModalInner>
-					<div className="modal-message">{message}</div>
-					<div className="modal-btn">
-						{confirmFn && (
-							<BasicButton type="button" onClick={() => confirmFn()}>
-								Confirm
-							</BasicButton>
-						)}
-						<CancelButton type="button" onClick={() => cancelFn()}>
-							Cancel
-						</CancelButton>
-					</div>
-				</ModalInner>
-			</ModalOuter>
-		</>
+		<ModalInner pointX={viewPoint.x} pointY={viewPoint.y}>
+			<div className="modal-message">{message}</div>
+			<div className="modal-btn">
+				{confirmFn && (
+					<BasicButton type="button" onClick={() => confirmFn()}>
+						Confirm
+					</BasicButton>
+				)}
+				{cancelFn && (
+					<CancelButton type="button" onClick={() => cancelFn()}>
+						Cancel
+					</CancelButton>
+				)}
+			</div>
+		</ModalInner>
 	);
 };
 

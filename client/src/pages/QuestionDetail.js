@@ -128,10 +128,13 @@ const QuestionContent = styled.section`
 
 function QuestionDetail() {
 	const { questionId } = useParams();
-	
-	const [quesList, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
-	console.log(quesList.createdAt);
+	const [data, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
 
+	let quesList;
+	if(data) {
+		quesList = data.response;
+	}
+	
 	const navigate = useNavigate();
 
 	const handleEditClick = (e) => {
@@ -188,7 +191,7 @@ function QuestionDetail() {
 									{quesList.content}
 								</div>
 								<div className="tag-box">
-									{quesList.tagList.map((tag) => (
+									{quesList.tags.map((tag) => (
                     <Tag key={tag.id}>{tag.tagName}</Tag>
                   ))}
 								</div>
@@ -199,7 +202,7 @@ function QuestionDetail() {
 							</div>
 						</QuestionContent>
 						{/* 답변 조회, 작성 */}
-						<AnswerDetailList />
+						<AnswerDetailList questionItem={quesList} />
 					</ContentBox>
 					<Aside />
 				</div>

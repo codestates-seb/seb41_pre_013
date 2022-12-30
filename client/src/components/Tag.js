@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { questionCreate } from '../api/Question';
 import useFetch from '../hooks/useFetch';
@@ -91,10 +91,12 @@ function Tag({askTag, setAskTag}) {
       event.target.value = '';
     }
   };
-
+  console.log("tags", tags);
+  console.log("ask tag", askTag);
+  
   return (
     <>
-      <TagsInput id={quesItem.id}>
+      <TagsInput>
         <ul id='tags'>
           {tags.map((tag, index) => (
             <li key={index} className='tag'>

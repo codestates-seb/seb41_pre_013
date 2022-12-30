@@ -79,6 +79,9 @@ function AskQuestion() {
 	const [askContent, setAskContent] = useState('');
 	const [askTag, setAskTag] = useState('');
 
+	console.log("askTag", askTag);
+
+	/*
 	let askTagArr = [];
 	for(let i = 1; i <= askTag.length; i++) {
 		askTagArr[i-1] = 
@@ -87,21 +90,16 @@ function AskQuestion() {
 				tagName: askTag[i-1]
 			})
 	}
+	*/
 
 	const navigate = useNavigate();
 
-	const handleSubmit = (askTitle, askContent) => {
+	const handleSubmit = (askTitle, askContent, askTag) => {
 		questionCreate(
 			{
-				id: 13,
-				questionId: 13,
 				title: askTitle, 
 				content: askContent,
-				createdAt: new Date(),
-				memberId: 100,
-				displayName: 'localhost',
-				answerCount: 1,
-				tagList: askTagArr
+				tags: askTag
 			}
 		);
 		navigate(`/`);

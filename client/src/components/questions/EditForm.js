@@ -77,14 +77,16 @@ const EditForm = ({ item }) => {
 	const defaultValue =
 		'I\'d say it\'s not supported. https://fullcalendar.io/docs/selection/select_callback/ indicates that when a selection is made, the callback will return a single "resource" object which will indicate the resource chosen by the user. This implies that selecting multiple resources\n\n via dragging the mouse on the timeline is not possible.\n';
 	const { questionId } = useParams();
+	console.log("questionid param", questionId);
+	
 	const navigate = useNavigate();
 	
-	const [quesItem, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
-	//console.log("quesItem tagName", quesItem.tagList[0].tagName);
+	const [data, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
 
-	// const [editTag, setEditTag] = useState([quesItem.tagList]);
-	//const editTagList = quesItem.tagList;
-	//console.log("editTagList", editTagList);
+	let quesItem;
+	if(data) {
+		quesItem = data.response;
+	}
 
 	const userKeyDown = (e) => {
 		if(e.keyCode === 13) {
@@ -95,12 +97,17 @@ const EditForm = ({ item }) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const form = e.target;
+		console.log(form.title_text.value);
+		console.log(form.body_text.value);
 
 		questionPatch(
-			Number(questionId),
-			form.title_text.value,
-			form.body_text.value
-		)
+			questionId,
+			{
+				title: form.title_text.value,
+				content: form.body_text.value,
+				// tags: quesItem.tags
+			}
+		);
 		navigate(`/questions/${questionId}`);
 	}
 
@@ -154,7 +161,7 @@ const EditForm = ({ item }) => {
 								name="tag_text"
 								placeholder="e.g. (c# php objective-c)"
 							/>*/}
-							<Tag tagList={quesItem.tagList} />
+							<Tag tagList={quesItem.tags} />
 							{/* <input type="text" defaultValue={quesItem.tagList[0].tagName} /> */}
 						</label>
 					</div>
