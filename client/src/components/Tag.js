@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { questionCreate } from '../api/Question';
+import useFetch from '../hooks/useFetch';
+import { QUES_ENDPOINT } from '../api/Question';
+import { useParams } from 'react-router-dom';
 
 const TagsInput = styled.div`
   // margin: 8rem auto;
@@ -66,8 +70,14 @@ const TagsInput = styled.div`
   }
 `;
 
-function Tag() {
-  // const selectedTags = (tags) => console.log(tags);
+function Tag({ askTag, setAskTag }) {
+  // askTag는 AskQuestion 질문 생성 페이지에서 생성된 값
+  // 질문 수정 페이지에서는 undefined로 표시됨
+  console.log("askTag", askTag);
+
+  const { questionId } = useParams(); 
+  const [quesItem, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
+
   const initialTags = [];
 
   const [tags, setTags] = useState(initialTags);
@@ -79,18 +89,28 @@ function Tag() {
     const filtered = tags.filter((el) => el === event.target.value);
     if (event.target.value !== '' && filtered.length === 0) {
       setTags([...tags, event.target.value]);
-      // selectedTags([...tags, event.target.value]);
+      setAskTag([...tags, event.target.value]);
       event.target.value = '';
     }
   };
   console.log("tag comp", tags);
+  console.log("Tag askTag", askTag);
+
   return (
     <>
-      <TagsInput>
+      <TagsInput id={quesItem.id}>
         <ul id='tags'>
+          {/* {quesItem.tagList.map((item, index) => (
+            <li key={quesItem.id} className='tag'>
+              <span className='tag-title'>{item.tagName}</span>
+              <span className='tag-close-icon' onClick={()=> removeTags(index)}>
+                &times;
+              </span>
+            </li>
+          ))} */}
           {tags.map((tag, index) => (
             <li key={index} className='tag'>
-              <span className='tag-title' value={tag}>{tag}</span>
+              <span className='tag-title'>{tag}</span>
               <span className='tag-close-icon' onClick={() => removeTags(index)}>
                 &times;
               </span>

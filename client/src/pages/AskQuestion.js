@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AskQuestionForm from '../components/AskQuestionForm';
 import { useNavigate, useParams } from 'react-router-dom';
 import { questionCreate } from '../api/Question';
+import useFetch from '../hooks/useFetch';
 
 const ContentContainer = styled.div`
 	width: 100%;
@@ -78,15 +79,18 @@ function AskQuestion() {
 	const [askContent, setAskContent] = useState('');
 	const [askTag, setAskTag] = useState('');
 
+	let askTagArr = [];
+	for(let i = 1; i <= askTag.length; i++) {
+		askTagArr[i-1] = 
+			new Object({
+				id: i,
+				tagName: askTag[i-1]
+			})
+	}
+
 	const navigate = useNavigate();
 
-	const handleSubmit = (askTitle, askContent, askTag) => {
-		//const data = { askTitle, askContent };
-		console.log("질문 post");
-		console.log(askTitle);
-		console.log(askContent);
-		console.log(askTag);
-
+	const handleSubmit = (askTitle, askContent) => {
 		questionCreate(
 			{
 				id: 13,
@@ -97,19 +101,10 @@ function AskQuestion() {
 				memberId: 100,
 				displayName: 'localhost',
 				answerCount: 1,
-				tagList: [
-					{
-						id: 1,
-						tagName: 'C++'
-					},
-					{
-						id: 2,
-						tag: 'Java'
-					}
-				]
+				tagList: askTagArr
 			}
 		);
-		navigate(`/questions/8`);
+		navigate(`/`);
 	}
 
 	return (

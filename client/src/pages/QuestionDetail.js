@@ -9,6 +9,7 @@ import { questionDelete } from '../api/Question';
 import { QUES_ENDPOINT } from '../api/Question';
 import useFetch from '../hooks/useFetch';
 import Loading from '../components/Loading';
+import { DateConvert } from '../util/common';
 
 const Container = styled.div`
 	width: 100%;
@@ -108,7 +109,7 @@ const QuestionContent = styled.section`
 		.tag-box {
 			height: 45px;
 			vertical-align: top;
-			margin-bottom: 20px;
+			margin-bottom: 20px
 		}
 
 		.edit-delete-box {
@@ -127,19 +128,9 @@ const QuestionContent = styled.section`
 
 function QuestionDetail() {
 	const { questionId } = useParams();
-	// console.log(`${QUES_ENDPOINT}/${questionId}`);
+	
 	const [quesList, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
-	//console.log(quesList.tagList[0].tagName);
-	// console.log(quesList.tagList[0].tagName);
-	// console.log(typeof quesList.tagList);
-	// console.log(Object.values(quesList.tagList[id]));
-	// const tagLists = quesList.tagList;
-	// console.log(Object.entries(tagLists));
-	// console.log(tagLists);
-	// console.log("quesList", quesList.tagList[1].tagName);
-	//console.log(quesList.tagList[0].tagName)
-	// let mapList = Object.keys(quesList.tagList).map(item => quesList.tagList[item]);
-	// console.log("mapList", mapList);
+	console.log(quesList.createdAt);
 
 	const navigate = useNavigate();
 
@@ -168,7 +159,7 @@ function QuestionDetail() {
 						<div className="question-info">
 							<div className="info-box">
 								<span className="info-title">Asked</span>
-								<span className="info-content">13 years, 6 months ago</span>
+								<span className="info-content">{DateConvert(quesList.createdAt)}</span>
 							</div>
 							<div className="info-box">
 								<span className="info-title">Modified</span>
@@ -197,21 +188,9 @@ function QuestionDetail() {
 									{quesList.content}
 								</div>
 								<div className="tag-box">
-									{/*
-									<Tag>git</Tag>
-									<Tag>version-control</Tag>
-									<Tag>git-commit</Tag>
-									<Tag>undo</Tag>
-									<Tag>git</Tag>
-									<Tag>git-commit</Tag>
-									<Tag>undo</Tag>
-									<Tag>git</Tag>
-									<Tag>git-commit</Tag>
-									<Tag>undo</Tag>
-									*/}
-									{quesList.tagList.map((tag) => {
-										<Tag key={tag.id}>{tag.tagName}</Tag>
-									})}
+									{quesList.tagList.map((tag) => (
+                    <Tag key={tag.id}>{tag.tagName}</Tag>
+                  ))}
 								</div>
 								<div className="edit-delete-box">
 									<button className="question-edit-btn" onClick={handleEditClick}>Edit</button>

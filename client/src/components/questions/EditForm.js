@@ -7,6 +7,7 @@ import { QUES_ENDPOINT, questionPatch } from '../../api/Question';
 import Tag from '../Tag';
 import useFetch from '../../hooks/useFetch';
 import Loading from '../Loading';
+import { TagButton } from '../Button';
 
 const AskQuestionEditForm = styled.form`
 	margin-bottom: 20px;
@@ -75,11 +76,21 @@ const Input = styled.input`
 const EditForm = ({ item }) => {
 	const defaultValue =
 		'I\'d say it\'s not supported. https://fullcalendar.io/docs/selection/select_callback/ indicates that when a selection is made, the callback will return a single "resource" object which will indicate the resource chosen by the user. This implies that selecting multiple resources\n\n via dragging the mouse on the timeline is not possible.\n';
-
 	const { questionId } = useParams();
 	const navigate = useNavigate();
 	
 	const [quesItem, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
+	//console.log("quesItem tagName", quesItem.tagList[0].tagName);
+
+	// const [editTag, setEditTag] = useState([quesItem.tagList]);
+	//const editTagList = quesItem.tagList;
+	//console.log("editTagList", editTagList);
+
+	const userKeyDown = (e) => {
+		if(e.keyCode === 13) {
+			e.preventDefault();
+		}
+	}
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -94,7 +105,7 @@ const EditForm = ({ item }) => {
 	}
 
 	return (
-		<AskQuestionEditForm onSubmit={handleSubmit}>
+		<AskQuestionEditForm onKeyDown={userKeyDown} onSubmit={handleSubmit}>
 			{error && <div>질문 정보 조회 실패</div>}
 			{isLoading ? (
 				<Loading />
@@ -143,7 +154,8 @@ const EditForm = ({ item }) => {
 								name="tag_text"
 								placeholder="e.g. (c# php objective-c)"
 							/>*/}
-							<Tag />
+							<Tag tagList={quesItem.tagList} />
+							{/* <input type="text" defaultValue={quesItem.tagList[0].tagName} /> */}
 						</label>
 					</div>
 					<div className="buttonBox">

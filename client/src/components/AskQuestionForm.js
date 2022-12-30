@@ -135,6 +135,8 @@ function AskQuestionForm({askTitle, setAskTitle, askContent, setAskContent, askT
 						/>*/}
 						<Tag
 							value={askTag}
+							askTag={askTag}
+							setAskTag={setAskTag}
 							onChange={(e) => setAskTag(e.target.value)}/>
 					</div>
 				</AskQuestionBox>
