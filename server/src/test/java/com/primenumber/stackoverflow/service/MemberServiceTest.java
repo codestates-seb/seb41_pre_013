@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 
@@ -112,8 +113,9 @@ class MemberServiceTest {
 
         // Then
         assertThat(member)
-                .hasFieldOrPropertyWithValue("password", dto.getPassword())
                 .hasFieldOrPropertyWithValue("displayName", dto.getDisplayName());
+        assertThat(new BCryptPasswordEncoder().matches(dto.getPassword(), member.getPassword()))
+                .isTrue();
         then(memberRepository).should().getReferenceById(memberId);
     }
 
