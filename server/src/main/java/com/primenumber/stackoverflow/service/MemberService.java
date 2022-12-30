@@ -52,6 +52,7 @@ public class MemberService {
         if (memberId != memberPrincipal.getId()) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
 
         Member member = memberRepository.getReferenceById(memberId);
+
         Optional.ofNullable(dto.getPassword())
                 .ifPresent(password -> member.setDisplayName(new BCryptPasswordEncoder().encode(password)));
         Optional.ofNullable(dto.getDisplayName())
