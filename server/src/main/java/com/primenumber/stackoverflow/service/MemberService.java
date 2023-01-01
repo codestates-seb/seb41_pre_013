@@ -21,7 +21,6 @@ import java.util.Optional;
 @Transactional
 @Service
 public class MemberService {
-    // TODO: Status 가 삭제 상태인 것들에 대한 Action 생각하고 수정하기 (CRUD 모두)
     private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
@@ -49,7 +48,7 @@ public class MemberService {
     }
 
     public void updateMember(Long memberId, MemberPrincipal memberPrincipal, MemberDto.Patch dto) {
-        if (memberId != memberPrincipal.getId()) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
+        if (!Objects.equals(memberId, memberPrincipal.getId())) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
 
         Member member = memberRepository.getReferenceById(memberId);
 
@@ -60,7 +59,7 @@ public class MemberService {
     }
 
     public void deleteMember(Long memberId, MemberPrincipal memberPrincipal) {
-        if (memberId != memberPrincipal.getId()) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
+        if (!Objects.equals(memberId, memberPrincipal.getId())) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
 
         Member member = memberRepository.getReferenceById(memberId);
         if (member.getStatus() == MemberStatus.QUIT) { throw new BusinessLogicException(ExceptionCode.GONE); }

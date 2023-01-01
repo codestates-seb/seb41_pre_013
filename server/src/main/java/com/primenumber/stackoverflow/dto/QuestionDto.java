@@ -70,7 +70,6 @@ public class QuestionDto {
         }
 
         public static QuestionDto.Response from(Question entity) {
-            Member member = entity.getMember();
             return new QuestionDto.Response(
                     entity.getId(), entity.getTitle(), entity.getContent(), entity.getStatus(), entity.getCreatedAt(), entity.getModifiedAt(),
                     MemberDto.Response.from(entity.getMember()),

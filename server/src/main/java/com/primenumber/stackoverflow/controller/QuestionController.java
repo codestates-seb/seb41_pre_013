@@ -2,7 +2,6 @@ package com.primenumber.stackoverflow.controller;
 
 import com.primenumber.stackoverflow.dto.QuestionDto;
 import com.primenumber.stackoverflow.dto.security.MemberPrincipal;
-import com.primenumber.stackoverflow.entity.Question;
 import com.primenumber.stackoverflow.response.BaseResponse;
 import com.primenumber.stackoverflow.response.PagingResponse;
 import com.primenumber.stackoverflow.service.QuestionService;
@@ -26,7 +25,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 public class QuestionController {
-    // TODO : 전체적으로
     private final QuestionService questionService;
 
     @GetMapping

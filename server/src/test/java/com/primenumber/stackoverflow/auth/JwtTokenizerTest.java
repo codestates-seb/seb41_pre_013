@@ -3,13 +3,16 @@ package com.primenumber.stackoverflow.auth;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.junit.jupiter.api.*;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("JWT 로직")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
