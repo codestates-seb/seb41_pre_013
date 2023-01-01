@@ -20,7 +20,8 @@ import java.util.Optional;
 import static com.primenumber.stackoverflow.util.Stub.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 @DisplayName("비즈니스 로직 - 회원")
 @ExtendWith(MockitoExtension.class)

@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -17,11 +16,11 @@ import java.util.List;
 public class QuestionTagService {
     private final QuestionTagRepository questionTagRepository;
 
-    public QuestionTag createQuestionTag(Question question, Tag tag) {
+    public QuestionTag createQuestionTags(Question question, Tag tag) {
         return questionTagRepository.save(QuestionTag.of(question, tag));
     }
 
-    public List<QuestionTag> createQuestionTag(List<QuestionTag> questionTags) {
+    public List<QuestionTag> createQuestionTags(List<QuestionTag> questionTags) {
         return questionTagRepository.saveAll(questionTags);
     }
 

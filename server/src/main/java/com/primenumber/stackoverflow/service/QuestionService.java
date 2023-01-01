@@ -2,12 +2,10 @@ package com.primenumber.stackoverflow.service;
 
 import com.primenumber.stackoverflow.dto.QuestionDto;
 import com.primenumber.stackoverflow.dto.security.MemberPrincipal;
-import com.primenumber.stackoverflow.entity.Member;
 import com.primenumber.stackoverflow.entity.Question;
 import com.primenumber.stackoverflow.entity.QuestionTag;
 import com.primenumber.stackoverflow.entity.Tag;
 import com.primenumber.stackoverflow.entity.util.BasicStatus;
-import com.primenumber.stackoverflow.entity.util.MemberStatus;
 import com.primenumber.stackoverflow.exception.BusinessLogicException;
 import com.primenumber.stackoverflow.exception.ExceptionCode;
 import com.primenumber.stackoverflow.repository.QuestionRepository;
@@ -25,7 +23,6 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class QuestionService {
-    // TODO: Status 가 삭제 상태인 것들에 대한 Action 생각하고 수정하기 (CRUD 모두)
     private final QuestionRepository questionRepository;
     private final QuestionTagService questionTagService;
     private final TagService tagService;
@@ -40,14 +37,12 @@ public class QuestionService {
     }
 
     public void saveQuestion(MemberPrincipal memberPrincipal, QuestionDto.Post dto) {
-        if (memberPrincipal.getId() == null) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
-
         Question question = questionRepository.save(dto.toEntity(memberPrincipal.toEntity()));
         List<Tag> tags = tagService.convertToTags(dto.getTags());
 
         List<QuestionTag> questionTags =
                 tags.stream()
-                        .map(tag -> questionTagService.createQuestionTag(question, tag))
+                        .map(tag -> questionTagService.createQuestionTags(question, tag))
                         .collect(Collectors.toList());
 
         question.getQuestionTags().addAll(questionTags);
@@ -56,7 +51,7 @@ public class QuestionService {
     public void updateQuestion(Long questionId, MemberPrincipal memberPrincipal, QuestionDto.Patch dto) {
         Question question = questionRepository.getReferenceById(questionId);
 
-        if (question.getMember().getId() != memberPrincipal.getId()) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
+        if (!Objects.equals(question.getMember().getId(), memberPrincipal.getId())) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
 
         Optional.ofNullable(dto.getTitle())
                 .ifPresent(question::setTitle);
@@ -96,7 +91,7 @@ public class QuestionService {
 
             // 추가할 QuestionTag 목록을 Question 에 추가
             // DB 에 저장
-            addQuestionTags = questionTagService.createQuestionTag(addQuestionTags);
+            addQuestionTags = questionTagService.createQuestionTags(addQuestionTags);
             question.getQuestionTags().addAll(addQuestionTags);
         }
     }
@@ -104,7 +99,7 @@ public class QuestionService {
     public void deleteQuestion(Long questionId, MemberPrincipal memberPrincipal) {
         Question question = questionRepository.getReferenceById(questionId);
 
-        if (question.getMember().getId() != memberPrincipal.getId()) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
+        if (!Objects.equals(question.getMember().getId(), memberPrincipal.getId())) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
         if (question.getStatus() == BasicStatus.DELETED) { throw new BusinessLogicException(ExceptionCode.GONE); }
 
         question.setStatus(BasicStatus.DELETED);

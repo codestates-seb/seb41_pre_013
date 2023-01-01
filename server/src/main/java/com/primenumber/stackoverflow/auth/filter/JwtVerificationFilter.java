@@ -3,8 +3,6 @@ package com.primenumber.stackoverflow.auth.filter;
 import com.primenumber.stackoverflow.auth.JwtTokenizer;
 import com.primenumber.stackoverflow.dto.security.MemberPrincipal;
 import com.primenumber.stackoverflow.service.MemberService;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,12 +26,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         try {
             Map<String, Object> claims = verifyJws(request);
             setAuthenticationToContext(claims);
-        } catch (SignatureException se) {
+        } catch (Exception se) {
             request.setAttribute("exception", se);
-        } catch (ExpiredJwtException ee) {
-            request.setAttribute("exception", ee);
-        } catch (Exception e) {
-            request.setAttribute("exception", e);
         }
 
         filterChain.doFilter(request, response);
@@ -48,9 +42,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private Map<String, Object> verifyJws(HttpServletRequest request) {
         String jws = request.getHeader(jwtTokenizer.getHeaderString()).replace(jwtTokenizer.getTokenPrefix() + " ", "");
-        Map<String, Object> claims = jwtTokenizer.getClaims(jws).getBody();
 
-        return claims;
+        return jwtTokenizer.getClaims(jws).getBody();
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {

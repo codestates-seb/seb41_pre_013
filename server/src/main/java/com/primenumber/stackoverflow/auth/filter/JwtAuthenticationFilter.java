@@ -61,9 +61,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String subject = member.getEmail();
 
-        String accessToken = jwtTokenizer.generateAccessToken(claims, subject, jwtTokenizer.getAccessExpirationTime());
-
-        return accessToken;
+        return jwtTokenizer.generateAccessToken(claims, subject, jwtTokenizer.getAccessExpirationTime());
     }
 
 //    private String delegateRefreshToken(Member member) {

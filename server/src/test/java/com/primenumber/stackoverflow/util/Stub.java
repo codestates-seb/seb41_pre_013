@@ -3,7 +3,7 @@ package com.primenumber.stackoverflow.util;
 import com.primenumber.stackoverflow.auth.JwtTokenizer;
 import com.primenumber.stackoverflow.dto.MemberDto;
 import com.primenumber.stackoverflow.dto.security.MemberPrincipal;
-import com.primenumber.stackoverflow.entity.Member;
+import com.primenumber.stackoverflow.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

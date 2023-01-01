@@ -1,7 +1,6 @@
 package com.primenumber.stackoverflow.dto;
 
 import com.primenumber.stackoverflow.entity.Answer;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
