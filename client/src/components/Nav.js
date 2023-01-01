@@ -70,7 +70,7 @@ function Nav() {
 			<nav>
 				<ul>
 					<li className={pathname === '/' ? 'selected' : ''}>
-						<a href="/">Home</a>
+						<Link to="/">Home</Link>
 					</li>
 					<li className="group">PUBLIC</li>
 					<li className={pathname.indexOf('/questions') > -1 ? 'selected' : ''}>
