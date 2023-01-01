@@ -72,7 +72,7 @@ const CreateAnswerForm = styled.form`
 		height: 200px;
 		resize: vertical;
 		padding: 10px;
-		font-size: 14px;
+		font-size: 1rem;
 		border: none;
 
 		:focus {
@@ -86,26 +86,20 @@ const CreateAnswerForm = styled.form`
 	}
 `;
 
-const AddForm = ({ rerender }) => {
+const AddForm = ({ alertAndMove }) => {
 	const { questionId } = useParams();
 
-	const handleAnswerAdd = (e) => {
+	const handleAnswerAdd = async (e) => {
 		e.preventDefault();
 		const form = e.target;
 
-		const successCb = () => rerender();
-		const failCb = () => alert('답변 등록에 실패했습니다.');
-		answerCreate(
-			{
-				memberId: 1,
-				displayName: 'yesman',
-				questionId: Number(questionId),
-				content: form.answer_text.value,
-				createdAt: new Date(),
-			},
-			successCb,
-			failCb
-		);
+		const result = await answerCreate(questionId, {
+			content: form.answer_text.value,
+		});
+
+		if (result.state === 'OK') alertAndMove('답변이 등록되었습니다.', true);
+		else alertAndMove('답변 등록에 실패했습니다.', false);
+
 		form.answer_text.value = '';
 	};
 
