@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
 import ScrollTop from './components/ScrollTop';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -15,14 +15,21 @@ const AskQuestionEdit = lazy(() => import('./pages/AskQuestionEdit'));
 const AnswerEdit = lazy(() => import('./pages/AnswerEdit'));
 
 function App() {
-	const [isLogin, setIsLogin] = useState(
-		localStorage.getItem('token') !== null
-	);
-
+	// path info
 	const { pathname } = useLocation();
 	const viewFooter = !(
 		pathname.indexOf('/login') > -1 || pathname.indexOf('/signup') > -1
 	);
+
+	// login info
+	const [isLogin, setIsLogin] = useState(false);
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		if (!!token) {
+			setIsLogin(true);
+		}
+	}, [isLogin]);
+
 	return (
 		<>
 			<GlobalStyle />
