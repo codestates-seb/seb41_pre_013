@@ -89,9 +89,23 @@ const SearchBar = styled.div`
 	}
 `;
 
-function Header({isLogin, setIsLogin}) {
+const DisNameStyle = styled.button`
+	background-color: #465a65;
+	color: white;
+	padding: 8px;
+	margin-right: 10px;
+	margin-left: 0px;
+	border-radius: 4px;
+	width: 32px;
+	height: 30px;
+	text-align: center;
+`;
+
+function Header({ isLogin, setIsLogin }) {
+	const disName = localStorage.getItem('displayName')
+
 	// 로그아웃 요청
-	const logout = async () => {
+	const onlogout = async () => {
     try {
       const response = await axios
 	  .get(process.env.REACT_APP_API_LOGOUT_ENDPOINT);
@@ -106,6 +120,15 @@ function Header({isLogin, setIsLogin}) {
       console.error(err);
     }
   };
+
+  	// 페이지 새로고침
+	const onReloadLogin = () => {
+      window.location.replace("/login");
+    };
+
+    const onReloadSignUp = () => {
+      window.location.replace("/signup");
+    };
 
 	return (
     <HeaderContainer>
@@ -130,16 +153,19 @@ function Header({isLogin, setIsLogin}) {
         </SearchBar>
 
         {isLogin ? (
-          <div className="top_buttons">
-            <LoginButton onClick={logout}>Logout</LoginButton>
-          </div>
+          <>
+            <DisNameStyle>{disName.slice(0, 1)}</DisNameStyle>
+            <div className="top_buttons">
+              <LoginButton onClick={onlogout}>Logout</LoginButton>
+            </div>
+          </>
         ) : (
           <div className="top_buttons">
             <Link to="/login">
-              <LoginButton>Login</LoginButton>
+              <LoginButton onClick={onReloadLogin}>Login</LoginButton>
             </Link>
             <Link to="/signup">
-              <BasicButton>Sign up</BasicButton>
+              <BasicButton onClick={onReloadSignUp}>Sign up</BasicButton>
             </Link>
           </div>
         )}
