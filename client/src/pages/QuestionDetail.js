@@ -138,7 +138,7 @@ function QuestionDetail() {
 	if(data) {
 		quesList = data.response;
 		quesId = data.response.member.id;
-		console.log("질문 작성자 아이디", quesId.id);
+		console.log("질문 작성자 아이디", quesId);
 	}
 	
 	const navigate = useNavigate();
