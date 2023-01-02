@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { questionPatch } from '../api/Question';
 import useFetch from '../hooks/useFetch';
@@ -91,20 +91,17 @@ function Tag({ tagList, askTag, setAskTag }) {
     setTags(tags.filter((_, index) => index !== indexToRemove));
   };
 
-  let newTagItem; 
   const addTags = (event) => {
     const filtered = tags.filter((el) => el === event.target.value);
     if (event.target.value !== '' && filtered.length === 0) {
       setTags([...tags, event.target.value]);
       //setAskTag([...initialTags, ...tags, event.target.value]);
-      newTagItem = event.target.value;
+      questionPatch(questionId, {
+        tags: [...tags, event.target.value]
+      })
       event.target.value = '';
     }
   };
-
-  questionPatch(questionId, {
-    tags: tags
-  })
 
   return (
     <>

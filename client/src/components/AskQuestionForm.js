@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { questionCreate } from '../api/Question';
 import Tag from './Tag';
 
 const AskQuestionFormContainer = styled.div`
