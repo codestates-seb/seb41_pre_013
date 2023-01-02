@@ -37,8 +37,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -136,7 +135,7 @@ public class AnswerControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(
-                delete("/answers/{answers-id}", answer.getId())
+                delete("/answers/{answer-id}", answer.getId())
                         .header(getJwtHeader(), getJwtPrefix() + " " + jwt)
         );
 
@@ -241,9 +240,8 @@ public class AnswerControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(
-                post("/answers")
+                patch("/answers/{answer-id}", answer.getId())
                         .header(getJwtHeader(), getJwtPrefix() + " " + jwt)
-                        .queryParam("question-id", String.valueOf(1L))
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
@@ -251,7 +249,7 @@ public class AnswerControllerTest {
 
         //then
         actions
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
 
         actions.andDo(
                 document("patch-answer",
