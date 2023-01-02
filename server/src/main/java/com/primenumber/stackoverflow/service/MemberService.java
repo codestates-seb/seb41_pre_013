@@ -26,18 +26,18 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Page<Member> searchMembers(Pageable pageable) {
-        return memberRepository.findAll(pageable);
+        return memberRepository.findAllByStatus(pageable, MemberStatus.ACTIVE);
     }
 
     @Transactional(readOnly = true)
     public Member searchMember(String email) {
-        return memberRepository.findByEmail(email)
-                .orElseThrow(EntityNotFoundException::new);
+        return memberRepository.findByEmailAndStatus(email, MemberStatus.ACTIVE)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER));
     }
 
     @Transactional(readOnly = true)
     public Member searchMember(Long memberId) {
-        return memberRepository.findById(memberId)
+        return memberRepository.findByIdAndStatus(memberId, MemberStatus.ACTIVE)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
@@ -52,6 +52,7 @@ public class MemberService {
         if (!Objects.equals(memberId, memberPrincipal.getId())) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
 
         Member member = memberRepository.getReferenceById(memberId);
+        if (member.getStatus() == MemberStatus.QUIT) { throw new BusinessLogicException(ExceptionCode.GONE); }
 
         Optional.ofNullable(dto.getPassword())
                 .ifPresent(password -> member.setPassword(new BCryptPasswordEncoder().encode(password)));
