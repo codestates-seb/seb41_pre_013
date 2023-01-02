@@ -4,7 +4,7 @@ import { useState } from 'react';
 import AskQuestionEdit from '../../pages/AskQuestionEdit';
 import { useNavigate, useParams } from 'react-router-dom';
 import { QUES_ENDPOINT, questionPatch } from '../../api/Question';
-import Tag from '../Tag';
+import EditTag from '../EditTag';
 import useFetch from '../../hooks/useFetch';
 import Loading from '../Loading';
 import { TagButton } from '../Button';
@@ -84,8 +84,11 @@ const EditForm = ({ item }) => {
 	const [data, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
 
 	let quesItem;
+	let tagsItem;
 	if(data) {
 		quesItem = data.response;
+		tagsItem = data.response;
+		console.log("tagsItem", tagsItem.tags);
 	}
 
 	const userKeyDown = (e) => {
@@ -155,14 +158,7 @@ const EditForm = ({ item }) => {
 					<div className="tagBox">
 						<label className="tag" htmlFor="tag">
 							<h4>Tags</h4>
-							{/*<Input
-								type="text"
-								id="tag"
-								name="tag_text"
-								placeholder="e.g. (c# php objective-c)"
-							/>*/}
-							<Tag tagList={quesItem.tags} />
-							{/* <input type="text" defaultValue={quesItem.tagList[0].tagName} /> */}
+							<EditTag tagList={quesItem.tags} />
 						</label>
 					</div>
 					<div className="buttonBox">
