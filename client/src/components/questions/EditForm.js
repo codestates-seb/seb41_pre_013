@@ -83,12 +83,9 @@ const EditForm = ({ item }) => {
 	
 	const [data, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
 
-	let quesItem;
-	let tagsItem;
+	let quesItem
 	if(data) {
 		quesItem = data.response;
-		tagsItem = data.response;
-		console.log("tagsItem", tagsItem.tags);
 	}
 
 	const userKeyDown = (e) => {

@@ -43,14 +43,12 @@ const NoticeBox = styled.div`
 function AskQuestionEdit() {
 	const navigate = useNavigate();
 	const { questionId } = useParams();
-	// console.log('questionId', questionId);
 
 	const handleEditQuestion = (askTitle, askContent) => {
 		console.log(questionId);
 		questionPatch(questionId);
 		navigate(-1);
 	}
-
 
 	return (
 		<ContentContainer>

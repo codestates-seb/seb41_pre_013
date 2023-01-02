@@ -128,11 +128,6 @@ function AskQuestionForm({askTitle, setAskTitle, askContent, setAskContent, askT
 							Add up to 5 tags to describe what your question is about. Start
 							typing to see suggestions.
 						</label>
-						{/*<Input
-							type="text"
-							placeholder="e.g. (css sql-server asp.net-mvc)"
-							id="tagInput"
-						/>*/}
 						<Tag
 							value={askTag}
 							askTag={askTag}

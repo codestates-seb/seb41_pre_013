@@ -81,17 +81,6 @@ function AskQuestion() {
 
 	console.log("askTag", askTag);
 
-	/*
-	let askTagArr = [];
-	for(let i = 1; i <= askTag.length; i++) {
-		askTagArr[i-1] = 
-			new Object({
-				id: i,
-				tagName: askTag[i-1]
-			})
-	}
-	*/
-
 	const navigate = useNavigate();
 
 	const handleSubmit = (askTitle, askContent, askTag) => {
