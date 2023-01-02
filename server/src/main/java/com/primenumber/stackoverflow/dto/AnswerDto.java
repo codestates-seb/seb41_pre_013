@@ -31,6 +31,7 @@ public class AnswerDto {
     public static class Response {
         private long answerId;
         private String content;
+        private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
 
         private long memberId;
@@ -39,13 +40,13 @@ public class AnswerDto {
         private long questionId;
 
         public static AnswerDto.Response of(long answerId, String content, LocalDateTime modifiedAt,
-                                            long memberId, String nickname, long questionId) {
-            return new Response(answerId, content, modifiedAt, memberId, nickname, questionId);
+                                            LocalDateTime createdAt, long memberId, String nickname, long questionId) {
+            return new Response(answerId, content, modifiedAt, createdAt, memberId, nickname, questionId);
         }
 
         public static Response from(Answer answer) {
             return new AnswerDto.Response(answer.getId(),
-                    answer.getContent(), answer.getModifiedAt(), answer.getMember().getId(),
+                    answer.getContent(), answer.getModifiedAt(), answer.getCreatedAt(), answer.getMember().getId(),
                     answer.getMember().getDisplayName(), answer.getQuestion().getId());
         }
 
