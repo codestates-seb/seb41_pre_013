@@ -51,6 +51,7 @@ const ItemContent = styled.li`
 		margin-bottom: 4px;
 		font-weight: lighter;
 
+		a,
 		a:visited {
 			color: #0162be;
 		}
@@ -80,9 +81,6 @@ const ItemContent = styled.li`
 
 		.author {
 			color: #3286d2;
-		}
-
-		.ask-time {
 		}
 	}
 

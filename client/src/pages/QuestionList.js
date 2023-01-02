@@ -28,6 +28,12 @@ const ContentContainer = styled.div`
 		display: flex;
 		justify-content: space-between;
 	}
+
+	@media (max-width: 640px) {
+		.content_wrapper {
+			width: 100%;
+		}
+	}
 `;
 
 const MainContent = styled.main`
@@ -72,6 +78,10 @@ const ListOption = styled.div`
 			:hover {
 				background-color: #f8f9f9;
 			}
+			:first-child {
+				border-top-left-radius: 4px;
+				border-bottom-left-radius: 4px;
+			}
 			:not(:last-child) {
 				border-right: 1px solid #9fa6ad;
 			}
@@ -100,6 +110,15 @@ const ListOption = styled.div`
 		}
 		svg {
 			font-size: var(--font-size-1-2rem);
+		}
+	}
+
+	@media (max-width: 1100px) {
+		.content_optoin_btn_general {
+			button:nth-of-type(3),
+			button:nth-of-type(4) {
+				display: none;
+			}
 		}
 	}
 `;
@@ -160,12 +179,10 @@ function QuestionList() {
 					{data && (
 						<>
 							<ListOption>
-								<h4>
-									{AmountDisplay(pageInfo.totalCnt)} questions with bounties
-								</h4>
+								<h4>{AmountDisplay(pageInfo.totalCnt)} questions</h4>
 								<div className="content_option_btns">
 									<div className="content_optoin_btn_general">
-										<button>Newest</button>
+										<button className="selected">Newest</button>
 										<button>Active</button>
 										<button>Bountied</button>
 										<button>Unanswered</button>

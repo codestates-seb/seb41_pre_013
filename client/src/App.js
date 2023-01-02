@@ -15,14 +15,9 @@ const AskQuestionEdit = lazy(() => import('./pages/AskQuestionEdit'));
 const AnswerEdit = lazy(() => import('./pages/AnswerEdit'));
 
 function App() {
-	// path info
-	const { pathname } = useLocation();
-	const viewFooter = !(
-		pathname.indexOf('/login') > -1 || pathname.indexOf('/signup') > -1
-	);
-
-	// login info
+	// login info > login/logout btn view
 	const [isLogin, setIsLogin] = useState(false);
+
 	useEffect(() => {
 		const token = localStorage.getItem('token');
 		if (!!token) {
@@ -30,6 +25,11 @@ function App() {
 		}
 	}, [isLogin]);
 
+	// path info > footer show/hide
+	const { pathname } = useLocation();
+	const viewFooter = !(
+		pathname.indexOf('/login') > -1 || pathname.indexOf('/signup') > -1
+	);
 	return (
 		<>
 			<GlobalStyle />

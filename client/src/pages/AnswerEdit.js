@@ -22,6 +22,12 @@ const ContentContainer = styled.div`
 		display: flex;
 		justify-content: space-between;
 	}
+
+	@media (max-width: 640px) {
+		.content_wrapper {
+			width: 100%;
+		}
+	}
 `;
 
 const MainContent = styled.main`

@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 import { GrSearch } from 'react-icons/gr';
+import { FiMenu } from 'react-icons/fi';
 import { BasicButton, LoginButton } from './Button';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { setNavMenuView } from '../redux/globalSlice';
 
 const HeaderContainer = styled.header`
 	width: 100%;
@@ -30,31 +33,75 @@ const TopBarContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 
-	.logo_img {
-		display: inline-block;
-		text-indent: -9999em;
-		height: 30px;
-		width: 146px;
-		margin-top: 5px;
-		margin-left: 0;
-		background-position: 0 -500px;
-		background-image: url('https://cdn.sstatic.net/Img/unified/sprites.svg?v=fcc0ea44ba27');
+	.menu_btn_small {
+		display: none;
+		height: 100%;
+		padding: 0 14px;
+
+		svg {
+			margin-top: 12px;
+			font-size: 1.25rem;
+		}
 	}
-	a {
+	.logo_link_big {
 		width: 164px;
 		height: 100%;
 		margin: 2px;
 		text-align: center;
 	}
+	.logo_img_big {
+		display: inline-block;
+		text-indent: -9999em;
+		width: 146px;
+		height: 30px;
+		margin-top: 8px;
+		margin-left: 0;
+		background-position: 0 -500px;
+		background-image: url('https://cdn.sstatic.net/Img/unified/sprites.svg?v=fcc0ea44ba27');
+	}
+	.logo_link_small {
+		display: none;
+		background-color: transparent;
+		height: 100%;
+		padding: 0 8px;
+	}
+	.logo_img_small {
+		display: inline-block;
+		text-indent: -9999em;
+		width: 25px;
+		height: 30px;
+		margin-top: 7px;
+		margin-left: 0;
+		background-position: 0 -500px;
+		background-image: url('https://cdn.sstatic.net/Img/unified/sprites.svg?v=fcc0ea44ba27');
+	}
 	a:hover {
 		background-color: #e4e6e8;
 	}
 	.header_menu {
-		padding: 14px;
+		padding: 7px 12px;
 		font-size: 12px;
+		cursor: pointer;
+
+		:hover {
+			border-radius: 20px;
+			background-color: #e4e6e8;
+		}
 	}
 	.top_buttons {
 		margin-right: var(--main-outline-margin);
+	}
+
+	@media (max-width: 640px) {
+		.menu_btn_small {
+			display: block;
+		}
+		.logo_link_big {
+			display: none;
+		}
+		.logo_link_small {
+			display: block;
+		}
 	}
 `;
 
@@ -89,9 +136,27 @@ const SearchBar = styled.div`
 	}
 `;
 
+const DisNameStyle = styled.button`
+	background-color: #465a65;
+	color: white;
+	padding: 8px;
+	margin-right: 10px;
+	margin-left: 0px;
+	border-radius: 4px;
+	width: 32px;
+	height: 30px;
+	text-align: center;
+`;
+
 function Header({ isLogin, setIsLogin }) {
+	const disName = localStorage.getItem('displayName');
+
+	// 좌측 네비메뉴 보이기 전역 상태 설정
+	const dispatch = useDispatch();
+	const isNavMenuView = useSelector((state) => state.global.isNavMenuView);
+
 	// 로그아웃 요청
-	const logout = async () => {
+	const onlogout = async () => {
 		try {
 			const response = await axios.get(
 				process.env.REACT_APP_API_LOGOUT_ENDPOINT
@@ -108,15 +173,34 @@ function Header({ isLogin, setIsLogin }) {
 		}
 	};
 
+	// 페이지 새로고침
+	const onReloadLogin = () => {
+		window.location.replace('/login');
+	};
+
+	const onReloadSignUp = () => {
+		window.location.replace('/signup');
+	};
+
 	return (
 		<HeaderContainer>
 			<TopBarContainer>
-				<Link to="/">
-					<span className="logo_img">stack overflow</span>
+				<Link
+					to="#"
+					className="menu_btn_small"
+					onClick={() => dispatch(setNavMenuView(!isNavMenuView))}
+				>
+					<FiMenu />
 				</Link>
-				<span className="header_menu">About</span>
+				<Link className="logo_link_big" to="/">
+					<span className="logo_img_big">stack overflow</span>
+				</Link>
+				<Link className="logo_link_small" to="/">
+					<span className="logo_img_small">Stack Overflow</span>
+				</Link>
+				{!isLogin && <span className="header_menu">About</span>}
 				<span className="header_menu">Products</span>
-				<span className="header_menu">For Teams</span>
+				{!isLogin && <span className="header_menu">For Teams</span>}
 				<SearchBar>
 					<GrSearch />
 					<input
@@ -131,16 +215,19 @@ function Header({ isLogin, setIsLogin }) {
 				</SearchBar>
 
 				{isLogin ? (
-					<div className="top_buttons">
-						<LoginButton onClick={logout}>Logout</LoginButton>
-					</div>
+					<>
+						<DisNameStyle>{disName.slice(0, 1)}</DisNameStyle>
+						<div className="top_buttons">
+							<LoginButton onClick={onlogout}>Logout</LoginButton>
+						</div>
+					</>
 				) : (
 					<div className="top_buttons">
 						<Link to="/login">
-							<LoginButton>Login</LoginButton>
+							<LoginButton onClick={onReloadLogin}>Login</LoginButton>
 						</Link>
 						<Link to="/signup">
-							<BasicButton>Sign up</BasicButton>
+							<BasicButton onClick={onReloadSignUp}>Sign up</BasicButton>
 						</Link>
 					</div>
 				)}
