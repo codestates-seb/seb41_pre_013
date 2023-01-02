@@ -43,7 +43,8 @@ public class SecurityConfig {
                     .sameOrigin().and()
                 .csrf()
                     .disable()
-                .cors(withDefaults())
+                .cors()
+                    .configurationSource(corsConfigurationSource()).and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .httpBasic()
@@ -76,8 +77,11 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));   // TODO: 현재는 모든 Origin (출처)에 대해 허용
+        // TODO: 환경 변수로 변경할 필요 있음
+        configuration.setAllowedOrigins(Arrays.asList("http://stack-overflow-clone.s3-website.ap-northeast-2.amazonaws.com"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE"));
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
