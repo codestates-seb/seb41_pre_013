@@ -78,6 +78,7 @@ public class QuestionDto {
                             .map(TagDto.Response::from)
                             .collect(Collectors.toList()),
                     entity.getAnswers().stream()
+                            .filter(answer -> answer.getStatus() != BasicStatus.DELETED)
                             .map(AnswerDto.Response::from)
                             .collect(Collectors.toList())
             );

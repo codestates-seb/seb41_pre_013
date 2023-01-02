@@ -31,13 +31,31 @@ class MemberServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
+    @DisplayName("회원 목록을 요청하면, 회원 목록 페이지를 반환한다.")
+    @Test
+    void givenPageInfo_whenSearchingMembers_thenReturnMemberPage() {
+        // Given
+        Pageable pageable = Pageable.ofSize(10);
+
+        given(memberRepository.findAllByStatus(pageable, MemberStatus.ACTIVE)).willReturn(Page.empty());
+
+        // When
+        Page<Member> members = sut.searchMembers(pageable);
+
+        // Then
+        assertThat(members).isEmpty();
+        then(memberRepository).should().findAllByStatus(pageable, MemberStatus.ACTIVE);
+    }
+
     @DisplayName("이메일을 통해 회원을 요청하면, 회원을 반환한다.")
     @Test
     void givenEmail_whenSearchingMember_thenReturnMember() {
         // Given
         String email = "hong@email.com";
+
         Member member = createMember();
-        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
+
+        given(memberRepository.findByEmailAndStatus(email, MemberStatus.ACTIVE)).willReturn(Optional.of(member));
 
         // When
         Member resultMember = sut.searchMember(email);
@@ -47,16 +65,18 @@ class MemberServiceTest {
                 .hasFieldOrPropertyWithValue("email", "hong@email.com")
                 .hasFieldOrPropertyWithValue("password", "pw1")
                 .hasFieldOrPropertyWithValue("displayName", "홍길동");
-        then(memberRepository).should().findByEmail(email);
+        then(memberRepository).should().findByEmailAndStatus(email, MemberStatus.ACTIVE);
     }
 
-    @DisplayName("id을 통해 회원을 요청하면, 회원을 반환한다.")
+    @DisplayName("id를 통해 회원을 요청하면, 회원을 반환한다.")
     @Test
     void givenId_whenSearchingMember_thenReturnMember() {
         // Given
-        long memberId = 1L;
+        Long memberId = 1L;
+
         Member member = createMember();
-        given(memberRepository.findById(memberId)).willReturn(Optional.of(member));
+
+        given(memberRepository.findByIdAndStatus(memberId, MemberStatus.ACTIVE)).willReturn(Optional.of(member));
 
         // When
         Member resultMember = sut.searchMember(memberId);
@@ -67,22 +87,7 @@ class MemberServiceTest {
                 .hasFieldOrPropertyWithValue("email", "hong@email.com")
                 .hasFieldOrPropertyWithValue("password", "pw1")
                 .hasFieldOrPropertyWithValue("displayName", "홍길동");
-        then(memberRepository).should().findById(memberId);
-    }
-
-    @DisplayName("회원 목록을 요청하면, 회원 목록 페이지를 반환한다.")
-    @Test
-    void givenNothing_whenSearchingMembers_thenReturnMemberPage() {
-        // Given
-        Pageable pageable = Pageable.ofSize(20);
-        given(memberRepository.findAll(pageable)).willReturn(Page.empty());
-
-        // When
-        Page<Member> members = sut.searchMembers(pageable);
-
-        // Then
-        assertThat(members).isEmpty();
-        then(memberRepository).should().findAll(pageable);
+        then(memberRepository).should().findByIdAndStatus(memberId, MemberStatus.ACTIVE);
     }
 
     @DisplayName("회원 정보를 입력하면, 회원을 생성한다.")
@@ -90,6 +95,7 @@ class MemberServiceTest {
     void givenMemberInfo_whenSavingMember_thenSaveMember() {
         // Given
         MemberDto.Post dto = createMemberPostDto();
+
         given(memberRepository.save(any(Member.class))).willReturn(createMember());
 
         // When
@@ -101,12 +107,14 @@ class MemberServiceTest {
 
     @DisplayName("회원의 수정 정보를 입력하면, 회원을 수정한다.")
     @Test
-    void givenModifiedMemberInfo_whenUpdatingMember_thenUpdatesMember() {
+    void givenMemberPrincipalAndModifiedMemberInfo_whenUpdatingMember_thenUpdatesMember() {
         // Given
-        long memberId = 1L;
+        Long memberId = 1L;
         MemberPrincipal memberPrincipal = createMemberPrincipal();
         MemberDto.Patch dto = createMemberPatchDto();
+
         Member member = createMember();
+
         given(memberRepository.getReferenceById(memberId)).willReturn(member);
 
         // When
@@ -122,11 +130,13 @@ class MemberServiceTest {
 
     @DisplayName("회원의 ID를 입력하면, 회원을 삭제한다.")
     @Test
-    void givenMemberId_whenDeletingMember_thenDeleteMember() {
+    void givenMemberPrincipalAndMemberId_whenDeletingMember_thenDeleteMember() {
         // Given
-        long memberId = 1L;
+        Long memberId = 1L;
         MemberPrincipal memberPrincipal = createMemberPrincipal();
+
         Member member = createMember();
+
         given(memberRepository.getReferenceById(memberId)).willReturn(member);
 
         // When

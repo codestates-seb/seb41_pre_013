@@ -28,7 +28,7 @@ public class QuestionService {
     private final TagService tagService;
 
     @Transactional(readOnly = true)
-    public Page<Question> searchQuestions(Pageable pageable) { return questionRepository.findAll(pageable); }
+    public Page<Question> searchQuestions(Pageable pageable) { return questionRepository.findAllByStatus(pageable, BasicStatus.ACTIVE); }
 
     @Transactional(readOnly = true)
     public Question searchQuestion(Long questionId) {
@@ -52,6 +52,7 @@ public class QuestionService {
         Question question = questionRepository.getReferenceById(questionId);
 
         if (!Objects.equals(question.getMember().getId(), memberPrincipal.getId())) { throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER); }
+        if (question.getStatus() == BasicStatus.DELETED) { throw new BusinessLogicException(ExceptionCode.GONE); }
 
         Optional.ofNullable(dto.getTitle())
                 .ifPresent(question::setTitle);
