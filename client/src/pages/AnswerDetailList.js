@@ -18,6 +18,7 @@ import { getLoginInfo } from '../api/LoginInfo';
 const AnswerContent = styled.div`
 	width: 100%;
 	margin-bottom: 30px;
+	/* border: 1px solid red; */
 
 	.answer-blank {
 		height: 50px;
@@ -300,7 +301,7 @@ const DetailList = ({ questionItem }) => {
 									</div>
 									<div className="answer-item-meta-user">
 										<div className="answer-createat">
-											answered {DateFormat(item.modifiedAt)}
+											answered {DateFormat(item.createdAt)}
 										</div>
 										<div className="answer-user-profile">
 											<img

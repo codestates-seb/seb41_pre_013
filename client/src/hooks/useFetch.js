@@ -21,13 +21,13 @@ const useFetch = (url, params, reload) => {
 					timeout: 2000,
 				});
 			}
-			// console.log(result);
+			console.log(result);
 			setIsLoading(false);
 			setData(result.data);
 		} catch (err) {
 			setIsLoading(false);
 			setError(err.message);
-			// console.error(err);
+			console.error(err);
 		}
 	};
 
@@ -35,7 +35,7 @@ const useFetch = (url, params, reload) => {
 		getFetch(url, params);
 	}, [url, params, reload]);
 
-	return [data, isLoading, error];
+    return [data, isLoading, error];
 };
 
 export default useFetch;

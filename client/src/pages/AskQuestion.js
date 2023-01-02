@@ -1,8 +1,13 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import AskQuestionForm from '../components/AskQuestionForm';
+import { useNavigate, useParams } from 'react-router-dom';
+import { questionCreate } from '../api/Question';
+import useFetch from '../hooks/useFetch';
 
 const ContentContainer = styled.div`
 	width: 100%;
+
 	max-width: var(--max-width);
 	background: none;
 `;
@@ -30,7 +35,7 @@ const MainContent = styled.main`
 		border: 1px solid #bbd9f1;
 		margin-top: 40px;
 
-		> h2 {
+> h2 {
 			font-weight: 400;
 			color: #374f51;
 			margin-bottom: 8px;
@@ -40,7 +45,7 @@ const MainContent = styled.main`
 			margin-bottom: 15px;
 		}
 
-		> h5 {
+> h5 {
 			color: #374f51;
 			margin-bottom: 8px;
 		}
@@ -70,6 +75,25 @@ const AskQuestionDescription = styled.div`
 `;
 
 function AskQuestion() {
+	const [askTitle, setAskTitle] = useState('');
+	const [askContent, setAskContent] = useState('');
+	const [askTag, setAskTag] = useState('');
+
+	console.log("askTag", askTag);
+
+	const navigate = useNavigate();
+
+	const handleSubmit = (askTitle, askContent, askTag) => {
+		questionCreate(
+			{
+				title: askTitle, 
+				content: askContent,
+				tags: askTag
+			}
+		);
+		navigate(`/`);
+	}
+
 	return (
 		<ContentContainer>
 			<MainContent>
@@ -104,7 +128,15 @@ function AskQuestion() {
 						</div>
 					</AskQuestionDescription>
 				</AskQuestionContainer>
-				<AskQuestionForm />
+				<AskQuestionForm 
+					askTitle = {askTitle}
+					setAskTitle = {setAskTitle}
+					askContent = {askContent}
+					setAskContent = {setAskContent}
+					askTag = {askTag}
+					setAskTag = {setAskTag}
+					handleSubmit = {handleSubmit}
+				/>
 			</MainContent>
 		</ContentContainer>
 	);

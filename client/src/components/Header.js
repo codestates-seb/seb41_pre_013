@@ -78,7 +78,9 @@ const TopBarContainer = styled.div`
 	a:hover {
 		background-color: #e4e6e8;
 	}
-	.header_menu {
+	.header_menu1,
+	.header_menu2,
+	.header_menu3 {
 		padding: 7px 12px;
 		font-size: 12px;
 		cursor: pointer;
@@ -92,6 +94,12 @@ const TopBarContainer = styled.div`
 		margin-right: var(--main-outline-margin);
 	}
 
+	@media (max-width: 530px) {
+		.header_menu2 {
+			display: none;
+		}
+	}
+
 	@media (max-width: 640px) {
 		.menu_btn_small {
 			display: block;
@@ -101,6 +109,13 @@ const TopBarContainer = styled.div`
 		}
 		.logo_link_small {
 			display: block;
+		}
+	}
+
+	@media (max-width: 750px) {
+		.header_menu1,
+		.header_menu3 {
+			display: none;
 		}
 	}
 `;
@@ -198,9 +213,9 @@ function Header({ isLogin, setIsLogin }) {
 				<Link className="logo_link_small" to="/">
 					<span className="logo_img_small">Stack Overflow</span>
 				</Link>
-				{!isLogin && <span className="header_menu">About</span>}
-				<span className="header_menu">Products</span>
-				{!isLogin && <span className="header_menu">For Teams</span>}
+				{!isLogin && <span className="header_menu1">About</span>}
+				<span className="header_menu2">Products</span>
+				{!isLogin && <span className="header_menu3">For Teams</span>}
 				<SearchBar>
 					<GrSearch />
 					<input

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Tag from './Tag';
 
 const AskQuestionFormContainer = styled.div`
 	width: 850px;
@@ -80,13 +81,12 @@ const SubmitBtn = styled.button`
 	border-radius: 4px;
 `;
 
-function AskQuestionForm() {
+function AskQuestionForm({askTitle, setAskTitle, askContent, setAskContent, askTag, setAskTag, handleSubmit}) {
 	return (
 		<AskQuestionFormContainer>
-			<form action="" method="get" class="form">
 				<AskQuestionBox className="titleContainer">
 					<div className="titleBox">
-						<label className="title" for="title">
+						<label className="title" htmlFor="titleInput">
 							Title
 						</label>
 						<label className="sub-info">
@@ -96,40 +96,50 @@ function AskQuestionForm() {
 						<Input
 							type="text"
 							placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
+							id="titleInput"
+							value={askTitle}
+							onChange={(e) => setAskTitle(e.target.value)}
 						/>
 					</div>
 				</AskQuestionBox>
 				<AskQuestionBox className="contentContainer">
 					<div className="contentBox">
-						<label className="content" for="content">
+						<label className="content" htmlFor="contentInput">
 							What are the details of your problem?
 						</label>
 						<label className="sub-info">
 							Introduce the problem and expand on what you put in the title.
 							Minimum 20 characters.
 						</label>
-						<textarea></textarea>
+						<textarea 
+							id="contentInput"
+							value={askContent}
+							onChange={(e) => setAskContent(e.target.value)}
+						></textarea>
 					</div>
 				</AskQuestionBox>
 				<AskQuestionBox className="tagContainer">
 					<div className="tagBox">
-						<label className="tag" for="tag">
+						<label className="tag" htmlFor="tagInput">
 							Tags
 						</label>
 						<label className="sub-info">
 							Add up to 5 tags to describe what your question is about. Start
 							typing to see suggestions.
 						</label>
-						<Input
-							type="text"
-							placeholder="e.g. (css sql-server asp.net-mvc)"
-						/>
+						<Tag
+							value={askTag}
+							askTag={askTag}
+							setAskTag={setAskTag}
+							onChange={(e) => setAskTag(e.target.value)}/>
 					</div>
 				</AskQuestionBox>
 				<SubmitBtn>
-					<div className="submit">Post your question</div>
+					<div 
+						className="submit"
+						onClick={() => handleSubmit(askTitle, askContent, askTag)}
+					>Post your question</div>
 				</SubmitBtn>
-			</form>
 		</AskQuestionFormContainer>
 	);
 }

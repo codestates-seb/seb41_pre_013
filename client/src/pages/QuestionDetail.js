@@ -4,7 +4,13 @@ import { BasicButton, TagButton as Tag } from '../components/Button';
 import Aside from '../components/Aside';
 import { RxTriangleUp, RxTriangleDown } from 'react-icons/rx';
 import AnswerDetailList from './AnswerDetailList';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { questionDelete } from '../api/Question';
+import { QUES_ENDPOINT } from '../api/Question';
+import useFetch from '../hooks/useFetch';
+import Loading from '../components/Loading';
+import { DateConvert } from '../util/common';
+import { getLoginInfo } from '../api/LoginInfo';
 
 const Container = styled.div`
 	width: 100%;
@@ -23,6 +29,12 @@ const Container = styled.div`
 		.content-wrapper {
 			width: 100%;
 			display: flex;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.main-content {
+				width: 100%;
 		}
 	}
 `;
@@ -104,7 +116,7 @@ const QuestionContent = styled.section`
 		.tag-box {
 			height: 45px;
 			vertical-align: top;
-			margin-bottom: 20px;
+			margin-bottom: 20px
 		}
 
 		.edit-delete-box {
@@ -122,20 +134,47 @@ const QuestionContent = styled.section`
 `;
 
 function QuestionDetail() {
+	const { questionId } = useParams();
+	const [data, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
+
+	const loginMemberId = getLoginInfo().memberId;
+	console.log("로그인 아이디", loginMemberId);
+	
+	let quesList, quesMemberId;
+	if(data) {
+		quesList = data.response;
+		quesMemberId = data.response.member.id;
+	}
+	
 	const navigate = useNavigate();
+
+	const handleEditClick = (e) => {
+		navigate(`/questions/${questionId}/edit`);
+	}
+
+	const handleDelClick = (e) => {
+		console.log("questionId", questionId);
+		questionDelete(questionId);
+		navigate(`/questions`);
+	}
+
 	return (
 		<Container>
 			<Nav />
+			{error && <div>질문 리스트 조회 실패</div>}
+			{isLoading ? (
+				<Loading />
+			) : (
 			<div className="main-content">
 				<QuestionHeader>
 					<div className="title-box">
 						<div className="question-title">
-							<h4>How do I undo the most recent local commits in Git?</h4>
+							<h4>{quesList.title}</h4>
 						</div>
 						<div className="question-info">
 							<div className="info-box">
 								<span className="info-title">Asked</span>
-								<span className="info-content">13 years, 6 months ago</span>
+								<span className="info-content">{DateConvert(quesList.createdAt)}</span>
 							</div>
 							<div className="info-box">
 								<span className="info-title">Modified</span>
@@ -161,37 +200,29 @@ function QuestionDetail() {
 							</div>
 							<div className="sub-info">
 								<div className="question-body">
-									This program prints the values stored inside vector num.
-									<br />
-									<br />
-									What I want to ask is, why we used const keyword for 'i' in
-									the for loop. Can't we use pointer variable? And why we don't
-									need to increment i?
+									{quesList.content}
 								</div>
 								<div className="tag-box">
-									<Tag>git</Tag>
-									<Tag>version-control</Tag>
-									<Tag>git-commit</Tag>
-									<Tag>undo</Tag>
-									<Tag>git</Tag>
-									<Tag>git-commit</Tag>
-									<Tag>undo</Tag>
-									<Tag>git</Tag>
-									<Tag>git-commit</Tag>
-									<Tag>undo</Tag>
+									{quesList.tags.map((tag) => (
+                    <Tag key={tag.id}>{tag.tagName}</Tag>
+                  ))}
 								</div>
-								<div className="edit-delete-box">
-									<button className="question-edit-btn">Edit</button>
-									<button className="question-delete-btn">Delete</button>
-								</div>
+								{loginMemberId &&
+									quesMemberId === Number(loginMemberId) && (
+										<div className="edit-delete-box">
+											<button className="question-edit-btn" onClick={handleEditClick}>Edit</button>
+											<button className="question-delete-btn" onClick={handleDelClick}>Delete</button>
+										</div>
+								)}
 							</div>
 						</QuestionContent>
 						{/* 답변 조회, 작성 */}
-						<AnswerDetailList />
+						<AnswerDetailList questionItem={quesList} />
 					</ContentBox>
 					<Aside />
 				</div>
 			</div>
+			)}
 		</Container>
 	);
 }

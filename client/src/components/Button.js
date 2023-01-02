@@ -38,6 +38,7 @@ export const LoginButton = styled.button`
 	height: ${(props) => (props.height ? props.height : '32')}px;
 	border-radius: 4px;
 	padding: 6px 12px;
+	margin-right: 3px;
 	border: 1px solid #9eb9d0;
 	background-color: #e3ecf3;
 	box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px,

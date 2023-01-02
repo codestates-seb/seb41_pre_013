@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 import { BasicButton, CancelButton } from '../Button';
+import { useState } from 'react';
+import AskQuestionEdit from '../../pages/AskQuestionEdit';
+import { useNavigate, useParams } from 'react-router-dom';
+import { QUES_ENDPOINT, questionPatch } from '../../api/Question';
+import EditTag from '../EditTag';
+import useFetch from '../../hooks/useFetch';
+import Loading from '../Loading';
+import { TagButton } from '../Button';
 
 const AskQuestionEditForm = styled.form`
 	margin-bottom: 20px;
@@ -64,71 +72,107 @@ const Input = styled.input`
 		outline: var(--outline-input-focus);
 	}
 `;
-
+// questionId
 const EditForm = ({ item }) => {
 	const defaultValue =
 		'I\'d say it\'s not supported. https://fullcalendar.io/docs/selection/select_callback/ indicates that when a selection is made, the callback will return a single "resource" object which will indicate the resource chosen by the user. This implies that selecting multiple resources\n\n via dragging the mouse on the timeline is not possible.\n';
+	const { questionId } = useParams();
+	console.log("questionid param", questionId);
+	
+	const navigate = useNavigate();
+	
+	const [data, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
+
+	let quesItem
+	if(data) {
+		quesItem = data.response;
+	}
+
+	const userKeyDown = (e) => {
+		if(e.keyCode === 13) {
+			e.preventDefault();
+		}
+	}
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		alert('submit');
-	};
+		const form = e.target;
+		console.log(form.title_text.value);
+		console.log(form.body_text.value);
+
+		questionPatch(
+			questionId,
+			{
+				title: form.title_text.value,
+				content: form.body_text.value,
+				// tags: quesItem.tags
+			}
+		);
+		navigate(`/questions/${questionId}`);
+	}
+
 	return (
-		<AskQuestionEditForm onSubmit={handleSubmit}>
-			<div className="titleBox">
-				<label className="title" htmlFor="title">
-					<h4>Title</h4>
-					<Input
-						type="text"
-						id="title"
-						name="title_text"
-						placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
-					/>
-				</label>
-			</div>
-			<div className="bodyBox">
-				<label className="body" htmlFor="body">
-					<h4>Body</h4>
-					<textarea id="body" name="body_text" defaultValue={defaultValue} />
-				</label>
-				<div className="explain">
-					<p>
-						I need to show the datepicker according to screen size if on a
-						desktop window the datepicker will show normally that is already
-						showing but when on a mobile screen i need to open a drawer and then
-						the datepicker should show inside the drawer with inline style i
-						have created the datepicker field outside the drawer .is there a way
-						to do this i am using antd datepicker
-					</p>
-					<p>
-						I have tried to create the custom drawer and when on mobile screen
-						only the drawer is showing and not the datepicker because i do not
-						know how to call the respective datepicker in a onclick function
-						like in the jquery we have .datepicker() for custom styling and
-						other stuff
-					</p>
-				</div>
-			</div>
-			<div className="tagBox">
-				<label className="tag" htmlFor="tag">
-					<h4>Tags</h4>
-					<Input
-						type="text"
-						id="tag"
-						name="tag_text"
-						placeholder="e.g. (c# php objective-c)"
-					/>
-				</label>
-			</div>
-			<div className="buttonBox">
-				<BasicButton type="submit" height="40">
-					Save edits
-				</BasicButton>
-				&nbsp;
-				<CancelButton type="button" height="40">
-					Cancel
-				</CancelButton>
-			</div>
+		<AskQuestionEditForm onKeyDown={userKeyDown} onSubmit={handleSubmit}>
+			{error && <div>질문 정보 조회 실패</div>}
+			{isLoading ? (
+				<Loading />
+			) : (
+				<>
+					<div className="titleBox">
+						<label className="title" htmlFor="title">
+							<h4>Title</h4>
+							<Input
+								type="text"
+								id="title"
+								name="title_text"
+								placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
+								defaultValue={quesItem.title}
+							/>
+						</label>
+					</div>
+					<div className="bodyBox">
+						<label className="body" htmlFor="body">
+							<textarea id="body" name="body_text" defaultValue={quesItem.content} />
+						</label>
+						<div className="explain">
+							<p>
+								I need to show the datepicker according to screen size if on a
+								desktop window the datepicker will show normally that is already
+								showing but when on a mobile screen i need to open a drawer and then
+								the datepicker should show inside the drawer with inline style i
+								have created the datepicker field outside the drawer .is there a way
+								to do this i am using antd datepicker
+							</p>
+							<p>
+								I have tried to create the custom drawer and when on mobile screen
+								only the drawer is showing and not the datepicker because i do not
+								know how to call the respective datepicker in a onclick function
+								like in the jquery we have .datepicker() for custom styling and
+								other stuff
+							</p>
+						</div>
+					</div>
+					<div className="tagBox">
+						<label className="tag" htmlFor="tag">
+							<h4>Tags</h4>
+							<EditTag tagList={quesItem.tags} />
+						</label>
+					</div>
+					<div className="buttonBox">
+						<BasicButton type="submit" height="40">
+							Save edits
+						</BasicButton>
+						&nbsp;
+						<CancelButton 
+							type="button" 
+							height="40"
+							onClick={() => navigate(`/questions/${questionId}`)}
+						>
+							Cancel
+						</CancelButton>
+					</div>
+				</>
+			)}
 		</AskQuestionEditForm>
 	);
 };
