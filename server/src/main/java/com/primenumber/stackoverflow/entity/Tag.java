@@ -36,11 +36,11 @@ public class Tag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tag tag = (Tag) o;
-        return id == tag.id;
+        return name.equals(tag.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(name);
     }
 }

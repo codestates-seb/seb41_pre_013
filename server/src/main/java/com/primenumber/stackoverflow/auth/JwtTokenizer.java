@@ -24,10 +24,10 @@ public class JwtTokenizer {
     private final String tokenPrefix = "Bearer";
     @Getter
     private final String secret = "91a4a9ed31c0eddc70d040538543b82cdf5bb8e84a8513447293dd8167e70941764ec5be594ff940b1485c43ac4fbc7ac8d0e3a798f590ee832789bb85ae6b1e";
+//    @Getter
+//    private final long refreshExpirationTime = 259_200_000;
     @Getter
-    private final long refreshExpirationTime = 259_200_000;
-    @Getter
-    private final long accessExpirationTime = 3_600_000;
+    private final long accessExpirationTime = 12 * 3_600_000;
 
 
     public String generateAccessToken(

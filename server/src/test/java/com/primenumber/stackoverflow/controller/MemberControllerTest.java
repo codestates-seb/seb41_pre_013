@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,9 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(TestSecurityConfig.class)
 @WebMvcTest(MemberController.class)
 class MemberControllerTest {
-
     @Autowired private MockMvc mvc;
-    @MockBean private MemberService memberService;
+    @Autowired private MemberService memberService;
 
     @DisplayName("[GET] 회원 페이지 - 정상 호출")
     @Test
@@ -128,6 +126,7 @@ class MemberControllerTest {
     public void givenMemberDtoPost_whenQuestingMemberRegistration_thenReturnNothing() throws Exception {
         // Given with Stubbing
         MemberDto.Post dto = createMemberPostDto();
+
         willDoNothing().given(memberService).saveMember(any(MemberDto.Post.class));
 
         Gson gson = new Gson();
@@ -156,21 +155,21 @@ class MemberControllerTest {
 
     @DisplayName("[PATCH] 회원 정보 수정 - 정상 호출")
     @Test
-    public void givenMemberIdAndPatchInfo_whenUpdatingMemberInfo_thenReturnNothing() throws Exception {
+    public void givenMemberPrincipalAndMemberIdAndPatchInfo_whenUpdatingMemberInfo_thenReturnNothing() throws Exception {
         // Given with Stubbing
-        Member member = createMember();
+        MemberPrincipal principal = createMemberPrincipal();
+        Long memberId = principal.getId();
         MemberDto.Patch dto = createMemberPatchDto();
+
+        willDoNothing().given(memberService).updateMember(anyLong(), any(MemberPrincipal.class), any(MemberDto.Patch.class));
 
         Gson gson = new Gson();
 
         String requestJson = gson.toJson(dto);
-        String jwt = createJwt(member);
-
-        willDoNothing().given(memberService).updateMember(anyLong(), any(MemberPrincipal.class), any(MemberDto.Patch.class));
-        given(memberService.searchMember(anyString())).willReturn(member);
+        String jwt = createJwt(principal.toEntity());
 
         // When & Then
-        mvc.perform(patch("/members/{memberId}", member.getId())
+        mvc.perform(patch("/members/{memberId}", memberId)
                         .header(getJwtHeader(), getJwtPrefix() + " " + jwt)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -203,10 +202,9 @@ class MemberControllerTest {
         // Given with Stubbing
         Member member = createMember();
 
-        String jwt = createJwt(member);
-
         willDoNothing().given(memberService).deleteMember(anyLong(), any(MemberPrincipal.class));
-        given(memberService.searchMember(anyString())).willReturn(member);
+
+        String jwt = createJwt(member);
 
         // When & Then
         mvc.perform(delete("/members/{memberId}", member.getId())
