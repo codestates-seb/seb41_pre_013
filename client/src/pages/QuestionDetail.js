@@ -144,6 +144,7 @@ function QuestionDetail() {
 	const handleDelClick = (e) => {
 		console.log("questionId", questionId);
 		questionDelete(questionId);
+		navigate(`/questions`);
 	}
 
 	return (
