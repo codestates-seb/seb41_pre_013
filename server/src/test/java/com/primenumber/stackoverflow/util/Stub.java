@@ -13,8 +13,12 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+// TODO : Stub 기능 별로 분리하기
 public class Stub {
+    // Member
+
     public static Member createMember() {
         Member member = Member.of(
                 "hong@email.com",
@@ -22,6 +26,19 @@ public class Stub {
                 "홍길동"
         );
         ReflectionTestUtils.setField(member, "id", 1L);
+        ReflectionTestUtils.setField(member, "createdAt", LocalDateTime.now());
+        ReflectionTestUtils.setField(member, "modifiedAt", LocalDateTime.now());
+
+        return member;
+    }
+
+    public static Member createMember(Long id, String email, String password, String displayName) {
+        Member member = Member.of(
+                email,
+                password,
+                displayName
+        );
+        ReflectionTestUtils.setField(member, "id", id);
         ReflectionTestUtils.setField(member, "createdAt", LocalDateTime.now());
         ReflectionTestUtils.setField(member, "modifiedAt", LocalDateTime.now());
 
@@ -44,12 +61,12 @@ public class Stub {
     }
 
     public static Page<Member> createMemberPage(Pageable pageable) {
-        Member member1 = Member.of("hong@email.com", "pw1", "홍길동");
+        Member member1 = Member.of("hong@email.com", "pw1@12345", "홍길동");
         ReflectionTestUtils.setField(member1, "id", 1L);
         ReflectionTestUtils.setField(member1, "createdAt", LocalDateTime.now());
         ReflectionTestUtils.setField(member1, "modifiedAt", LocalDateTime.now());
 
-        Member member2 = Member.of("jeon@email.com", "pw2", "전우치");
+        Member member2 = Member.of("jeon@email.com", "pw2@12345", "전우치");
         ReflectionTestUtils.setField(member2, "id", 2L);
         ReflectionTestUtils.setField(member2, "createdAt", LocalDateTime.now());
         ReflectionTestUtils.setField(member2, "modifiedAt", LocalDateTime.now());
@@ -59,9 +76,25 @@ public class Stub {
         return new PageImpl<>(members, pageable, members.size());
     }
 
+    public static List<Member> createMembers() {
+        Member member1 = Member.of("hong@email.com", "pw1@12345", "홍길동");
+        ReflectionTestUtils.setField(member1, "id", 1L);
+        ReflectionTestUtils.setField(member1, "createdAt", LocalDateTime.now());
+        ReflectionTestUtils.setField(member1, "modifiedAt", LocalDateTime.now());
+
+        Member member2 = Member.of("jeon@email.com", "pw2@12345", "전우치");
+        ReflectionTestUtils.setField(member2, "id", 2L);
+        ReflectionTestUtils.setField(member2, "createdAt", LocalDateTime.now());
+        ReflectionTestUtils.setField(member2, "modifiedAt", LocalDateTime.now());
+
+        return List.of(member1, member2);
+    }
+
     public static MemberPrincipal createMemberPrincipal() {
         return MemberPrincipal.from(createMember());
     }
+
+    // JWT
 
     public static String createJwt(Member member) {
         Map<String, Object> claims = new HashMap<>();
@@ -71,9 +104,7 @@ public class Stub {
 
         JwtTokenizer jwtTokenizer = new JwtTokenizer();
 
-        String accessToken = jwtTokenizer.generateAccessToken(claims, subject, jwtTokenizer.getAccessExpirationTime());
-
-        return accessToken;
+        return jwtTokenizer.generateAccessToken(claims, subject, jwtTokenizer.getAccessExpirationTime());
     }
 
     public static String getJwtHeader() { return (new JwtTokenizer()).getHeaderString(); }
