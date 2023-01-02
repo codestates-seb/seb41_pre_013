@@ -2,15 +2,17 @@ import styled from 'styled-components';
 import { BiFilter } from 'react-icons/bi';
 import { AiFillCaretDown } from 'react-icons/ai';
 import { BasicButton } from '../components/Button';
-import Nav from '../components/Nav';
-import Aside from '../components/Aside';
-import Item from '../components/questions/Item';
-import Pagination from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
-import { QUES_ENDPOINT } from '../api/Question';
 import Loading from '../components/Loading';
 import useFetch from '../hooks/useFetch';
 import { AmountDisplay } from '../util/common';
+import { useState } from 'react';
+import { QUES_ENDPOINT } from '../api/Question';
+import Nav from '../components/Nav';
+import Aside from '../components/Aside';
+import Toest from '../components/Toest';
+import Item from '../components/questions/Item';
+import Pagination from '../components/Pagination';
 
 const ContentContainer = styled.div`
 	width: 100%;
@@ -25,6 +27,12 @@ const ContentContainer = styled.div`
 		padding: var(--main-outline-margin);
 		display: flex;
 		justify-content: space-between;
+	}
+
+	@media (max-width: 640px) {
+		.content_wrapper {
+			width: 100%;
+		}
 	}
 `;
 
@@ -70,6 +78,10 @@ const ListOption = styled.div`
 			:hover {
 				background-color: #f8f9f9;
 			}
+			:first-child {
+				border-top-left-radius: 4px;
+				border-bottom-left-radius: 4px;
+			}
 			:not(:last-child) {
 				border-right: 1px solid #9fa6ad;
 			}
@@ -100,6 +112,15 @@ const ListOption = styled.div`
 			font-size: var(--font-size-1-2rem);
 		}
 	}
+
+	@media (max-width: 1100px) {
+		.content_optoin_btn_general {
+			button:nth-of-type(3),
+			button:nth-of-type(4) {
+				display: none;
+			}
+		}
+	}
 `;
 
 const List = styled.ul`
@@ -107,12 +128,45 @@ const List = styled.ul`
 `;
 
 function QuestionList() {
-	const [quesList, isLoading, error] = useFetch(QUES_ENDPOINT);
 	const navigate = useNavigate();
+
+	// state
+	const [params, setParams] = useState({ page: 1, size: 15 });
+	const [toest, setToest] = useState({ isOpen: false, msg: '' });
+
+	// question list
+	const [data, isLoading, error] = useFetch(QUES_ENDPOINT, params);
+	let list,
+		pageInfo = {
+			page: params.page,
+			size: params.size,
+			totalCnt: 0,
+			totalPage: 0,
+			pageCnt: 5,
+			perPage: true,
+		};
+	if (data) {
+		list = data.response;
+		pageInfo.totalCnt = data.pageInfo.totalElements;
+		pageInfo.totalPage = data.pageInfo.totalPages;
+	}
+
+	// handle
+	const goPage = (page, size) => {
+		setParams({ page, size });
+	};
+
+	const toestView = (isOpen, msg) => {
+		setToest({ isOpen, msg });
+	};
+
 	return (
 		<ContentContainer>
 			<Nav />
 			<div className="content_wrapper">
+				{toest.isOpen && (
+					<Toest message={toest.msg} callback={toestView(false, '')} />
+				)}
 				<MainContent>
 					<div className="content_title">
 						<h2>All Questions</h2>
@@ -121,17 +175,14 @@ function QuestionList() {
 						</BasicButton>
 					</div>
 					{error && <div>질문 리스트 조회 실패</div>}
-					{isLoading ? (
-						<Loading />
-					) : (
+					{isLoading && <Loading />}
+					{data && (
 						<>
 							<ListOption>
-								<h4>
-									{AmountDisplay(quesList.length)} questions with bounties
-								</h4>
+								<h4>{AmountDisplay(pageInfo.totalCnt)} questions</h4>
 								<div className="content_option_btns">
 									<div className="content_optoin_btn_general">
-										<button>Newest</button>
+										<button className="selected">Newest</button>
 										<button>Active</button>
 										<button>Bountied</button>
 										<button>Unanswered</button>
@@ -146,14 +197,15 @@ function QuestionList() {
 									</button>
 								</div>
 							</ListOption>
+							{pageInfo.totalCnt === 0 && <div>등록된 질문이 없습니다.</div>}
 							<List>
-								{quesList.map((item) => (
+								{list.map((item) => (
 									<Item key={item.id} item={item} />
 								))}
 							</List>
-							<Pagination
-								pageInfo={{ viewPerPage: true, totalCnt: quesList.length }}
-							/>
+							{pageInfo.totalPage > 1 && (
+								<Pagination pageInfo={pageInfo} goPage={goPage} />
+							)}
 						</>
 					)}
 				</MainContent>

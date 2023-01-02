@@ -42,11 +42,16 @@ const ItemContent = styled.li`
 		}
 	}
 
+	.list-item {
+		width: 100%;
+	}
+
 	.list-item-title {
 		color: #0162be;
 		margin-bottom: 4px;
 		font-weight: lighter;
 
+		a,
 		a:visited {
 			color: #0162be;
 		}
@@ -59,6 +64,7 @@ const ItemContent = styled.li`
 	}
 
 	.list-item-meta {
+		width: 100%;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -75,9 +81,6 @@ const ItemContent = styled.li`
 
 		.author {
 			color: #3286d2;
-		}
-
-		.ask-time {
 		}
 	}
 
@@ -105,8 +108,8 @@ const Item = ({ item }) => {
 				</div>
 				<div>
 					<span></span>
-					<span className={`${item.answerCount > 0 && 'answer-selected'}`}>
-						<strong>{item.answerCount}</strong> answers
+					<span className={`${item.answers.length > 0 && 'answer-selected'}`}>
+						<strong>{item.answers.length}</strong> answers
 					</span>
 				</div>
 				<div>
@@ -123,14 +126,13 @@ const Item = ({ item }) => {
 				<div className="list-item-content">{item.content}</div>
 				<div className="list-item-meta">
 					<div className="list-item-meta-tags">
-						{item.tagList.map((tag) => (
+						{item.tags.map((tag) => (
 							<Tag key={tag.id}>{tag.tagName}</Tag>
 						))}
 					</div>
 					<div className="list-item-meta-author">
 						<span className="author">{item.displayName}&nbsp;</span>
 						<span className="ask-time">
-							{/* <strong>183</!--strong> */}
 							asked {DateConvert(item.createdAt)}
 						</span>
 					</div>

@@ -54,6 +54,11 @@ const GlobalStyle = createGlobalStyle`
 
   a {
     text-decoration: none;
+    color: var(--font-color-base); 
+
+    :visited {
+      color: var(--font-color-base); 
+    }
   }
 
   button {

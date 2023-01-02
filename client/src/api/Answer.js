@@ -1,54 +1,74 @@
 import axios from 'axios';
+import { getLoginInfo } from './LoginInfo';
 
-export const ANSWER_ENDPOINT = (questionId) => {
-	return (
-		process.env.REACT_APP_API +
-		process.env.REACT_APP_API_ANSWER_ENDPOINT.replace(':questionId', questionId)
-	);
-};
-const API_CONNECT_TIMEOUT = 1000;
+// api url
+export const ANSWER_ENDPOINT =
+	process.env.REACT_APP_API + process.env.REACT_APP_API_ANSWER_ENDPOINT;
+
+const API_CONNECT_TIMEOUT = 2000;
 
 // 답변 생성
-export const answerCreate = async (body, successCb, failCb) => {
-	const api_url = process.env.REACT_APP_API + '/answers';
+export const answerCreate = async (questionId, body) => {
+	const { token } = getLoginInfo();
+	// console.log(ANSWER_ENDPOINT);
 
 	try {
-		await axios.post(api_url, body, {
+		let result = await axios.post(ANSWER_ENDPOINT, body, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: token,
+			},
+			params: { 'question-id': Number(questionId) },
 			timeout: API_CONNECT_TIMEOUT,
 		});
-		successCb();
+		// console.log(result);
+		return { state: 'OK', data: result.data.response };
 	} catch (err) {
-		failCb();
-		console.error('Error: ', err);
+		// console.error('Error: ', err);
+		return { state: 'error' };
 	}
 };
 
 // 답변 수정
-export const answerUpdate = async (body, successCb, failCb) => {
-	const api_url = process.env.REACT_APP_API + '/answers/' + body.answerId;
-	console.log(api_url);
+export const answerUpdate = async (answerId, body) => {
+	const { token } = getLoginInfo();
+	const path = `${ANSWER_ENDPOINT}/${answerId}`;
+	// console.log(path);
+
 	try {
-		await axios.patch(api_url, body, {
+		let result = await axios.patch(path, body, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: token,
+			},
 			timeout: API_CONNECT_TIMEOUT,
 		});
-		successCb();
+		// console.log(result);
+		return { state: 'OK', data: result.data.response };
 	} catch (err) {
-		failCb();
-		console.error('Error: ', err);
+		// console.error('Error: ', err);
+		return { statusText: 'error' };
 	}
 };
 
 // 답변 삭제
-export const answerDelete = async (answerId, successCb, failCb) => {
-	const api_url = process.env.REACT_APP_API + '/answers/' + answerId;
+export const answerDelete = async (answerId) => {
+	const { token } = getLoginInfo();
+	const path = `${ANSWER_ENDPOINT}/${answerId}`;
+	// console.log(path);
+
 	try {
-		let result = await axios.delete(api_url, {
+		let result = await axios.delete(path, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: token,
+			},
 			timeout: API_CONNECT_TIMEOUT,
 		});
-		console.log(result);
-		successCb();
+		// console.log(result);
+		return { state: 'OK', msg: result.data };
 	} catch (err) {
-		failCb();
-		console.error('Error: ', err);
+		// console.error('Error: ', err);
+		return { state: 'error' };
 	}
 };

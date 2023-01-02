@@ -3,15 +3,17 @@ import { useState } from 'react';
 import { GoTriangleUp, GoTriangleDown } from 'react-icons/go';
 import { TbBadge } from 'react-icons/tb';
 import { GiBackwardTime } from 'react-icons/gi';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AmountDisplay, DateFormat } from '../util/common';
 import useFetch from '../hooks/useFetch';
 import useMoveScroll from '../hooks/useMoveScroll';
 import { ANSWER_ENDPOINT, answerDelete } from '../api/Answer';
 import Loading from '../components/Loading';
 import Modal from '../components/Modal';
+import Toest from '../components/Toest';
 import Pagination from '../components/Pagination';
 import AddForm from '../components/answers/AddForm';
+import { getLoginInfo } from '../api/LoginInfo';
 
 const AnswerContent = styled.div`
 	width: 100%;
@@ -67,7 +69,6 @@ const AnswerContent = styled.div`
 
 			.answer-item-content {
 				margin: 17px 0 20px;
-				font-size: var(--font-size-0-9-3rem);
 				line-height: 1.3rem;
 				vertical-align: top;
 				color: #232629;
@@ -83,7 +84,8 @@ const AnswerContent = styled.div`
 			.answer-item-meta-button {
 				vertical-align: top;
 
-				button {
+				button,
+				a {
 					background-color: transparent;
 					font-size: var(--font-size-0-8rem);
 					margin-right: 10px;
@@ -148,84 +150,123 @@ const AnswerContent = styled.div`
 	}
 `;
 
-const DetailList = () => {
-	const { questionId } = useParams();
-	const navigate = useNavigate();
+const DetailList = ({ questionItem }) => {
+	// hook
 	const { element, onMoveToElement } = useMoveScroll();
 
-	// status
+	// base info
+	const questionId = questionItem.id;
+	const loginMemberId = getLoginInfo().memberId;
+
+	// state
 	const [modal, setModal] = useState({ isOpen: false, msg: '' });
-	const [reload, setReload] = useState(false);
+	const [toest, setToest] = useState({ isOpen: false, msg: '' });
 	const [delAnswerId, setDelAnswerId] = useState(null);
+	const [clickPoint, setClickPoint] = useState({ x: 0, y: 0 });
+	const [listReload, setListReload] = useState(false);
+	const [params, setParams] = useState({
+		'question-id': questionId,
+		page: 1,
+		size: 15,
+	});
 
 	// answer list
-	const [answerList, isLoading, error] = useFetch(
-		ANSWER_ENDPOINT(questionId),
-		reload
+	const [data, isLoading, error] = useFetch(
+		ANSWER_ENDPOINT,
+		params,
+		listReload
 	);
-	const totalCnt = isLoading ? 0 : answerList.length;
+	let list,
+		pageInfo = {
+			page: params.page,
+			size: params.size,
+			totalCnt: 0,
+			totalPage: 0,
+			pageCnt: 5,
+			perPage: false,
+		};
+	if (data) {
+		list = data.response;
+		pageInfo.totalCnt = data.pageInfo.totalElements;
+		pageInfo.totalPage = data.pageInfo.totalPages;
+	}
 
-	const handleBtnClick = (e) => {
-		const btnType = e.target.name;
+	// func & handle
+	const handleDelClick = (e) => {
 		const answerId = e.target.value;
 
-		if (btnType === 'edit-btn')
-			navigate(`/questions/${questionId}/answers/${answerId}/edit`);
-		else if (btnType === 'del-btn') {
-			setDelAnswerId(answerId);
-			setModal({ isOpen: true, msg: '정말 삭제하시겠습니까?' });
-		}
+		setDelAnswerId(answerId);
+		modalView(true, '정말 삭제하시겠습니까?');
 	};
 
-	const answerRemove = () => {
-		modalClose();
+	// answer delete
+	const answerRemove = async () => {
+		modalView(false, '');
 
-		const successCb = () => rerender();
-		const failCb = () => alert('답변 삭제에 실패했습니다.');
-		answerDelete(delAnswerId, successCb, failCb);
+		const result = await answerDelete(delAnswerId);
+		if (result.state === 'OK') alertAndMove(result.msg, true);
+		else alertAndMove('답변 삭제에 실패했습니다.', false);
 	};
 
-	const modalClose = () => {
-		setModal({ isOpen: false, msg: '' });
+	// 답변 입력, 삭제 후 메시지 안내 및 위치 이동
+	// msg = 처리 안내 메시지, pointMove = answer list 상단 이동 여부
+	const alertAndMove = (msg, pointMove) => {
+		setListReload(!listReload);
+		toestView(true, msg);
+		if (pointMove && element != null) onMoveToElement();
 	};
 
-	const rerender = () => {
-		setReload(!reload);
-		if (element != null) onMoveToElement();
+	const goPage = (page, size) => {
+		setParams({ page, size });
 	};
 
-	const goPage = (pageNum) => {
-		rerender();
+	const modalView = (isOpen, msg) => {
+		setModal({ isOpen, msg });
 	};
+
+	const toestView = (isOpen, msg) => {
+		setToest({ isOpen, msg });
+	};
+
+	const handleClickPoint = (e) => {
+		setClickPoint({
+			x: e.nativeEvent.clientX,
+			y: e.nativeEvent.clientY,
+		});
+	};
+
+	// 답변 수정 후 리스트 호출 시, 수정된 답변 위치로 이동 후 애니메이션 재생
+	// const { editAnswerId } = useLocation().state;
+	// const { editAnswerEl, moveToEditAnswerEl } = useMoveScroll();
 
 	return (
-		<AnswerContent ref={element}>
+		<AnswerContent ref={element} onClick={handleClickPoint}>
+			{toest.isOpen && (
+				<Toest message={toest.msg} callback={() => toestView(false, '')} />
+			)}
 			<div className="answer-blank"></div>
 			<div className="answer-total">
-				<h3>{AmountDisplay(totalCnt)} Answers</h3>
+				<h3>{AmountDisplay(pageInfo.totalCnt)} Answers</h3>
 			</div>
 			{error && <div>답변 리스트 조회 실패</div>}
-			{isLoading ? (
-				<Loading />
-			) : (
+			{isLoading && <Loading />}
+			{data && (
 				<>
 					{modal.isOpen && (
 						<Modal
 							message={modal.msg}
 							confirmFn={answerRemove}
-							cancelFn={modalClose}
+							cancelFn={() => modalView(false, '')}
+							viewPoint={clickPoint}
 						/>
 					)}
-					{totalCnt > 1 && (
+					{pageInfo.totalPage > 1 && (
 						<div>
-							<Pagination
-								pageInfo={{ viewPerPage: false, totalCnt }}
-								goPage={goPage}
-							/>
+							<Pagination pageInfo={pageInfo} goPage={goPage} />
 						</div>
 					)}
-					{answerList.map((item) => (
-						<div className="answer-item" key={item.id}>
+					{list.map((item) => (
+						<div className="answer-item" key={item.answerId}>
 							<div className="vote-box">
 								<GoTriangleUp className="vote-icon" />
 								<div className="vote-num">0</div>
@@ -237,26 +278,29 @@ const DetailList = () => {
 								<div className="answer-item-content">{item.content}</div>
 								<div className="answer-item-meta">
 									<div className="answer-item-meta-button">
-										<button
-											type="button"
-											name="edit-btn"
-											value={item.id}
-											onClick={handleBtnClick}
-										>
-											Edit
-										</button>
-										<button
-											type="button"
-											name="del-btn"
-											value={item.id}
-											onClick={handleBtnClick}
-										>
-											Delete
-										</button>
+										{loginMemberId &&
+											item.memberId === Number(loginMemberId) && (
+												<>
+													<Link
+														to={`/questions/${questionId}/answers/${item.answerId}/edit`}
+														state={{ answerItem: item, questionItem }}
+													>
+														Edit
+													</Link>
+													<button
+														type="button"
+														name="del-btn"
+														value={item.answerId}
+														onClick={handleDelClick}
+													>
+														Delete
+													</button>
+												</>
+											)}
 									</div>
 									<div className="answer-item-meta-user">
 										<div className="answer-createat">
-											answered {DateFormat(item.createdAt)}
+											answered {DateFormat(item.modifiedAt)}
 										</div>
 										<div className="answer-user-profile">
 											<img
@@ -278,17 +322,14 @@ const DetailList = () => {
 							</div>
 						</div>
 					))}
-					{totalCnt > 30 && (
+					{pageInfo.totalPage > 1 && (
 						<div>
-							<Pagination
-								pageInfo={{ viewPerPage: false, totalCnt }}
-								goPage={goPage}
-							/>
+							<Pagination pageInfo={pageInfo} goPage={goPage} />
 						</div>
 					)}
 				</>
 			)}
-			<AddForm rerender={rerender} />
+			{loginMemberId && <AddForm alertAndMove={alertAndMove} />}
 		</AnswerContent>
 	);
 };
