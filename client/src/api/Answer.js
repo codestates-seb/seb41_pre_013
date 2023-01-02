@@ -25,7 +25,7 @@ export const answerCreate = async (questionId, body) => {
 		// console.log(result);
 		return { state: 'OK', data: result.data.response };
 	} catch (err) {
-		// console.error('Error: ', err);
+		console.error('Error: ', err);
 		return { state: 'error' };
 	}
 };
@@ -47,7 +47,7 @@ export const answerUpdate = async (answerId, body) => {
 		// console.log(result);
 		return { state: 'OK', data: result.data.response };
 	} catch (err) {
-		// console.error('Error: ', err);
+		console.error('Error: ', err);
 		return { statusText: 'error' };
 	}
 };
@@ -69,7 +69,7 @@ export const answerDelete = async (answerId) => {
 		// console.log(result);
 		return { state: 'OK', msg: result.data };
 	} catch (err) {
-		// console.error('Error: ', err);
+		console.error('Error: ', err);
 		return { state: 'error' };
 	}
 };

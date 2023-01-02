@@ -31,6 +31,12 @@ const Container = styled.div`
 			display: flex;
 		}
 	}
+
+	@media (max-width: 640px) {
+		.main-content {
+				width: 100%;
+		}
+	}
 `;
 
 const QuestionHeader = styled.section`
@@ -134,10 +140,10 @@ function QuestionDetail() {
 	const loginMemberId = getLoginInfo().memberId;
 	console.log("로그인 아이디", loginMemberId);
 	
-	let quesList, quesId;
+	let quesList, quesMemberId;
 	if(data) {
 		quesList = data.response;
-		quesId = data.response.member.id;
+		quesMemberId = data.response.member.id;
 	}
 	
 	const navigate = useNavigate();
@@ -202,7 +208,7 @@ function QuestionDetail() {
                   ))}
 								</div>
 								{loginMemberId &&
-									quesId === Number(loginMemberId) && (
+									quesMemberId === Number(loginMemberId) && (
 										<div className="edit-delete-box">
 											<button className="question-edit-btn" onClick={handleEditClick}>Edit</button>
 											<button className="question-delete-btn" onClick={handleDelClick}>Delete</button>

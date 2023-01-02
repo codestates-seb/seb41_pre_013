@@ -301,7 +301,7 @@ const DetailList = ({ questionItem }) => {
 									</div>
 									<div className="answer-item-meta-user">
 										<div className="answer-createat">
-											answered {DateFormat(item.modifiedAt)}
+											answered {DateFormat(item.createdAt)}
 										</div>
 										<div className="answer-user-profile">
 											<img
