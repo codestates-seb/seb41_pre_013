@@ -5,8 +5,15 @@ export const AmountDisplay = (number) => {
 
 // 현재 시간 기준 날짜 변환(1 min ago, 2 mins ago, 1 sec ago)
 export const DateConvert = (createAt) => {
-	let cDate = new Date(createAt);
+	const utcDate = new Date(createAt);
+	const cDate = utcDate.getTime() - utcDate.getTimezoneOffset() * 60 * 1000;
+
 	const milliSeconds = new Date() - cDate;
+
+	// console.log('createAt', createAt);
+	// console.log('cdate', new Date(cDate));
+	// console.log('milliseconds', milliSeconds);
+
 	const seconds = milliSeconds / 1000;
 	if (seconds < 60) return `${Math.floor(seconds)} secs ago`;
 
@@ -36,13 +43,23 @@ export const DateConvert = (createAt) => {
 
 // 날짜 표시 포맷(Jun 8, 2011 at 2:43)
 export const DateFormat = (createAt) => {
-	const strDate = new Date(createAt).toLocaleString('en-US', {
+	const utcDate = new Date(createAt);
+	const cDate = new Date(
+		utcDate.getTime() - utcDate.getTimezoneOffset() * 60 * 1000
+	);
+
+	// console.log('cDate', cDate);
+
+	const strDate = cDate.toLocaleString('en-US', {
 		month: 'short',
 		day: 'numeric',
 		year: 'numeric',
 		hour: 'numeric',
 		minute: 'numeric',
 	});
+
+	// console.log('strDate', strDate);
+
 	const arrDate = strDate.split(',');
 	const time = arrDate[2].trim().split(' '); // '5:02 PM'
 	let [hour, minute] = time[0].split(':');

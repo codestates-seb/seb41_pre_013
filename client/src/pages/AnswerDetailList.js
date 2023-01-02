@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { GoTriangleUp, GoTriangleDown } from 'react-icons/go';
 import { TbBadge } from 'react-icons/tb';
 import { GiBackwardTime } from 'react-icons/gi';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AmountDisplay, DateFormat } from '../util/common';
 import useFetch from '../hooks/useFetch';
 import useMoveScroll from '../hooks/useMoveScroll';
@@ -13,6 +13,7 @@ import Modal from '../components/Modal';
 import Toest from '../components/Toest';
 import Pagination from '../components/Pagination';
 import AddForm from '../components/answers/AddForm';
+import { getLoginInfo } from '../api/LoginInfo';
 
 const AnswerContent = styled.div`
 	width: 100%;
@@ -69,7 +70,6 @@ const AnswerContent = styled.div`
 
 			.answer-item-content {
 				margin: 17px 0 20px;
-				font-size: var(--font-size-0-9-3rem);
 				line-height: 1.3rem;
 				vertical-align: top;
 				color: #232629;
@@ -153,15 +153,18 @@ const AnswerContent = styled.div`
 
 const DetailList = ({ questionItem }) => {
 	// hook
-	const questionId = questionItem.id;
-	// const { questionId } = useParams();
 	const { element, onMoveToElement } = useMoveScroll();
+
+	// base info
+	const questionId = questionItem.id;
+	const loginMemberId = getLoginInfo().memberId;
 
 	// state
 	const [modal, setModal] = useState({ isOpen: false, msg: '' });
 	const [toest, setToest] = useState({ isOpen: false, msg: '' });
 	const [delAnswerId, setDelAnswerId] = useState(null);
 	const [clickPoint, setClickPoint] = useState({ x: 0, y: 0 });
+	const [listReload, setListReload] = useState(false);
 	const [params, setParams] = useState({
 		'question-id': questionId,
 		page: 1,
@@ -170,8 +173,9 @@ const DetailList = ({ questionItem }) => {
 
 	// answer list
 	const [data, isLoading, error] = useFetch(
-		ANSWER_ENDPOINT(questionId),
-		params
+		ANSWER_ENDPOINT,
+		params,
+		listReload
 	);
 	let list,
 		pageInfo = {
@@ -188,7 +192,7 @@ const DetailList = ({ questionItem }) => {
 		pageInfo.totalPage = data.pageInfo.totalPages;
 	}
 
-	// handle
+	// func & handle
 	const handleDelClick = (e) => {
 		const answerId = e.target.value;
 
@@ -201,11 +205,18 @@ const DetailList = ({ questionItem }) => {
 		modalView(false, '');
 
 		const result = await answerDelete(delAnswerId);
-		if (result.statusText === 'OK') alertAndMove(result.msg, true);
+		if (result.state === 'OK') alertAndMove(result.msg, true);
 		else alertAndMove('답변 삭제에 실패했습니다.', false);
 	};
 
-	// func & handle
+	// 답변 입력, 삭제 후 메시지 안내 및 위치 이동
+	// msg = 처리 안내 메시지, pointMove = answer list 상단 이동 여부
+	const alertAndMove = (msg, pointMove) => {
+		setListReload(!listReload);
+		toestView(true, msg);
+		if (pointMove && element != null) onMoveToElement();
+	};
+
 	const goPage = (page, size) => {
 		setParams({ page, size });
 	};
@@ -218,19 +229,16 @@ const DetailList = ({ questionItem }) => {
 		setToest({ isOpen, msg });
 	};
 
-	// 답변 입력, 삭제 후 메시지 안내 및 위치 이동
-	// msg = 처리 안내 메시지, pointMove = answer list 상단 이동 여부
-	const alertAndMove = (msg, pointMove) => {
-		toestView(true, msg);
-		if (pointMove && element != null) onMoveToElement();
-	};
-
 	const handleClickPoint = (e) => {
 		setClickPoint({
 			x: e.nativeEvent.clientX,
 			y: e.nativeEvent.clientY,
 		});
 	};
+
+	// 답변 수정 후 리스트 호출 시, 수정된 답변 위치로 이동 후 애니메이션 재생
+	// const { editAnswerId } = useLocation().state;
+	// const { editAnswerEl, moveToEditAnswerEl } = useMoveScroll();
 
 	return (
 		<AnswerContent ref={element} onClick={handleClickPoint}>
@@ -259,7 +267,7 @@ const DetailList = ({ questionItem }) => {
 						</div>
 					)}
 					{list.map((item) => (
-						<div className="answer-item" key={item.id}>
+						<div className="answer-item" key={item.answerId}>
 							<div className="vote-box">
 								<GoTriangleUp className="vote-icon" />
 								<div className="vote-num">0</div>
@@ -271,26 +279,29 @@ const DetailList = ({ questionItem }) => {
 								<div className="answer-item-content">{item.content}</div>
 								<div className="answer-item-meta">
 									<div className="answer-item-meta-button">
-										<Link
-											to={{
-												pathname: `/questions/${questionId}/answers/${item.id}/edit`,
-												state: { answerItem: item, questionItem },
-											}}
-										>
-											Edit
-										</Link>
-										<button
-											type="button"
-											name="del-btn"
-											value={item.id}
-											onClick={handleDelClick}
-										>
-											Delete
-										</button>
+										{loginMemberId &&
+											item.memberId === Number(loginMemberId) && (
+												<>
+													<Link
+														to={`/questions/${questionId}/answers/${item.answerId}/edit`}
+														state={{ answerItem: item, questionItem }}
+													>
+														Edit
+													</Link>
+													<button
+														type="button"
+														name="del-btn"
+														value={item.answerId}
+														onClick={handleDelClick}
+													>
+														Delete
+													</button>
+												</>
+											)}
 									</div>
 									<div className="answer-item-meta-user">
 										<div className="answer-createat">
-											answered {DateFormat(item.createdAt)}
+											answered {DateFormat(item.modifiedAt)}
 										</div>
 										<div className="answer-user-profile">
 											<img
@@ -319,7 +330,7 @@ const DetailList = ({ questionItem }) => {
 					)}
 				</>
 			)}
-			<AddForm alertAndMove={alertAndMove} />
+			{loginMemberId && <AddForm alertAndMove={alertAndMove} />}
 		</AnswerContent>
 	);
 };
