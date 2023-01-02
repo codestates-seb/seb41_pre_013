@@ -10,6 +10,7 @@ import { QUES_ENDPOINT } from '../api/Question';
 import useFetch from '../hooks/useFetch';
 import Loading from '../components/Loading';
 import { DateConvert } from '../util/common';
+import { getLoginInfo } from '../api/LoginInfo';
 
 const Container = styled.div`
 	width: 100%;
@@ -130,9 +131,14 @@ function QuestionDetail() {
 	const { questionId } = useParams();
 	const [data, isLoading, error] = useFetch(`${QUES_ENDPOINT}/${questionId}`);
 
-	let quesList;
+	const loginMemberId = getLoginInfo().memberId;
+	console.log("로그인 아이디", loginMemberId);
+	
+	let quesList, quesId;
 	if(data) {
 		quesList = data.response;
+		quesId = data.response.member.id;
+		console.log("질문 작성자 아이디", quesId.id);
 	}
 	
 	const navigate = useNavigate();
@@ -196,10 +202,13 @@ function QuestionDetail() {
                     <Tag key={tag.id}>{tag.tagName}</Tag>
                   ))}
 								</div>
-								<div className="edit-delete-box">
-									<button className="question-edit-btn" onClick={handleEditClick}>Edit</button>
-									<button className="question-delete-btn" onClick={handleDelClick}>Delete</button>
-								</div>
+								{loginMemberId &&
+									quesId === Number(loginMemberId) && (
+										<div className="edit-delete-box">
+											<button className="question-edit-btn" onClick={handleEditClick}>Edit</button>
+											<button className="question-delete-btn" onClick={handleDelClick}>Delete</button>
+										</div>
+								)}
 							</div>
 						</QuestionContent>
 						{/* 답변 조회, 작성 */}
